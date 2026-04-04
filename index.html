@@ -4,76 +4,419 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SoldergG — Mobile App Developer</title>
-  <meta name="description" content="Independent mobile app developer. Creator of Kebab Locator — find the best kebab shops near you." />
+  <meta name="description" content="Independent mobile app developer specialising in native iOS (SwiftUI) and cross-platform apps. Creator of Kebab Locator, SGO SalvaMais, and more." />
+  <meta property="og:title" content="SoldergG — Mobile App Developer" />
+  <meta property="og:description" content="Native iOS & cross-platform mobile apps built with SwiftUI and React Native." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://soldergg.github.io" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
+  <!-- ── NAVIGATION ── -->
+  <nav id="navbar">
     <div class="nav-inner">
-      <span class="logo">SoldergG</span>
-      <ul>
+      <a href="#" class="logo">SoldergG<span class="dot">.</span></a>
+      <ul class="nav-links">
         <li><a href="#apps">Apps</a></li>
+        <li><a href="#skills">Skills</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
+      <a href="https://github.com/SoldergG" target="_blank" class="nav-github">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+        GitHub
+      </a>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <header class="hero">
-    <div class="hero-content">
-      <div class="badge">Independent Developer</div>
-      <h1>Building apps<br /><span class="gradient-text">people actually use</span></h1>
-      <p class="hero-sub">Native iOS &amp; cross-platform mobile apps crafted with care.</p>
-      <a href="#apps" class="btn-primary">View my apps</a>
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+      <div class="grid-overlay"></div>
     </div>
-    <div class="hero-visual">
-      <div class="phone-mockup">
-        <div class="phone-screen">
-          <div class="app-icon-big">🌯</div>
-          <p class="phone-title">Kebab Locator</p>
-          <p class="phone-sub">Find kebab shops near you</p>
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-badge">
+          <span class="status-dot"></span>
+          Available for projects
+        </div>
+        <h1>Building mobile apps<br /><span class="gradient-text">that feel native</span></h1>
+        <p class="hero-desc">Independent iOS &amp; cross-platform developer. I create fast, polished, production-ready apps with SwiftUI and React Native — from concept to App Store.</p>
+        <div class="hero-cta">
+          <a href="#apps" class="btn-primary">View my apps</a>
+          <a href="https://github.com/SoldergG" target="_blank" class="btn-ghost">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><span class="stat-num">5+</span><span class="stat-label">Apps built</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-num">2</span><span class="stat-label">Platforms</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Swift &amp; TS</span></div>
         </div>
       </div>
-    </div>
-  </header>
-
-  <!-- APPS -->
-  <section id="apps" class="section">
-    <div class="container">
-      <h2 class="section-title">My Apps</h2>
-      <p class="section-sub">Every app is built with native performance, clean UI, and real-world utility.</p>
-
-      <div class="cards">
-        <!-- Kebab Locator -->
-        <div class="card featured">
-          <div class="card-header">
-            <div class="app-icon">🌯</div>
-            <div class="card-meta">
-              <h3>Kebab Locator</h3>
-              <span class="tag">iOS &amp; Android</span>
+      <div class="hero-phones">
+        <div class="phone phone-back">
+          <div class="phone-notch"></div>
+          <div class="phone-content">
+            <div class="mini-ui">
+              <div class="mini-header">SGO SalvaMais</div>
+              <div class="mini-stat-row">
+                <div class="mini-stat orange"><span>12</span><small>Serviços</small></div>
+                <div class="mini-stat red"><span>3</span><small>ISN</small></div>
+              </div>
+              <div class="mini-list">
+                <div class="mini-item"></div>
+                <div class="mini-item"></div>
+                <div class="mini-item short"></div>
+              </div>
             </div>
           </div>
-          <p>Discover the best kebab restaurants near you. Browse menus, save your favourites, read reviews, and get directions — all in one place.</p>
-          <ul class="features">
-            <li>📍 GPS-based nearby search</li>
-            <li>⭐ Favourites &amp; reviews</li>
-            <li>🗺️ Interactive map</li>
-            <li>🏪 Owner portal for listings</li>
-          </ul>
-          <div class="store-buttons">
-            <a href="#" class="store-btn ios">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-              App Store
+        </div>
+        <div class="phone phone-front">
+          <div class="phone-notch"></div>
+          <div class="phone-content">
+            <div class="mini-ui">
+              <div class="mini-header kebab">🌯 Kebab Locator</div>
+              <div class="mini-map">
+                <div class="map-dot d1"></div>
+                <div class="map-dot d2"></div>
+                <div class="map-dot d3"></div>
+                <div class="map-dot d4 pulse"></div>
+              </div>
+              <div class="mini-card">
+                <div class="mini-card-icon">🌯</div>
+                <div><div class="mini-card-title"></div><div class="mini-card-sub"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── APPS ── -->
+  <section id="apps" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Portfolio</div>
+        <h2>My Apps</h2>
+        <p>From consumer apps to enterprise tools — every project ships production-ready.</p>
+      </div>
+
+      <!-- Kebab Locator -->
+      <div class="app-showcase">
+        <div class="app-showcase-text">
+          <div class="app-platform-tags">
+            <span class="platform-tag ios">iOS</span>
+            <span class="platform-tag android">Android</span>
+          </div>
+          <div class="app-showcase-header">
+            <div class="app-showcase-icon" style="background: linear-gradient(135deg,#ff6b35,#ff9500);">🌯</div>
+            <div>
+              <h3>Kebab Locator</h3>
+              <p class="app-tagline">Find the best kebab shops near you</p>
+            </div>
+          </div>
+          <p class="app-desc">A cross-platform restaurant discovery app for kebab lovers. Uses real-time GPS to surface the closest shops, lets users save favourites, write reviews, and submit new listings. Business owners get a dedicated portal to manage their presence.</p>
+          <div class="feature-grid">
+            <div class="feature-item"><span class="fi-icon">📍</span><div><strong>GPS Discovery</strong><p>Haversine-based nearby search with live location tracking</p></div></div>
+            <div class="feature-item"><span class="fi-icon">🗺️</span><div><strong>Interactive Map</strong><p>MapKit integration with custom annotations and clustering</p></div></div>
+            <div class="feature-item"><span class="fi-icon">⭐</span><div><strong>Reviews & Favourites</strong><p>Persistent user favourites and star rating system</p></div></div>
+            <div class="feature-item"><span class="fi-icon">🏪</span><div><strong>Owner Portal</strong><p>Business owners can claim and manage their listings</p></div></div>
+            <div class="feature-item"><span class="fi-icon">🔍</span><div><strong>Smart Search</strong><p>Filter by distance, rating, cuisine style, and open now</p></div></div>
+            <div class="feature-item"><span class="fi-icon">📡</span><div><strong>Multi-source Data</strong><p>OpenStreetMap, Google Places, Foursquare, Yelp</p></div></div>
+          </div>
+          <div class="app-tech-stack">
+            <span>SwiftUI</span><span>React Native</span><span>Expo</span><span>Supabase</span><span>MapKit</span><span>AdMob</span>
+          </div>
+          <div class="app-links">
+            <a href="https://github.com/SoldergG/KebabLocator-iOS" target="_blank" class="btn-secondary sm">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+              View on GitHub (iOS)
             </a>
-            <a href="#" class="store-btn android">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.341l-4.763-8.25L6.477 15.341H17.523zM12 2.5L2.5 19h19L12 2.5zm0 2.236L19.764 18H4.236L12 4.736z"/></svg>
-              Google Play
+          </div>
+        </div>
+        <div class="app-showcase-visual kebab-visual">
+          <div class="visual-phone">
+            <div class="vp-notch"></div>
+            <div class="vp-screen">
+              <div class="vp-header">
+                <span>Kebab Locator</span>
+                <span>📍 Lisboa</span>
+              </div>
+              <div class="vp-map-area">
+                <div class="vp-map-bg">
+                  <div class="vp-map-line h1"></div>
+                  <div class="vp-map-line h2"></div>
+                  <div class="vp-map-line v1"></div>
+                  <div class="vp-map-line v2"></div>
+                  <div class="vp-pin p1">🌯</div>
+                  <div class="vp-pin p2">🌯</div>
+                  <div class="vp-pin p3 active">🌯</div>
+                  <div class="vp-user-pin">📍</div>
+                </div>
+              </div>
+              <div class="vp-card">
+                <div class="vp-card-icon">🌯</div>
+                <div class="vp-card-text">
+                  <div class="vp-card-name">Istanbul Kebab</div>
+                  <div class="vp-card-meta">⭐ 4.8 · 0.3 km away</div>
+                </div>
+                <div class="vp-card-arrow">›</div>
+              </div>
+              <div class="vp-card" style="opacity:0.5">
+                <div class="vp-card-icon">🌯</div>
+                <div class="vp-card-text">
+                  <div class="vp-card-name">Sultan's Döner</div>
+                  <div class="vp-card-meta">⭐ 4.5 · 0.7 km away</div>
+                </div>
+                <div class="vp-card-arrow">›</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- SGO SalvaMais -->
+      <div class="app-showcase reverse">
+        <div class="app-showcase-text">
+          <div class="app-platform-tags">
+            <span class="platform-tag ios">iOS</span>
+            <span class="platform-tag enterprise">Enterprise</span>
+          </div>
+          <div class="app-showcase-header">
+            <div class="app-showcase-icon" style="background: linear-gradient(135deg,#ff3b30,#ff9f0a);">🛡️</div>
+            <div>
+              <h3>SGO SalvaMais</h3>
+              <p class="app-tagline">Field operations & compliance management</p>
+            </div>
+          </div>
+          <p class="app-desc">A native iOS enterprise app for managing field services, safety compliance, and incident reporting. Designed for teams with multiple roles — managers, technicians, and clients each have a tailored experience. Features digital ISN report forms with photo capture and signature.</p>
+          <div class="feature-grid">
+            <div class="feature-item"><span class="fi-icon">📊</span><div><strong>Live Dashboard</strong><p>Real-time stats, active services, and pending reports at a glance</p></div></div>
+            <div class="feature-item"><span class="fi-icon">📋</span><div><strong>ISN Reports</strong><p>Multi-step digital forms with photo capture and signature pad</p></div></div>
+            <div class="feature-item"><span class="fi-icon">👥</span><div><strong>Role-based Access</strong><p>Manager, technician, and client views with scoped permissions</p></div></div>
+            <div class="feature-item"><span class="fi-icon">📅</span><div><strong>Calendar & Planning</strong><p>Schedule and track field service appointments</p></div></div>
+            <div class="feature-item"><span class="fi-icon">📦</span><div><strong>Inventory</strong><p>Track equipment and materials per service</p></div></div>
+            <div class="feature-item"><span class="fi-icon">✅</span><div><strong>Compliance Tracking</strong><p>Monitor compliance status across all ongoing operations</p></div></div>
+          </div>
+          <div class="app-tech-stack">
+            <span>SwiftUI</span><span>MVVM</span><span>Supabase</span><span>Auth</span><span>Canvas API</span>
+          </div>
+          <div class="app-links">
+            <a href="https://github.com/SoldergG/SGO-SalvaMais-iOS" target="_blank" class="btn-secondary sm">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+              View on GitHub
+            </a>
+          </div>
+        </div>
+        <div class="app-showcase-visual sgo-visual">
+          <div class="visual-phone">
+            <div class="vp-notch"></div>
+            <div class="vp-screen sgo-screen">
+              <div class="vp-header sgo-header">
+                <span>Dashboard</span>
+                <span>🔔</span>
+              </div>
+              <div class="sgo-stats">
+                <div class="sgo-stat orange"><span class="sgo-num">12</span><small>Serviços</small></div>
+                <div class="sgo-stat red"><span class="sgo-num">3</span><small>Pendentes</small></div>
+                <div class="sgo-stat green"><span class="sgo-num">8</span><small>Concluídos</small></div>
+              </div>
+              <div class="sgo-section-title">ISN Reports</div>
+              <div class="sgo-row"><div class="sgo-dot red"></div><div class="sgo-row-text"><div></div><div></div></div><div class="sgo-badge">Novo</div></div>
+              <div class="sgo-row"><div class="sgo-dot orange"></div><div class="sgo-row-text"><div></div><div></div></div><div class="sgo-badge grey">Rev.</div></div>
+              <div class="sgo-section-title">Serviços Hoje</div>
+              <div class="sgo-row"><div class="sgo-dot green"></div><div class="sgo-row-text"><div></div><div></div></div><div class="sgo-badge green2">OK</div></div>
+              <div class="sgo-row"><div class="sgo-dot orange"></div><div class="sgo-row-text"><div></div><div></div></div><div class="sgo-badge">Em curso</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Other Projects -->
+      <div class="section-header" style="margin-top:0">
+        <div class="section-eyebrow">More</div>
+        <h2>Other Projects</h2>
+        <p>Tools and utilities built to solve real problems.</p>
+      </div>
+
+      <div class="projects-grid">
+
+        <div class="project-card">
+          <div class="project-card-top">
+            <div class="project-icon" style="background:linear-gradient(135deg,#ffd60a,#ff9f0a);">☀️</div>
+            <div class="project-platform-tags">
+              <span class="platform-tag web">Web</span>
+              <span class="platform-tag ts">TypeScript</span>
+            </div>
+          </div>
+          <h4>Solar Calculator</h4>
+          <p>Estimate solar energy production and financial return for photovoltaic panel installations. Calculates based on location, panel specs, and energy consumption.</p>
+          <ul class="project-features">
+            <li>Energy yield estimation by region</li>
+            <li>ROI and payback period calculator</li>
+            <li>Panel configuration builder</li>
+          </ul>
+          <div class="project-links">
+            <a href="https://github.com/SoldergG/Solar-cal" target="_blank" class="btn-ghost xs">GitHub</a>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-top">
+            <div class="project-icon" style="background:linear-gradient(135deg,#5e5ce6,#bf5af2);">🎙️</div>
+            <div class="project-platform-tags">
+              <span class="platform-tag web">Web</span>
+              <span class="platform-tag ts">TypeScript</span>
+            </div>
+          </div>
+          <h4>Transcript Pro</h4>
+          <p>AI-powered audio transcription tool. Upload audio files and get accurate text transcriptions with speaker detection and timestamp markers.</p>
+          <ul class="project-features">
+            <li>Multi-format audio support</li>
+            <li>Automatic speaker detection</li>
+            <li>Export to TXT, SRT, JSON</li>
+          </ul>
+          <div class="project-links">
+            <a href="https://github.com/SoldergG/Transcript1-28" target="_blank" class="btn-ghost xs">GitHub</a>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-top">
+            <div class="project-icon" style="background:linear-gradient(135deg,#30d158,#34c759);">🌞</div>
+            <div class="project-platform-tags">
+              <span class="platform-tag web">Web</span>
+              <span class="platform-tag js">JavaScript</span>
+            </div>
+          </div>
+          <h4>Solar Simulator</h4>
+          <p>Interactive simulator to visualise solar panel output throughout the day and year. Includes seasonal variation, cloud cover, and orientation modelling.</p>
+          <ul class="project-features">
+            <li>Day/year output simulation</li>
+            <li>Panel orientation optimiser</li>
+            <li>Real-time visual charts</li>
+          </ul>
+          <div class="project-links">
+            <a href="https://github.com/SoldergG/solar-simulator" target="_blank" class="btn-ghost xs">GitHub</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SKILLS ── -->
+  <section id="skills" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Expertise</div>
+        <h2>Skills & Technologies</h2>
+        <p>Full stack mobile development — from UI design to backend infrastructure.</p>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-category">
+          <div class="skill-cat-icon">📱</div>
+          <h4>iOS Development</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">SwiftUI</span>
+            <span class="skill-tag">Swift</span>
+            <span class="skill-tag">MVVM</span>
+            <span class="skill-tag">MapKit</span>
+            <span class="skill-tag">CoreLocation</span>
+            <span class="skill-tag">Combine</span>
+            <span class="skill-tag">WidgetKit</span>
+            <span class="skill-tag">AVFoundation</span>
+          </div>
+        </div>
+        <div class="skill-category">
+          <div class="skill-cat-icon">🤖</div>
+          <h4>Cross-Platform</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">React Native</span>
+            <span class="skill-tag">Expo</span>
+            <span class="skill-tag">TypeScript</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">React Navigation</span>
+            <span class="skill-tag">Expo Router</span>
+          </div>
+        </div>
+        <div class="skill-category">
+          <div class="skill-cat-icon">🗄️</div>
+          <h4>Backend & Data</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Supabase</span>
+            <span class="skill-tag">PostgreSQL</span>
+            <span class="skill-tag">REST API</span>
+            <span class="skill-tag">Edge Functions</span>
+            <span class="skill-tag">Row Level Security</span>
+          </div>
+        </div>
+        <div class="skill-category">
+          <div class="skill-cat-icon">🛠️</div>
+          <h4>Tooling & Services</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Xcode</span>
+            <span class="skill-tag">Git / GitHub</span>
+            <span class="skill-tag">Google AdMob</span>
+            <span class="skill-tag">App Store Connect</span>
+            <span class="skill-tag">TestFlight</span>
+            <span class="skill-tag">GitHub Actions</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ── -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="about-layout">
+        <div class="about-left">
+          <div class="section-eyebrow">About me</div>
+          <h2>Indie developer,<br />full-stack mindset</h2>
+          <p>I build mobile apps independently — handling everything from architecture and UI design to backend integration and App Store submission. I care deeply about the details that make apps feel <em>native</em>.</p>
+          <p>My current focus is on <strong>SwiftUI</strong> for iOS, backed by <strong>Supabase</strong> for real-time data. I also work cross-platform with <strong>React Native + Expo</strong> when reach matters.</p>
+          <p>I'm passionate about location-based apps, enterprise tooling, and anything that solves a real daily problem.</p>
+          <div class="about-values">
+            <div class="value"><div class="value-icon">⚡</div><div><strong>Performance first</strong><p>Smooth 60fps, fast launches, efficient data loading.</p></div></div>
+            <div class="value"><div class="value-icon">🎨</div><div><strong>Native feel</strong><p>Following platform HIG guidelines for iOS and Android.</p></div></div>
+            <div class="value"><div class="value-icon">🔒</div><div><strong>Secure by design</strong><p>Row-level security, auth flows, safe key management.</p></div></div>
+          </div>
+        </div>
+        <div class="about-right">
+          <div class="about-card">
+            <div class="about-card-header">
+              <div class="about-avatar">SG</div>
+              <div>
+                <div class="about-name">SoldergG</div>
+                <div class="about-role">Independent Mobile Developer</div>
+              </div>
+            </div>
+            <div class="about-card-divider"></div>
+            <div class="about-card-row"><span>🌍</span><span>Portugal</span></div>
+            <div class="about-card-row"><span>💼</span><span>iOS + Android</span></div>
+            <div class="about-card-row"><span>🔧</span><span>SwiftUI · React Native · Supabase</span></div>
+            <div class="about-card-row"><span>📦</span><span>5+ apps shipped</span></div>
+            <div class="about-card-divider"></div>
+            <a href="https://github.com/SoldergG" target="_blank" class="about-github-btn">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="18"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+              View GitHub Profile
             </a>
           </div>
         </div>
@@ -81,51 +424,62 @@
     </div>
   </section>
 
-  <!-- ABOUT -->
-  <section id="about" class="section section-alt">
-    <div class="container about-grid">
-      <div class="about-text">
-        <h2 class="section-title">About me</h2>
-        <p>I'm an independent mobile developer focused on building clean, fast, and useful apps. I work with <strong>SwiftUI</strong> for native iOS experiences and <strong>React Native / Expo</strong> for cross-platform projects.</p>
-        <p>My apps are backed by <strong>Supabase</strong> for real-time data, and I care deeply about performance, accessibility, and great UX.</p>
-      </div>
-      <div class="skills">
-        <div class="skill-chip">SwiftUI</div>
-        <div class="skill-chip">React Native</div>
-        <div class="skill-chip">Expo</div>
-        <div class="skill-chip">TypeScript</div>
-        <div class="skill-chip">Supabase</div>
-        <div class="skill-chip">PostgreSQL</div>
-        <div class="skill-chip">MapKit</div>
-        <div class="skill-chip">AdMob</div>
-        <div class="skill-chip">MVVM</div>
-        <div class="skill-chip">iOS</div>
-        <div class="skill-chip">Android</div>
+  <!-- ── CONTACT ── -->
+  <section id="contact" class="section section-dark">
+    <div class="container">
+      <div class="contact-layout">
+        <div class="contact-text">
+          <div class="section-eyebrow">Get in touch</div>
+          <h2>Let's build something together</h2>
+          <p>Have a project idea, a bug to report, or want to collaborate? Feel free to reach out via GitHub or email.</p>
+          <div class="contact-links">
+            <a href="https://github.com/SoldergG" target="_blank" class="contact-link">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="22"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+              <div><strong>GitHub</strong><small>github.com/SoldergG</small></div>
+            </a>
+          </div>
+        </div>
+        <div class="contact-cta-box">
+          <p class="cta-label">Open to new projects &amp; collaborations</p>
+          <a href="https://github.com/SoldergG" target="_blank" class="btn-primary lg">Visit GitHub Profile</a>
+          <p class="cta-note">Response within 24–48 hours</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- CONTACT -->
-  <section id="contact" class="section">
-    <div class="container contact-center">
-      <h2 class="section-title">Get in touch</h2>
-      <p class="section-sub">Have a question about one of my apps? Want to collaborate?</p>
-      <a href="mailto:124895270+SoldergG@users.noreply.github.com" class="btn-primary">Send an email</a>
-      <a href="https://github.com/SoldergG" target="_blank" class="btn-secondary">GitHub</a>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
+  <!-- ── FOOTER ── -->
   <footer>
     <div class="container footer-inner">
-      <span>© 2026 SoldergG. All rights reserved.</span>
-      <div class="footer-links">
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="https://github.com/SoldergG" target="_blank">GitHub</a>
-        <a href="app-ads.txt">app-ads.txt</a>
+      <div class="footer-left">
+        <span class="logo">SoldergG<span class="dot">.</span></span>
+        <p>Independent mobile developer · Portugal</p>
       </div>
+      <div class="footer-links">
+        <a href="#apps">Apps</a>
+        <a href="#skills">Skills</a>
+        <a href="#about">About</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="app-ads.txt">app-ads.txt</a>
+        <a href="https://github.com/SoldergG" target="_blank">GitHub</a>
+      </div>
+      <p class="footer-copy">© 2026 SoldergG. All rights reserved.</p>
     </div>
   </footer>
 
+  <script>
+    // Scroll nav shadow
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+    });
+    // Smooth reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.app-showcase, .project-card, .skill-category, .value, .about-card').forEach(el => {
+      el.classList.add('reveal');
+      observer.observe(el);
+    });
+  </script>
 </body>
 </html>
