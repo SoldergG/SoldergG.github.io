@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SoldergG — Mobile App Developer</title>
+  <meta name="description" content="Independent mobile app developer. Creator of Kebab Locator — find the best kebab shops near you." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <span class="logo">SoldergG</span>
+      <ul>
+        <li><a href="#apps">Apps</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-content">
+      <div class="badge">Independent Developer</div>
+      <h1>Building apps<br /><span class="gradient-text">people actually use</span></h1>
+      <p class="hero-sub">Native iOS &amp; cross-platform mobile apps crafted with care.</p>
+      <a href="#apps" class="btn-primary">View my apps</a>
+    </div>
+    <div class="hero-visual">
+      <div class="phone-mockup">
+        <div class="phone-screen">
+          <div class="app-icon-big">🌯</div>
+          <p class="phone-title">Kebab Locator</p>
+          <p class="phone-sub">Find kebab shops near you</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- APPS -->
+  <section id="apps" class="section">
+    <div class="container">
+      <h2 class="section-title">My Apps</h2>
+      <p class="section-sub">Every app is built with native performance, clean UI, and real-world utility.</p>
+
+      <div class="cards">
+        <!-- Kebab Locator -->
+        <div class="card featured">
+          <div class="card-header">
+            <div class="app-icon">🌯</div>
+            <div class="card-meta">
+              <h3>Kebab Locator</h3>
+              <span class="tag">iOS &amp; Android</span>
+            </div>
+          </div>
+          <p>Discover the best kebab restaurants near you. Browse menus, save your favourites, read reviews, and get directions — all in one place.</p>
+          <ul class="features">
+            <li>📍 GPS-based nearby search</li>
+            <li>⭐ Favourites &amp; reviews</li>
+            <li>🗺️ Interactive map</li>
+            <li>🏪 Owner portal for listings</li>
+          </ul>
+          <div class="store-buttons">
+            <a href="#" class="store-btn ios">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              App Store
+            </a>
+            <a href="#" class="store-btn android">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.341l-4.763-8.25L6.477 15.341H17.523zM12 2.5L2.5 19h19L12 2.5zm0 2.236L19.764 18H4.236L12 4.736z"/></svg>
+              Google Play
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section section-alt">
+    <div class="container about-grid">
+      <div class="about-text">
+        <h2 class="section-title">About me</h2>
+        <p>I'm an independent mobile developer focused on building clean, fast, and useful apps. I work with <strong>SwiftUI</strong> for native iOS experiences and <strong>React Native / Expo</strong> for cross-platform projects.</p>
+        <p>My apps are backed by <strong>Supabase</strong> for real-time data, and I care deeply about performance, accessibility, and great UX.</p>
+      </div>
+      <div class="skills">
+        <div class="skill-chip">SwiftUI</div>
+        <div class="skill-chip">React Native</div>
+        <div class="skill-chip">Expo</div>
+        <div class="skill-chip">TypeScript</div>
+        <div class="skill-chip">Supabase</div>
+        <div class="skill-chip">PostgreSQL</div>
+        <div class="skill-chip">MapKit</div>
+        <div class="skill-chip">AdMob</div>
+        <div class="skill-chip">MVVM</div>
+        <div class="skill-chip">iOS</div>
+        <div class="skill-chip">Android</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section">
+    <div class="container contact-center">
+      <h2 class="section-title">Get in touch</h2>
+      <p class="section-sub">Have a question about one of my apps? Want to collaborate?</p>
+      <a href="mailto:124895270+SoldergG@users.noreply.github.com" class="btn-primary">Send an email</a>
+      <a href="https://github.com/SoldergG" target="_blank" class="btn-secondary">GitHub</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <span>© 2026 SoldergG. All rights reserved.</span>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="https://github.com/SoldergG" target="_blank">GitHub</a>
+        <a href="app-ads.txt">app-ads.txt</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
