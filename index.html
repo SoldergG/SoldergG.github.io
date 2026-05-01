@@ -46,12 +46,6 @@ nav.stuck {
   letter-spacing: -.02em; color: var(--text);
   display: flex; align-items: center; gap: 16px;
 }
-.logo-hex {
-  width: 26px; height: 26px;
-  background: linear-gradient(135deg, var(--orange), var(--amber));
-  clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
-  flex-shrink: 0;
-}
 .nav-links { list-style: none; display: flex; gap: 28px; align-items: center; }
 .nav-links a {
   font-family: var(--font-b); font-size: .84rem; font-weight: 500;
@@ -471,7 +465,7 @@ footer a:hover { color: rgba(255,255,255,.7); }
 <!-- NAV -->
 <nav id="nav">
   <div class="logo">
-    <div class="logo-hex"></div>
+    <img src="logo.png" alt="LT" style="width:28px;height:28px;object-fit:contain;flex-shrink:0;">
     Lucas Salvador
   </div>
   <ul class="nav-links">
@@ -935,7 +929,7 @@ footer a:hover { color: rgba(255,255,255,.7); }
 
 <footer style="background:var(--bg);border-top:1px solid var(--sep);padding:28px 32px;display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--muted);flex-wrap:wrap;gap:10px">
   <div style="display:flex;align-items:center;gap:8px">
-    <div style="width:18px;height:18px;background:linear-gradient(135deg,var(--orange),var(--amber));clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)"></div>
+    <img src="logo.png" alt="LT" style="width:18px;height:18px;object-fit:contain;opacity:.5;">
     <span>© 2025 Lucas Salvador</span>
   </div>
   <span>Lisbon · Portugal 🇵🇹</span>
