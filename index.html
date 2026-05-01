@@ -24,7 +24,7 @@
   --font-b: 'DM Sans', -apple-system, sans-serif;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body { background: var(--bg); color: var(--text); font-family: var(--font-b); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
 /* ─── NAV ─────────────────────────────────────── */
@@ -458,6 +458,111 @@ footer a:hover { color: rgba(255,255,255,.7); }
 .reveal-delay-2 { transition-delay: .2s; }
 .reveal-delay-3 { transition-delay: .3s; }
 
+/* ─── HAMBURGER ───────────────────────────────── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 6px;
+  background: none;
+  border: none;
+  z-index: 600;
+}
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform .3s, opacity .3s;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.nav-mobile {
+  display: none;
+  position: fixed;
+  top: 52px; left: 0; right: 0;
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--sep2);
+  padding: 8px 24px 20px;
+  flex-direction: column;
+  z-index: 499;
+  box-shadow: 0 8px 32px rgba(0,0,0,.08);
+}
+.nav-mobile.open { display: flex; }
+.nav-mobile a {
+  font-family: var(--font-b); font-weight: 500; font-size: 1rem;
+  color: var(--text); text-decoration: none;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--sep);
+}
+.nav-mobile a.nav-cta-mobile {
+  margin-top: 12px;
+  background: var(--text); color: #fff !important;
+  padding: 13px 20px;
+  border-radius: 100px;
+  text-align: center;
+  font-weight: 600;
+  border: none;
+}
+
+/* ─── RESPONSIVE ──────────────────────────────── */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+
+  nav { padding: 0 20px; }
+
+  .hero { padding: 100px 20px 60px; }
+  .hero-inner { max-width: 100%; }
+  .hero-sub { font-size: .95rem; }
+  #hero-canvas { opacity: 0.15; }
+
+  .feature {
+    grid-template-columns: 1fr !important;
+    gap: 32px;
+    padding: 60px 20px;
+  }
+  .feature.reverse { direction: ltr; }
+  .feat-visual { display: none; }
+
+  #projects { padding: 80px 0; }
+  .section-inner { padding: 0 20px; }
+  .section-h2 { margin-bottom: 28px; }
+  .projects-grid { grid-template-columns: 1fr !important; }
+  .pcard.wide { grid-column: span 1 !important; }
+
+  #skills { padding: 80px 0; }
+  .skills-grid { grid-template-columns: 1fr 1fr !important; margin-top: 28px; }
+
+  .about-inner {
+    grid-template-columns: 1fr !important;
+    gap: 48px;
+    padding: 0 20px;
+  }
+  .about-photo-wrap img { max-height: 360px; object-position: top center; }
+  .about-photo-badge { bottom: -12px; font-size: .75rem; padding: 8px 14px; }
+
+  #contact { padding: 80px 20px !important; }
+  #contact > div, .contact-grid { grid-template-columns: 1fr !important; gap: 40px; }
+
+  footer { padding: 24px 20px !important; }
+  footer > div { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .skills-grid { grid-template-columns: 1fr !important; }
+  .hero-stats { gap: 18px; }
+  .h-stat-n { font-size: 1.6rem; }
+  .hero-actions { flex-direction: column; align-items: center; }
+  .hero-actions a { width: 100%; text-align: center; }
+}
+
 </style>
 </head>
 <body>
@@ -475,7 +580,19 @@ footer a:hover { color: rgba(255,255,255,.7); }
     <li><a href="#contact">Contact</a></li>
     <li><a href="#contact" class="nav-cta">Hire me</a></li>
   </ul>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="nav-mobile" id="nav-mobile">
+  <a href="#projects" class="nav-mobile-link">Projects</a>
+  <a href="#skills" class="nav-mobile-link">Skills</a>
+  <a href="#about" class="nav-mobile-link">About</a>
+  <a href="#contact" class="nav-mobile-link">Contact</a>
+  <a href="#contact" class="nav-cta-mobile">Hire me</a>
+</div>
 
 <!-- HERO -->
 <section class="hero" id="home">
@@ -896,7 +1013,7 @@ footer a:hover { color: rgba(255,255,255,.7); }
 
 <!-- CONTACT -->
 <section id="contact" style="background:var(--bg2);padding:120px 32px">
-  <div style="max-width:860px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center">
+  <div style="max-width:860px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center" class="contact-grid">
     <div>
       <span class="section-eyebrow reveal">Let's work together</span>
       <h2 class="reveal" style="font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin:16px 0 18px;color:var(--text)">Got a project<br>in <span style="background:linear-gradient(135deg,var(--orange),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">mind?</span></h2>
@@ -945,6 +1062,22 @@ footer a:hover { color: rgba(255,255,255,.7); }
 window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('stuck', window.scrollY > 20);
 });
+
+// ── Hamburger menu ──
+(function() {
+  const btn = document.getElementById('nav-hamburger');
+  const menu = document.getElementById('nav-mobile');
+  function closeMenu() {
+    btn.classList.remove('open');
+    menu.classList.remove('open');
+  }
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('open');
+    menu.classList.toggle('open');
+  });
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  window.addEventListener('scroll', closeMenu);
+})();
 
 // ── Scroll reveal ──
 const obs = new IntersectionObserver(entries => {
@@ -1019,8 +1152,10 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     hexGroup.add(mesh);
   });
 
-  hexGroup.position.set(3.8, 0.1, -1.5);
+  const isMobile = window.innerWidth <= 768;
+  hexGroup.position.set(isMobile ? 1.5 : 3.8, isMobile ? -1.2 : 0.1, -1.5);
   hexGroup.rotation.set(0.12, -0.18, 0.05);
+  if (isMobile) hexGroup.scale.setScalar(0.7);
   scene.add(hexGroup);
 
   // Particles
