@@ -44,12 +44,13 @@ nav.stuck {
 .logo {
   font-family: var(--font-d); font-weight: 800; font-size: 1rem;
   letter-spacing: -.02em; color: var(--text);
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: center; gap: 16px;
 }
 .logo-hex {
   width: 26px; height: 26px;
   background: linear-gradient(135deg, var(--orange), var(--amber));
   clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+  flex-shrink: 0;
 }
 .nav-links { list-style: none; display: flex; gap: 28px; align-items: center; }
 .nav-links a {
