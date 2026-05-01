@@ -3,1406 +3,1020 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lucas Salvador — iOS & Full-Stack Developer · 3D Portfolio</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<title>Lucas Salvador — iOS & Full-Stack Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg: #0a0a0f;
-  --surface: #111118;
-  --surface2: #18181f;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.13);
-  --text: #f0eee8;
-  --muted: #7a7a8a;
-  --accent: #c8ff6e;
-  --accent2: #6e8fff;
-  --accent3: #ff6eb4;
-  --font-head: 'Syne', sans-serif;
-  --font-mono: 'DM Mono', monospace;
+  --bg: #ffffff;
+  --bg2: #f5f5f7;
+  --bg3: #fafafa;
+  --text: #1d1d1f;
+  --text2: #424245;
+  --muted: #6e6e73;
+  --sep: rgba(0,0,0,0.08);
+  --sep2: rgba(0,0,0,0.12);
+  --orange: #ff6b35;
+  --amber: #ff9500;
+  --surface: #ffffff;
+  --font-d: 'Syne', sans-serif;
+  --font-b: 'DM Sans', -apple-system, sans-serif;
 }
+
 html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-head);
-  overflow-x: hidden;
-  cursor: none;
-}
+body { background: var(--bg); color: var(--text); font-family: var(--font-b); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-/* Custom cursor */
-#cursor {
-  position: fixed;
-  width: 12px;
-  height: 12px;
-  background: var(--accent);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s, background 0.2s;
-  mix-blend-mode: difference;
-}
-#cursor-ring {
-  position: fixed;
-  width: 36px;
-  height: 36px;
-  border: 1px solid rgba(200,255,110,0.5);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-  transition: width 0.3s, height 0.3s, border-color 0.3s;
-}
-body:has(a:hover) #cursor, body:has(button:hover) #cursor { width: 20px; height: 20px; }
-body:has(a:hover) #cursor-ring, body:has(button:hover) #cursor-ring {
-  width: 56px; height: 56px;
-  border-color: rgba(200,255,110,0.9);
-}
-
-/* Noise overlay */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 1000;
-  opacity: 0.5;
-}
-
-/* Three.js canvas */
-#three-canvas {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* Nav */
+/* ─── NAV ─────────────────────────────────────── */
 nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 3rem;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.3s, background 0.3s;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  height: 52px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px;
+  transition: background .4s, backdrop-filter .4s, box-shadow .4s;
 }
-nav.scrolled {
-  background: rgba(10,10,15,0.85);
-  backdrop-filter: blur(20px);
-  border-color: var(--border);
+nav.stuck {
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 1px 0 var(--sep);
 }
-.nav-logo {
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  color: var(--accent);
-  text-transform: uppercase;
-  font-family: var(--font-mono);
-  transition: color 0.3s, letter-spacing 0.3s;
+.logo {
+  font-family: var(--font-d); font-weight: 800; font-size: 1rem;
+  letter-spacing: -.02em; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
 }
-.nav-logo:hover { color: var(--text); letter-spacing: 0.25em; }
-.nav-links { display: flex; gap: 2rem; list-style: none; }
+.logo-hex {
+  width: 26px; height: 26px;
+  background: linear-gradient(135deg, var(--orange), var(--amber));
+  clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+}
+.nav-links { list-style: none; display: flex; gap: 28px; align-items: center; }
 .nav-links a {
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  transition: color 0.2s;
-  position: relative;
+  font-family: var(--font-b); font-size: .84rem; font-weight: 500;
+  color: var(--muted); text-decoration: none;
+  transition: color .2s;
 }
-.nav-links a:not(.nav-cta)::after {
-  content: '';
-  position: absolute;
-  bottom: -4px; left: 0;
-  width: 0; height: 1px;
-  background: var(--accent);
-  transition: width 0.3s cubic-bezier(0.23,1,0.32,1);
-}
-.nav-links a:not(.nav-cta):hover::after { width: 100%; }
 .nav-links a:hover { color: var(--text); }
 .nav-cta {
-  background: var(--accent);
-  color: var(--bg) !important;
-  padding: 0.5rem 1.25rem;
-  border-radius: 2px;
-  font-weight: 700 !important;
-  transition: opacity 0.2s !important;
+  background: var(--text) !important;
+  color: #fff !important;
+  padding: 7px 18px;
+  border-radius: 100px;
+  font-size: .82rem !important;
+  font-weight: 600 !important;
+  transition: background .2s, transform .15s !important;
 }
-.nav-cta:hover { opacity: 0.85; }
+.nav-cta:hover { background: #333 !important; transform: translateY(-1px); }
 
-/* Hero */
+/* ─── HERO ────────────────────────────────────── */
 .hero {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 6rem 3rem 4rem;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 32px 80px;
   position: relative;
   overflow: hidden;
-  z-index: 1;
 }
-.hero-grid-bg {
+#hero-canvas {
   position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(200,255,110,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(200,255,110,0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
 }
-.hero-scanlines {
-  position: absolute; inset: 0;
-  background: repeating-linear-gradient(
-    0deg, transparent, transparent 3px,
-    rgba(255,255,255,0.008) 3px, rgba(255,255,255,0.008) 4px
-  );
-  pointer-events: none;
+.hero-inner { position: relative; z-index: 1; max-width: 900px; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,0,0,0.04);
+  border: 1px solid var(--sep2);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: .78rem; font-weight: 600; color: var(--muted);
+  letter-spacing: .04em; margin-bottom: 32px;
+  opacity: 0; animation: fadeUp .8s .1s ease forwards;
 }
-.hero-label {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--accent);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  animation: fadeInLeft 0.9s 0.2s both;
-}
-.hero-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
-.hero-label::after { content: '|'; animation: blink 1s step-end infinite; margin-left: 0.3rem; }
-.hero-title {
-  font-size: clamp(3.5rem, 9vw, 9rem);
+.status-dot { width: 6px; height: 6px; background: #34c759; border-radius: 50%; animation: pulse-dot 2s infinite; }
+@keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+.hero-h1 {
+  font-family: var(--font-d);
+  font-size: clamp(3.2rem, 7vw, 7rem);
   font-weight: 800;
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-  margin-bottom: 2rem;
-  animation: fadeInUp 1s 0.4s both;
+  letter-spacing: -.04em;
+  line-height: .92;
+  margin-bottom: 28px;
+  opacity: 0; animation: fadeUp .9s .25s ease forwards;
 }
-.hero-title .line2 { color: var(--muted); }
-.hero-title .accent {
-  background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent));
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.hero-h1 .grad {
+  background: linear-gradient(135deg, var(--orange) 0%, var(--amber) 60%, #ffcc02 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer 3s linear infinite;
 }
-.hero-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-top: 3rem;
-  flex-wrap: wrap;
-  gap: 2rem;
-  animation: fadeInUp 1s 0.7s both;
+.hero-h1 .muted { color: #b0b0b5; -webkit-text-fill-color: #b0b0b5; }
+.hero-sub {
+  font-size: 1.05rem; color: var(--muted); line-height: 1.75;
+  max-width: 500px; margin: 0 auto 40px;
+  font-weight: 400;
+  opacity: 0; animation: fadeUp .9s .4s ease forwards;
 }
-.hero-desc {
-  max-width: 440px;
-  font-size: 0.95rem;
-  color: var(--muted);
-  line-height: 1.8;
+.hero-actions {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp .9s .55s ease forwards;
 }
-.hero-desc strong { color: var(--text); font-weight: 600; }
-.hero-stats { display: flex; gap: 3rem; }
-.stat-num {
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--text);
-  line-height: 1;
-  animation: scaleIn 0.6s 0.9s both;
+.btn-primary {
+  background: var(--text); color: #fff;
+  font-family: var(--font-b); font-weight: 600; font-size: .92rem;
+  padding: 14px 28px; border-radius: 100px;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: background .2s, transform .15s, box-shadow .2s;
+  display: inline-flex; align-items: center; gap: 6px;
 }
-.stat-label {
-  font-size: 0.72rem;
-  color: var(--muted);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-top: 0.25rem;
-  font-family: var(--font-mono);
+.btn-primary:hover { background: #333; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+.btn-ghost {
+  background: transparent; color: var(--text);
+  font-family: var(--font-b); font-weight: 500; font-size: .92rem;
+  padding: 14px 24px; border-radius: 100px;
+  border: 1px solid var(--sep2);
+  text-decoration: none; cursor: pointer;
+  transition: background .2s, border-color .2s, transform .15s;
+  display: inline-flex; align-items: center; gap: 6px;
 }
-.scroll-indicator {
+.btn-ghost:hover { background: var(--bg2); transform: translateY(-2px); }
+.hero-stats {
+  display: flex; gap: 40px; justify-content: center; margin-top: 60px;
+  opacity: 0; animation: fadeUp .9s .7s ease forwards;
+}
+.h-stat-n { font-family: var(--font-d); font-size: 2rem; font-weight: 800; color: var(--text); letter-spacing: -.04em; }
+.h-stat-l { font-size: .78rem; color: var(--muted); font-weight: 500; margin-top: 2px; }
+.stat-sep { width: 1px; background: var(--sep2); align-self: stretch; }
+
+/* 3D scroll object */
+#scroll-obj {
   position: absolute;
-  bottom: 2rem; left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  animation: fadeInUp 1s 1.5s both;
-}
-.scroll-line {
-  width: 1px; height: 40px;
-  background: linear-gradient(to bottom, var(--muted), transparent);
-  animation: scrollPulse 2s ease-in-out infinite;
+  right: -80px; top: 50%;
+  transform: translateY(-50%);
+  width: 420px; height: 420px;
+  pointer-events: none; z-index: 0;
+  opacity: .85;
 }
 
-/* 3D floating badge in hero */
-.hero-3d-badge {
-  position: absolute;
-  top: 30%; right: 8%;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--accent2);
-  opacity: 0.6;
-  animation: float3d 6s ease-in-out infinite;
-  pointer-events: none;
+/* ─── MARQUEE BAND ────────────────────────────── */
+.band {
+  background: var(--bg2);
+  border-top: 1px solid var(--sep);
+  border-bottom: 1px solid var(--sep);
+  padding: 14px 0;
+  overflow: hidden;
 }
+.band-track {
+  display: flex; gap: 48px;
+  animation: marquee 28s linear infinite;
+  width: max-content;
+}
+.band-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: .8rem; font-weight: 500; color: var(--muted);
+  white-space: nowrap;
+}
+.band-item strong { color: var(--text); }
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
-/* Sections */
-section { padding: 6rem 3rem; position: relative; z-index: 1; }
-.section-label {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--accent);
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  margin-bottom: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-.section-label::before { content: ''; width: 16px; height: 1px; background: var(--accent); }
-.section-title {
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  margin-bottom: 3rem;
-}
-
-/* Projects with 3D tilt */
-#projects { background: var(--surface); }
-.projects-grid {
+/* ─── FEATURE SECTIONS (3D scroll) ───────────── */
+.feature {
+  padding: 120px 32px;
+  max-width: 1160px;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5px;
-  background: var(--border);
-  border: 1.5px solid var(--border);
-  perspective: 1200px;
+  gap: 80px;
+  align-items: center;
 }
-.project-card {
-  background: var(--surface);
-  padding: 2.5rem;
-  position: relative;
-  overflow: hidden;
-  transition: background 0.3s, box-shadow 0.4s;
+.feature.reverse { direction: rtl; }
+.feature.reverse > * { direction: ltr; }
+.feat-label {
+  font-size: .7rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--orange);
+  background: rgba(255,107,53,.08);
+  border: 1px solid rgba(255,107,53,.18);
+  border-radius: 100px;
+  padding: 4px 12px;
+  display: inline-block; margin-bottom: 18px;
+}
+.feat-h2 {
+  font-family: var(--font-d);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 800; letter-spacing: -.04em;
+  line-height: 1.05; margin-bottom: 18px; color: var(--text);
+}
+.feat-desc {
+  font-size: .97rem; color: var(--muted);
+  line-height: 1.8; margin-bottom: 28px;
+  max-width: 440px; font-weight: 400;
+}
+.feat-links { display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* 3D card visual */
+.feat-visual {
+  perspective: 1000px;
+}
+.feat-card-3d {
+  background: linear-gradient(135deg, #1d1d1f 0%, #2d2d2f 100%);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 40px 80px rgba(0,0,0,.18), 0 0 0 1px rgba(255,255,255,.06);
   transform-style: preserve-3d;
+  transition: transform .6s cubic-bezier(.23,1,.32,1);
   will-change: transform;
 }
-.project-card:hover { background: var(--surface2); }
-.project-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s cubic-bezier(0.23,1,0.32,1);
-}
-.project-card:hover::before { transform: scaleX(1); }
-.project-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(200,255,110,0.06), transparent 40%);
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
-}
-.project-card:hover::after { opacity: 1; }
-.project-card.featured { grid-column: 1 / -1; }
-.project-tag {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--accent);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: 1.25rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.project-tag::before {
-  content: '';
-  width: 6px; height: 6px;
-  background: var(--accent);
-  border-radius: 50%;
-  animation: pulse 2s ease-in-out infinite;
-}
-.project-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
-.project-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.75; margin-bottom: 1.75rem; max-width: 500px; }
-.project-tech { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
-.tech-pill {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  padding: 0.3rem 0.75rem;
-  border: 1px solid var(--border2);
-  color: var(--muted);
-  letter-spacing: 0.05em;
-  transition: border-color 0.3s, color 0.3s, transform 0.3s, background 0.3s;
-}
-.tech-pill:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(200,255,110,0.05);
-  transform: translateY(-2px);
-}
-.project-links { display: flex; gap: 1rem; align-items: center; }
-.project-link {
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--accent);
-  text-decoration: none;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  transition: gap 0.2s;
-}
-.project-link:hover { gap: 0.7rem; }
-.project-number {
-  position: absolute;
-  bottom: 2rem; right: 2rem;
-  font-family: var(--font-mono);
-  font-size: 4rem;
-  font-weight: 300;
-  color: var(--border2);
-  line-height: 1;
-  pointer-events: none;
-  transition: transform 0.4s, opacity 0.4s;
-}
-.project-card:hover .project-number {
-  transform: scale(1.1) translate(-5px, -5px);
-  opacity: 0.15;
+.feat-card-3d:hover {
+  transform: rotateY(-8deg) rotateX(3deg) translateY(-8px);
+  box-shadow: 0 60px 100px rgba(0,0,0,.25);
 }
 
-/* Skills */
-.skills-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
-.skills-intro { font-size: 1.05rem; color: var(--muted); line-height: 1.85; margin-bottom: 2rem; }
-.skills-intro strong { color: var(--text); }
-.skill-category { margin-bottom: 2.5rem; }
-.skill-category-title {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--accent2);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border);
-}
-.skill-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.skill-item {
-  font-size: 0.82rem;
-  font-weight: 500;
-  padding: 0.4rem 0.9rem;
-  border: 1px solid var(--border2);
-  color: var(--text);
-  transition: border-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
-  position: relative;
+/* iPhone mockup inside card */
+.phone-mock {
+  background: #000;
+  border-radius: 32px;
   overflow: hidden;
+  width: 180px;
+  margin: 0 auto;
+  box-shadow: 0 24px 60px rgba(0,0,0,.5);
+  border: 6px solid #1a1a1a;
 }
-.skill-item::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(200,255,110,0.1), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.skill-item:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 4px 20px rgba(200,255,110,0.15);
-}
-.skill-item:hover::before { opacity: 1; }
-.skill-item.core {
-  border-color: rgba(200,255,110,0.3);
-  color: var(--accent);
-  animation: float 4s ease-in-out infinite;
-}
-.skill-item.core:nth-child(2) { animation-delay: -1s; }
-.skill-item.core:nth-child(3) { animation-delay: -2s; }
+.phone-notch { width: 60px; height: 6px; background: #1a1a1a; border-radius: 0 0 10px 10px; margin: 8px auto 0; }
+.phone-screen { background: #f2f2f7; padding: 10px 12px 14px; }
 
-/* About */
-#about { background: var(--surface); }
-.about-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 6rem; align-items: center; }
-.about-frame {
-  width: 100%;
-  aspect-ratio: 3/4;
-  border: 1.5px solid var(--border2);
-  position: relative;
+/* Web card */
+.web-card-mock {
+  background: var(--bg3);
+  border-radius: 16px;
   overflow: hidden;
-  background: var(--surface2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.5s cubic-bezier(0.23,1,0.32,1), box-shadow 0.5s;
-  transform-style: preserve-3d;
+  box-shadow: 0 8px 32px rgba(0,0,0,.1);
+  border: 1px solid var(--sep);
 }
-.about-frame:hover {
-  transform: perspective(800px) rotateY(-5deg) rotateX(2deg) scale(1.02);
-  box-shadow: 20px 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(200,255,110,0.06);
+.wc-topbar {
+  background: rgba(255,255,255,.9);
+  padding: 10px 14px;
+  display: flex; align-items: center; gap: 6px;
+  border-bottom: 1px solid var(--sep);
 }
-.about-frame img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  transition: transform 0.6s cubic-bezier(0.23,1,0.32,1);
+.wc-dot { width: 8px; height: 8px; border-radius: 50%; }
+.wc-url { flex: 1; background: var(--bg2); border-radius: 6px; padding: 4px 10px; font-size: 9px; color: var(--muted); margin-left: 8px; }
+.wc-body { padding: 16px; }
+
+/* ─── PROJECTS GRID ───────────────────────────── */
+#projects { background: var(--bg2); padding: 120px 0; }
+.section-inner { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+.section-eyebrow {
+  font-size: .72rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--orange);
+  background: rgba(255,107,53,.08);
+  border: 1px solid rgba(255,107,53,.18);
+  border-radius: 100px;
+  padding: 4px 12px;
+  display: inline-block; margin-bottom: 16px;
 }
-.about-frame:hover img { transform: scale(1.05); }
-.about-frame-corner {
-  position: absolute;
-  width: 20px; height: 20px;
-  border-color: var(--accent);
-  border-style: solid;
+.section-h2 {
+  font-family: var(--font-d);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 800; letter-spacing: -.04em; margin-bottom: 48px;
 }
-.corner-tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
-.corner-tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
-.corner-bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
-.corner-br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
-.about-badge {
-  position: absolute;
-  bottom: -1.5rem; right: -1.5rem;
-  background: var(--accent);
-  color: var(--bg);
-  padding: 1.25rem;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  line-height: 1.6;
-  max-width: 160px;
-}
-.about-badge strong { font-weight: 700; display: block; font-size: 1.1rem; }
-.about-bio { font-size: 1rem; color: var(--muted); line-height: 1.9; margin-bottom: 2rem; }
-.about-bio strong { color: var(--text); font-weight: 600; }
-.about-bio em { color: var(--accent); font-style: normal; font-weight: 600; }
-.about-facts {
+.projects-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  border: 1px solid var(--border);
-  margin-top: 2.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 }
-.about-fact {
-  padding: 1.25rem 1.5rem;
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  transition: background 0.3s, transform 0.3s;
+.pcard {
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 24px;
+  border: 1px solid var(--sep);
+  box-shadow: 0 2px 12px rgba(0,0,0,.05);
+  transition: transform .3s cubic-bezier(.23,1,.32,1), box-shadow .3s;
+  cursor: default;
 }
-.about-fact:nth-child(2n) { border-right: none; }
-.about-fact:nth-last-child(-n+2) { border-bottom: none; }
-.about-fact:hover { background: rgba(200,255,110,0.03); transform: translateY(-2px); }
-.fact-label { font-family: var(--font-mono); font-size: 0.6rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.35rem; }
-.fact-value { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+.pcard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(0,0,0,.12);
+}
+.pcard.wide { grid-column: span 2; }
+.pcard-icon {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+}
+.pcard-tags { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+.ptag {
+  font-size: .68rem; font-weight: 700;
+  padding: 3px 9px; border-radius: 100px;
+  letter-spacing: .04em; text-transform: uppercase;
+}
+.pcard h3 {
+  font-family: var(--font-d); font-size: 1.05rem; font-weight: 700;
+  letter-spacing: -.02em; margin-bottom: 8px; color: var(--text);
+}
+.pcard p {
+  font-size: .84rem; color: var(--muted); line-height: 1.7; margin-bottom: 16px;
+}
+.pcard-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  border-top: 1px solid var(--sep); padding-top: 12px; margin-top: auto;
+}
+.pcard-tech { display: flex; gap: 6px; flex-wrap: wrap; }
+.tech-tag {
+  font-size: .68rem; background: var(--bg2);
+  border: 1px solid var(--sep); border-radius: 6px;
+  padding: 3px 8px; color: var(--muted); font-weight: 500;
+}
+.pcard-link {
+  font-size: .78rem; font-weight: 600; color: var(--orange);
+  text-decoration: none;
+  display: flex; align-items: center; gap: 4px;
+  transition: gap .15s;
+}
+.pcard-link:hover { gap: 7px; }
 
-/* Contact */
-.contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
-.contact-big-text { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 2rem; }
-.contact-big-text .highlight { color: var(--accent); }
-.contact-sub { font-size: 0.95rem; color: var(--muted); line-height: 1.8; margin-bottom: 2.5rem; }
-.contact-links-list { list-style: none; }
-.contact-links-list li { border-top: 1px solid var(--border); padding: 1rem 0; }
-.contact-links-list li:last-child { border-bottom: 1px solid var(--border); }
-.contact-link-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-decoration: none;
-  color: var(--text);
-  font-size: 0.95rem;
-  font-weight: 500;
-  transition: color 0.3s, transform 0.3s, padding-left 0.3s;
+/* ─── SKILLS ──────────────────────────────────── */
+#skills { padding: 120px 0; background: var(--bg); }
+.skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 48px; }
+.skill-cat {
+  background: var(--bg2);
+  border: 1px solid var(--sep);
+  border-radius: 20px;
+  padding: 24px;
+  transition: transform .25s, box-shadow .25s;
 }
-.contact-link-item:hover { color: var(--accent); transform: translateX(8px); }
-.contact-link-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
-.link-arrow { transition: transform 0.2s; }
-.contact-link-item:hover .link-arrow { transform: translate(4px, -4px); }
-.contact-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  background: var(--accent);
-  color: var(--bg);
-  padding: 1rem 2rem;
-  font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-decoration: none;
-  margin-top: 2.5rem;
+.skill-cat:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.08); }
+.skill-cat-icon { font-size: 1.6rem; margin-bottom: 12px; }
+.skill-cat h4 { font-family: var(--font-d); font-size: .9rem; font-weight: 700; margin-bottom: 14px; color: var(--text); }
+.skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.skill-tag {
+  font-size: .74rem; font-weight: 500;
+  background: #fff; border: 1px solid var(--sep);
+  border-radius: 8px; padding: 4px 10px; color: var(--text2);
+  transition: border-color .15s, color .15s;
+}
+.skill-tag:hover { border-color: var(--orange); color: var(--orange); }
+
+/* ─── CONTACT ─────────────────────────────────── */
+#contact {
+  background: #1d1d1f;
+  padding: 140px 32px;
+  text-align: center;
   position: relative;
   overflow: hidden;
-  transition: opacity 0.2s, transform 0.2s;
 }
-.contact-cta:hover { opacity: 0.9; transform: translateY(-2px); }
-.contact-cta::after {
+#contact::before {
   content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
-  transform: translateX(-100%);
-  transition: transform 0.6s;
+  position: absolute; top: -40%; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(255,107,53,.12) 0%, transparent 60%);
+  border-radius: 50%; pointer-events: none;
 }
-.contact-cta:hover::after { transform: translateX(100%); }
+.contact-inner { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+.contact-h2 {
+  font-family: var(--font-d);
+  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  font-weight: 800; letter-spacing: -.04em;
+  color: #fff; line-height: .95; margin-bottom: 20px;
+}
+.contact-h2 .grad2 {
+  background: linear-gradient(135deg, var(--orange), var(--amber));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.contact-sub { font-size: 1rem; color: rgba(255,255,255,.5); line-height: 1.75; margin-bottom: 40px; }
+.contact-links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 48px; }
+.contact-link {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px; padding: 14px 20px;
+  text-decoration: none; color: #fff;
+  transition: background .2s, border-color .2s, transform .2s;
+  font-size: .88rem; font-weight: 500;
+}
+.contact-link:hover { background: rgba(255,255,255,.08); border-color: rgba(255,107,53,.4); transform: translateY(-2px); }
+.contact-link span { font-size: 1.1rem; }
 
-/* Footer */
+/* ─── FOOTER ──────────────────────────────────── */
 footer {
-  padding: 2rem 3rem;
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--muted);
-  flex-wrap: wrap;
-  gap: 1rem;
-  position: relative;
-  z-index: 1;
+  background: #1d1d1f;
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding: 28px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: .78rem; color: rgba(255,255,255,.3);
+  flex-wrap: wrap; gap: 10px;
 }
-footer a { color: var(--muted); text-decoration: none; transition: color 0.3s; }
-footer a:hover { color: var(--accent); }
+footer a { color: rgba(255,255,255,.35); text-decoration: none; transition: color .2s; }
+footer a:hover { color: rgba(255,255,255,.7); }
 
-/* Reveal */
-.reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s cubic-bezier(0.23,1,0.32,1), transform 0.8s cubic-bezier(0.23,1,0.32,1);
-}
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
+/* ─── ANIMATIONS ──────────────────────────────── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity .8s cubic-bezier(.23,1,.32,1), transform .8s cubic-bezier(.23,1,.32,1); }
+.reveal.in { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .2s; }
+.reveal-delay-3 { transition-delay: .3s; }
 
-/* Ambient orbs */
-.ambient-orb {
-  position: fixed;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
-  filter: blur(80px);
-  animation: orbDrift linear infinite;
-  opacity: 0;
-}
-.orb1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(110,143,255,0.07) 0%, transparent 70%); top: -100px; right: -80px; animation-duration: 18s; }
-.orb2 { width: 380px; height: 380px; background: radial-gradient(circle, rgba(200,255,110,0.05) 0%, transparent 70%); bottom: 20%; left: -60px; animation-duration: 24s; animation-delay: -8s; }
-.orb3 { width: 280px; height: 280px; background: radial-gradient(circle, rgba(255,110,180,0.045) 0%, transparent 70%); top: 55%; right: 10%; animation-duration: 20s; animation-delay: -14s; }
-
-/* 3D depth indicator in hero */
-.depth-label {
-  position: absolute;
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  color: rgba(200,255,110,0.3);
-  letter-spacing: 0.15em;
-  pointer-events: none;
-}
-.depth-label.d1 { top: 20%; left: 5%; animation: float3d 7s ease-in-out infinite; }
-.depth-label.d2 { top: 45%; right: 5%; animation: float3d 9s ease-in-out infinite 2s; }
-.depth-label.d3 { bottom: 25%; left: 8%; animation: float3d 8s ease-in-out infinite 4s; }
-
-/* Animations */
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes fadeInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
-@keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-@keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-@keyframes float3d { 0%, 100% { transform: translateY(0) translateZ(0); } 50% { transform: translateY(-10px) translateZ(20px); } }
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-@keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.3); opacity: 1; } }
-@keyframes scrollPulse { 0%, 100% { opacity: 0.3; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(1.2); } }
-@keyframes orbDrift { 0% { opacity: 0; transform: translate(0,0) scale(1); } 10% { opacity: 1; } 30% { transform: translate(18px,-22px) scale(1.04); } 60% { transform: translate(-12px,14px) scale(0.97); } 85% { opacity: 1; } 100% { opacity: 0; transform: translate(0,0) scale(1); } }
-@keyframes particleDrift { 0% { transform: translate(0,0) scale(1); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; } }
-@keyframes glitch {
-  0%, 90%, 100% { clip-path: none; transform: none; }
-  91% { clip-path: polygon(0 10%, 100% 10%, 100% 30%, 0 30%); transform: translateX(-4px); }
-  92% { clip-path: polygon(0 50%, 100% 50%, 100% 70%, 0 70%); transform: translateX(4px); }
-  93% { clip-path: none; transform: none; }
-}
-
-/* Glitch on hero title hover */
-.hero-title:hover .line2 { animation: glitch 0.4s steps(1) forwards; }
-
-/* Particle */
-.particle { position: fixed; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 0; opacity: 0; }
-
-/* Responsive */
-@media (max-width: 768px) {
-  nav { padding: 1.25rem 1.5rem; }
-  .nav-links { display: none; }
-  section { padding: 4rem 1.5rem; }
-  .hero { padding: 5rem 1.5rem 3rem; }
-  .projects-grid { grid-template-columns: 1fr; }
-  .project-card.featured { grid-column: 1; }
-  .skills-layout, .about-layout, .contact-layout { grid-template-columns: 1fr; gap: 2.5rem; }
-  .about-frame { aspect-ratio: 1; }
-  .about-badge { display: none; }
-  footer { flex-direction: column; text-align: center; }
-  .skill-item.core { animation: none; }
-  #cursor, #cursor-ring { display: none; }
-  body { cursor: auto; }
-  .depth-label { display: none; }
-}
 </style>
 </head>
 <body>
 
-<!-- Custom cursor -->
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
-
-<!-- Three.js canvas -->
-<canvas id="three-canvas"></canvas>
-
-<div class="ambient-orb orb1"></div>
-<div class="ambient-orb orb2"></div>
-<div class="ambient-orb orb3"></div>
-
+<!-- NAV -->
 <nav id="nav">
-  <div class="nav-logo">LS_DEV</div>
+  <div class="logo">
+    <div class="logo-hex"></div>
+    Lucas Salvador
+  </div>
   <ul class="nav-links">
     <li><a href="#projects">Projects</a></li>
     <li><a href="#skills">Skills</a></li>
-    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
     <li><a href="#contact" class="nav-cta">Hire me</a></li>
   </ul>
 </nav>
 
-<!-- Hero -->
+<!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-grid-bg"></div>
-  <div class="hero-scanlines"></div>
-
-  <!-- Floating depth labels -->
-  <div class="depth-label d1">// swift 6.0</div>
-  <div class="depth-label d2">{ "status": "available" }</div>
-  <div class="depth-label d3">docker-compose up --build</div>
-
-  <div class="hero-label">Available for projects &amp; collaborations</div>
-  <h1 class="hero-title">
-    Lucas<br>
-    <span class="line2">Salvador</span><span class="accent">.</span>
-  </h1>
-  <div class="hero-bottom">
-    <p class="hero-desc">
-      <strong>iOS &amp; Full-Stack Developer</strong> based in <strong>Lisbon, Portugal</strong>.
-      I build beautiful native apps with Swift/SwiftUI and full-stack web products with Next.js and Supabase.
-      Turning ideas into real products — from concept to App Store.
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><div class="status-dot"></div>Available for projects &amp; collaborations · Lisbon, Portugal</div>
+    <h1 class="hero-h1">
+      iOS &amp; Full-Stack<br>
+      <span class="muted">Developer</span><span class="grad">.</span>
+    </h1>
+    <p class="hero-sub">
+      Building beautiful native Swift apps and full-stack web products with Next.js &amp; Supabase.
+      From concept to App Store — made in Portugal.
     </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">View Projects →</a>
+      <a href="#contact" class="btn-ghost">Get in touch</a>
+    </div>
     <div class="hero-stats">
-      <div>
-        <div class="stat-num" data-target="5" data-suffix="+">0+</div>
-        <div class="stat-label">iOS Apps</div>
-      </div>
-      <div>
-        <div class="stat-num" data-target="13" data-suffix="+">0+</div>
-        <div class="stat-label">Projects</div>
-      </div>
-      <div>
-        <div class="stat-num">PT</div>
-        <div class="stat-label">Lisbon</div>
-      </div>
+      <div><div class="h-stat-n">5+</div><div class="h-stat-l">iOS Apps</div></div>
+      <div class="stat-sep"></div>
+      <div><div class="h-stat-n">13+</div><div class="h-stat-l">Projects</div></div>
+      <div class="stat-sep"></div>
+      <div><div class="h-stat-n">PT</div><div class="h-stat-l">Lisbon</div></div>
     </div>
-  </div>
-  <div class="scroll-indicator">
-    <div class="scroll-line"></div>
-    scroll
   </div>
 </section>
 
-<!-- Projects -->
+<!-- BAND -->
+<div class="band">
+  <div class="band-track" id="band-track">
+    <div class="band-item"><strong>SwiftUI</strong> iOS Development</div>
+    <div class="band-item"><strong>Next.js 15</strong> Full-Stack Web</div>
+    <div class="band-item"><strong>Three.js</strong> 3D Web</div>
+    <div class="band-item"><strong>Supabase</strong> Backend</div>
+    <div class="band-item"><strong>React</strong> Web Apps</div>
+    <div class="band-item"><strong>Claude API</strong> AI Integration</div>
+    <div class="band-item"><strong>MapKit</strong> Location</div>
+    <div class="band-item"><strong>TypeScript</strong> Type-safe Code</div>
+    <div class="band-item"><strong>SwiftUI</strong> iOS Development</div>
+    <div class="band-item"><strong>Next.js 15</strong> Full-Stack Web</div>
+    <div class="band-item"><strong>Three.js</strong> 3D Web</div>
+    <div class="band-item"><strong>Supabase</strong> Backend</div>
+    <div class="band-item"><strong>React</strong> Web Apps</div>
+    <div class="band-item"><strong>Claude API</strong> AI Integration</div>
+    <div class="band-item"><strong>MapKit</strong> Location</div>
+    <div class="band-item"><strong>TypeScript</strong> Type-safe Code</div>
+  </div>
+</div>
+
+<!-- FEATURE: TeeUp -->
+<div style="max-width:1160px;margin:0 auto">
+  <div class="feature reveal">
+    <div>
+      <span class="feat-label">iOS App</span>
+      <h2 class="feat-h2">Golf companion<br>built for Portugal.</h2>
+      <p class="feat-desc">TeeUp combines real-time score tracking, WHS handicap, Google Places course discovery, and a full social layer — 100% SwiftUI, offline-first.</p>
+      <div class="feat-links">
+        <a href="https://github.com/SoldergG/TeeUp" class="btn-primary" style="font-size:.85rem;padding:11px 22px" target="_blank">GitHub →</a>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+          <span class="tech-tag">SwiftUI</span><span class="tech-tag">Supabase</span><span class="tech-tag">MapKit</span><span class="tech-tag">WeatherKit</span>
+        </div>
+      </div>
+    </div>
+    <div class="feat-visual">
+      <div class="feat-card-3d" id="teeup-card">
+        <div style="text-align:center;padding:8px 0 16px">
+          <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">TeeUp</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.25)">Golf Companion</div>
+        </div>
+        <div class="phone-mock">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <!-- mini score screen -->
+            <div style="background:linear-gradient(135deg,#1B4D2E,#0F2E1A);border-radius:10px;padding:8px;margin-bottom:8px">
+              <div style="display:flex;justify-content:space-around;align-items:center">
+                <div style="text-align:center"><div style="font-size:16px;font-weight:800;color:#fff">78</div><div style="font-size:7px;color:rgba(255,255,255,.5)">SCORE</div></div>
+                <div style="width:1px;height:24px;background:rgba(255,255,255,.15)"></div>
+                <div style="text-align:center"><div style="font-size:16px;font-weight:800;color:#4dabff">−2</div><div style="font-size:7px;color:rgba(255,255,255,.5)">PAR</div></div>
+                <div style="width:1px;height:24px;background:rgba(255,255,255,.15)"></div>
+                <div style="text-align:center"><div style="font-size:16px;font-weight:800;color:#C9A84C">14</div><div style="font-size:7px;color:rgba(255,255,255,.5)">HCP</div></div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#fff;border-radius:8px;padding:6px;text-align:center"><div style="font-size:13px;font-weight:800;color:#34C759">23</div><div style="font-size:7px;color:#8e8e93">Rounds</div></div>
+              <div style="background:#fff;border-radius:8px;padding:6px;text-align:center"><div style="font-size:13px;font-weight:800;color:#0a84ff">86.4</div><div style="font-size:7px;color:#8e8e93">Avg</div></div>
+            </div>
+            <!-- Score dots -->
+            <div style="display:flex;gap:3px;margin-top:6px;justify-content:center">
+              <div style="width:22px;height:22px;border-radius:6px;background:rgba(10,132,255,.15);color:#0a84ff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center">-1</div>
+              <div style="width:22px;height:22px;border-radius:6px;background:rgba(52,199,89,.15);color:#34C759;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center">E</div>
+              <div style="width:22px;height:22px;border-radius:6px;background:rgba(88,86,214,.15);color:#5856D6;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center">-2</div>
+              <div style="width:22px;height:22px;border-radius:6px;background:rgba(255,149,0,.15);color:#FF9500;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center">+1</div>
+              <div style="width:22px;height:22px;border-radius:6px;background:rgba(52,199,89,.15);color:#34C759;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center">E</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-around;padding-top:16px">
+          <div style="text-align:center;font-size:9px;color:rgba(255,255,255,.3)">⛳ Rondas</div>
+          <div style="text-align:center;font-size:9px;color:rgba(255,255,255,.3)">🗺 Campos</div>
+          <div style="text-align:center;font-size:9px;color:rgba(255,255,255,.3)">📍 Mapa</div>
+          <div style="text-align:center;font-size:9px;color:rgba(255,255,255,.3)">👥 Amigos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURE: SolarCalc -->
+  <div class="feature reverse reveal reveal-delay-1">
+    <div>
+      <span class="feat-label">SaaS · Web</span>
+      <h2 class="feat-h2">Solar energy<br>calculator for Portugal.</h2>
+      <p class="feat-desc">SolarCalc uses PVGIS data, real Portuguese electricity tariffs, and a 3D Three.js hero to deliver accurate solar savings in under 2 minutes.</p>
+      <div class="feat-links">
+        <a href="https://github.com/SoldergG/solarcalc" class="btn-primary" style="font-size:.85rem;padding:11px 22px" target="_blank">GitHub →</a>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+          <span class="tech-tag">Three.js</span><span class="tech-tag">PVGIS API</span><span class="tech-tag">React</span>
+        </div>
+      </div>
+    </div>
+    <div class="feat-visual">
+      <div class="feat-card-3d" id="solar-card" style="background:linear-gradient(135deg,#06090F,#0C1120)">
+        <div class="web-card-mock">
+          <div class="wc-topbar">
+            <div class="wc-dot" style="background:#ff5f56"></div>
+            <div class="wc-dot" style="background:#ffbd2e"></div>
+            <div class="wc-dot" style="background:#27c93f"></div>
+            <div class="wc-url">solarcalc.pt</div>
+          </div>
+          <div class="wc-body" style="background:#06090F">
+            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#fff;line-height:1;margin-bottom:4px;letter-spacing:-.02em">Quanto pode a<br><span style="color:#F4A823">energia solar</span><br>poupar-lhe?</div>
+            <div style="font-size:9px;color:rgba(255,252,245,.4);margin-bottom:10px;line-height:1.5">Dados reais PVGIS · Portugal</div>
+            <!-- mini calc -->
+            <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:8px">
+              <div style="font-size:8px;color:rgba(255,255,255,.4);margin-bottom:4px">Consumo mensal</div>
+              <div style="height:3px;background:rgba(255,255,255,.08);border-radius:2px;margin-bottom:8px">
+                <div style="width:55%;height:100%;background:linear-gradient(to right,#E8920A,#FFD166);border-radius:2px"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between">
+                <div style="font-size:9px;color:rgba(255,252,245,.5)">Poupança/ano</div>
+                <div style="font-size:9px;font-weight:700;color:#10D67E">EUR 847</div>
+              </div>
+              <div style="display:flex;justify-content:space-between">
+                <div style="font-size:9px;color:rgba(255,252,245,.5)">Payback</div>
+                <div style="font-size:9px;font-weight:700;color:#F4A823">6.8 anos</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
 <section id="projects">
-  <div class="section-label">Selected work</div>
-  <h2 class="section-title">Projects</h2>
-  <div class="projects-grid">
+  <div class="section-inner">
+    <span class="section-eyebrow reveal">All Projects</span>
+    <h2 class="section-h2 reveal">Built to ship.</h2>
+    <div class="projects-grid" style="grid-template-columns:repeat(3,1fr)">
 
-    <div class="project-card featured reveal tilt-card">
-      <div class="project-tag">iOS App · Swift · Featured</div>
-      <h3 class="project-name">TeeUp</h3>
-      <p class="project-desc">
-        Premium iOS golf companion app built for Portuguese golfers. Combines real-time score tracking,
-        course discovery via Google Places, World Handicap System calculations, and a full social layer —
-        72 Swift files, 100% SwiftUI, offline-first with Supabase backend.
-      </p>
-      <div class="project-tech">
-        <span class="tech-pill">SwiftUI</span>
-        <span class="tech-pill">SwiftData</span>
-        <span class="tech-pill">Supabase</span>
-        <span class="tech-pill">Google Places</span>
-        <span class="tech-pill">MapKit</span>
-        <span class="tech-pill">WeatherKit</span>
-        <span class="tech-pill">Swift Charts</span>
+      <!-- TeeUp — wide -->
+      <div class="pcard wide reveal" style="grid-column:span 2">
+        <div class="pcard-icon" style="background:linear-gradient(135deg,#1B4D2E,#2D7A4A)">⛳</div>
+        <div class="pcard-tags">
+          <span class="ptag" style="background:rgba(10,132,255,.1);color:#0a84ff;border:1px solid rgba(10,132,255,.2)">iOS</span>
+          <span class="ptag" style="background:rgba(255,107,53,.08);color:var(--orange);border:1px solid rgba(255,107,53,.18)">Featured</span>
+        </div>
+        <h3>TeeUp</h3>
+        <p>Premium golf companion for Portuguese golfers. WHS handicap, MapKit course discovery, social rounds, Swift Charts analytics. 72 Swift files, 100% SwiftUI, offline-first with Supabase backend.</p>
+        <div class="pcard-footer">
+          <div class="pcard-tech"><span class="tech-tag">SwiftUI</span><span class="tech-tag">Supabase</span><span class="tech-tag">MapKit</span><span class="tech-tag">WeatherKit</span></div>
+          <a href="https://github.com/SoldergG/TeeUp" class="pcard-link" target="_blank">GitHub →</a>
+        </div>
       </div>
-      <div class="project-links">
-        <a href="https://github.com/SoldergG/TeeUp" class="project-link" target="_blank">GitHub →</a>
+
+      <!-- KebabLocator — App Store -->
+      <div class="pcard reveal reveal-delay-1">
+        <div class="pcard-icon" style="background:linear-gradient(135deg,#ff6b35,#ff9500)">🌯</div>
+        <div class="pcard-tags">
+          <span class="ptag" style="background:rgba(10,132,255,.1);color:#0a84ff;border:1px solid rgba(10,132,255,.2)">iOS</span>
+          <span class="ptag" style="background:rgba(48,209,88,.1);color:#30d158;border:1px solid rgba(48,209,88,.2)">App Store</span>
+        </div>
+        <h3>KebabLocator</h3>
+        <p>Find the best kebabs near you. Live on the App Store — MapKit, CoreLocation, native SwiftUI.</p>
+        <div class="pcard-footer">
+          <div class="pcard-tech"><span class="tech-tag">Swift</span><span class="tech-tag">MapKit</span></div>
+          <a href="https://apps.apple.com/us/app/kebablocator/id6761265002" class="pcard-link" target="_blank" style="color:#30d158">App Store ↗</a>
+        </div>
       </div>
-      <div class="project-number">01</div>
+
+      <!-- GroupMemo -->
+      <div class="pcard reveal">
+        <div class="pcard-icon" style="background:linear-gradient(135deg,#bf5af2,#8e44ad)">📸</div>
+        <div class="pcard-tags">
+          <span class="ptag" style="background:rgba(10,132,255,.1);color:#0a84ff;border:1px solid rgba(10,132,255,.2)">iOS</span>
+        </div>
+        <h3>GroupMemo</h3>
+        <p>Shared memories for friend groups. Timeline, bucket list, interactive map with real-time member locations. Apple Sign-In, Supabase Realtime.</p>
+        <div class="pcard-footer">
+          <div class="pcard-tech"><span class="tech-tag">SwiftUI</span><span class="tech-tag">MapKit</span></div>
+          <a href="https://github.com/SoldergG/GroupMemo" class="pcard-link" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+      <!-- SGO SalvaMais — TestFlight -->
+      <div class="pcard reveal reveal-delay-1">
+        <div class="pcard-icon" style="background:linear-gradient(135deg,#ff3b30,#ff6961)">🚨</div>
+        <div class="pcard-tags">
+          <span class="ptag" style="background:rgba(10,132,255,.1);color:#0a84ff;border:1px solid rgba(10,132,255,.2)">iOS</span>
+          <span class="ptag" style="background:rgba(255,59,48,.1);color:#ff3b30;border:1px solid rgba(255,59,48,.2)">TestFlight</span>
+        </div>
+        <h3>SGO SalvaMais</h3>
+        <p>Native iOS emergency safety workflow app. Xcode Cloud CI/CD, production-grade codebase for real users.</p>
+        <div class="pcard-footer">
+          <div class="pcard-tech"><span class="tech-tag">Swift</span><span class="tech-tag">Xcode Cloud</span></div>
+          <a href="https://testflight.apple.com/join/G4tn2J4P" class="pcard-link" target="_blank" style="color:#ff3b30">TestFlight ↗</a>
+        </div>
+      </div>
+
+      <!-- SolarCalc -->
+      <div class="pcard reveal reveal-delay-2">
+        <div class="pcard-icon" style="background:linear-gradient(135deg,#F4A823,#E8920A)">☀️</div>
+        <div class="pcard-tags"><span class="ptag" style="background:rgba(191,90,242,.1);color:#bf5af2;border:1px solid rgba(191,90,242,.2)">Web · SaaS</span></div>
+        <h3>SolarCalc</h3>
+        <p>Solar energy calculator for Portugal. PVGIS data, real tariffs, 3D Three.js hero, real-time payback simulation.</p>
+        <div class="pcard-footer">
+          <div class="pcard-tech"><span class="tech-tag">Three.js</span><span class="tech-tag">React</span></div>
+          <a href="https://github.com/SoldergG/solarcalc" class="pcard-link" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+      <!-- Jarvis -->
+      <div class="pcard reveal">
+        <div class="pcard-icon" style="background:linear-gradient(135deg,#0a84ff,#5856d6)">🤖</div>
+        <div class="pcard-tags"><span class="ptag" style="background:rgba(48,209,88,.1);color:#30d158;border:1px solid rgba(48,209,88,.2)">Server</span></div>
+        <h3>Jarvis</h3>
+        <p>Self-hosted AI assistant with ElevenLabs voice, Docker Compose, Tailscale remote access, Telegram integration.</p>
+        <div class="pcard-footer">
+          <div class="pcard-tech"><span class="tech-tag">Docker</span><span class="tech-tag">Linux</span></div>
+          <a href="https://github.com/SoldergG" class="pcard-link" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+      <!-- Expense Tracker -->
+      <div class="pcard reveal reveal-delay-1">
+        <div class="pcard-icon" style="background:linear-gradient(135deg,#34c759,#1a7a3a)">💸</div>
+        <div class="pcard-tags"><span class="ptag" style="background:rgba(191,90,242,.1);color:#bf5af2;border:1px solid rgba(191,90,242,.2)">Web · SaaS</span></div>
+        <h3>Expense Tracker</h3>
+        <p>Full-stack expense tracking with beautiful Recharts analytics and real-time Supabase persistence. Next.js 15.</p>
+        <div class="pcard-footer">
+          <div class="pcard-tech"><span class="tech-tag">Next.js</span><span class="tech-tag">Supabase</span></div>
+          <a href="https://github.com/SoldergG/expense-tracker" class="pcard-link" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+      <!-- Schema Visualizer -->
+      <div class="pcard reveal reveal-delay-2">
+        <div class="pcard-icon" style="background:linear-gradient(135deg,#5856d6,#3634a3)">🗂</div>
+        <div class="pcard-tags"><span class="ptag" style="background:rgba(191,90,242,.1);color:#bf5af2;border:1px solid rgba(191,90,242,.2)">Web · Tool</span></div>
+        <h3>Schema Visualizer</h3>
+        <p>SQL-to-ER diagram generator. Paste SQL, get an interactive React Flow entity-relationship diagram instantly.</p>
+        <div class="pcard-footer">
+          <div class="pcard-tech"><span class="tech-tag">Next.js</span><span class="tech-tag">React Flow</span></div>
+          <a href="https://github.com/SoldergG/schema-visualizer" class="pcard-link" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+      <!-- SwiftUI Gallery -->
+      <div class="pcard reveal">
+        <div class="pcard-icon" style="background:linear-gradient(135deg,#ff6b35,#ff9500)">🎨</div>
+        <div class="pcard-tags"><span class="ptag" style="background:rgba(191,90,242,.1);color:#bf5af2;border:1px solid rgba(191,90,242,.2)">Web · Reference</span></div>
+        <h3>SwiftUI Gallery</h3>
+        <p>Interactive showcase of 35+ SwiftUI components with live Prism.js code previews. A reference library for iOS devs.</p>
+        <div class="pcard-footer">
+          <div class="pcard-tech"><span class="tech-tag">Next.js</span><span class="tech-tag">Prism.js</span></div>
+          <a href="https://github.com/SoldergG/swiftui-gallery" class="pcard-link" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+      <!-- AI Chat Swift -->
+      <div class="pcard reveal reveal-delay-1">
+        <div class="pcard-icon" style="background:linear-gradient(135deg,#ff6b35,#bf5af2)">🧠</div>
+        <div class="pcard-tags">
+          <span class="ptag" style="background:rgba(10,132,255,.1);color:#0a84ff;border:1px solid rgba(10,132,255,.2)">iOS</span>
+        </div>
+        <h3>AI Chat Swift</h3>
+        <p>Native iOS chat app with real-time Claude API streaming, conversation history, and markdown rendering.</p>
+        <div class="pcard-footer">
+          <div class="pcard-tech"><span class="tech-tag">SwiftUI</span><span class="tech-tag">Claude API</span></div>
+          <a href="https://github.com/SoldergG/ai-chat-swift" class="pcard-link" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
+      <!-- Procura Escola -->
+      <div class="pcard reveal reveal-delay-2">
+        <div class="pcard-icon" style="background:linear-gradient(135deg,#34c759,#007aff)">🎓</div>
+        <div class="pcard-tags"><span class="ptag" style="background:rgba(191,90,242,.1);color:#bf5af2;border:1px solid rgba(191,90,242,.2)">Web · PT</span></div>
+        <h3>Procura Escola</h3>
+        <p>Portuguese university course comparator. Compare degrees, filter by district, access entry scores side-by-side.</p>
+        <div class="pcard-footer">
+          <div class="pcard-tech"><span class="tech-tag">Next.js</span><span class="tech-tag">TypeScript</span></div>
+          <a href="https://github.com/SoldergG/procura-escola" class="pcard-link" target="_blank">GitHub →</a>
+        </div>
+      </div>
+
     </div>
-
-    <div class="project-card reveal tilt-card">
-      <div class="project-tag">iOS App · Swift</div>
-      <h3 class="project-name">SGO SalvaMais</h3>
-      <p class="project-desc">
-        A native iOS application built to streamline emergency and safety workflows.
-        Developed with Swift and SwiftUI, with Xcode Cloud CI/CD integration.
-        Targets real users with a production-quality codebase.
-      </p>
-      <div class="project-tech">
-        <span class="tech-pill">Swift</span>
-        <span class="tech-pill">SwiftUI</span>
-        <span class="tech-pill">Xcode Cloud</span>
-        <span class="tech-pill">GitHub Actions</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/SoldergG/SGO-SalvaMais-iOS" class="project-link" target="_blank">GitHub →</a>
-        <a href="https://testflight.apple.com/join/G4tn2J4P" class="project-link" target="_blank">TestFlight ↗</a>
-      </div>
-      <div class="project-number">02</div>
-    </div>
-
-    <div class="project-card reveal tilt-card">
-      <div class="project-tag">iOS App · Swift</div>
-      <h3 class="project-name">KebabLocator</h3>
-      <p class="project-desc">
-        Native iOS app for locating kebab restaurants. A fun but technically solid project
-        showcasing MapKit integration, location services, and clean UI design.
-      </p>
-      <div class="project-tech">
-        <span class="tech-pill">Swift</span>
-        <span class="tech-pill">MapKit</span>
-        <span class="tech-pill">CoreLocation</span>
-        <span class="tech-pill">SwiftUI</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/SoldergG/KebabLocator-iOS" class="project-link" target="_blank">GitHub →</a>
-        <a href="https://apps.apple.com/us/app/kebablocator/id6761265002" class="project-link" target="_blank">App Store ↗</a>
-      </div>
-      <div class="project-number">03</div>
-    </div>
-
-    <div class="project-card reveal tilt-card">
-      <div class="project-tag">Home Server · Linux · Docker</div>
-      <h3 class="project-name">Jarvis Home Assistant</h3>
-      <p class="project-desc">
-        Custom AI assistant with voice synthesis (ElevenLabs + Edge TTS), running on a
-        self-managed home server with Docker Compose, Tailscale remote access, and Telegram integration.
-      </p>
-      <div class="project-tech">
-        <span class="tech-pill">Docker</span>
-        <span class="tech-pill">Linux</span>
-        <span class="tech-pill">Tailscale</span>
-        <span class="tech-pill">ElevenLabs API</span>
-        <span class="tech-pill">OpenRouter</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/SoldergG" class="project-link" target="_blank">GitHub →</a>
-      </div>
-      <div class="project-number">04</div>
-    </div>
-
-    <div class="project-card reveal tilt-card">
-      <div class="project-tag">Web App · React · TypeScript</div>
-      <h3 class="project-name">Transcritor Pro</h3>
-      <p class="project-desc">
-        Professional audio transcription platform with a complete billing system.
-        Uses OpenAI Whisper API for high-quality transcriptions, with user management,
-        role-based access, and prepaid minute packs.
-      </p>
-      <div class="project-tech">
-        <span class="tech-pill">React</span>
-        <span class="tech-pill">TypeScript</span>
-        <span class="tech-pill">Supabase</span>
-        <span class="tech-pill">OpenAI Whisper</span>
-        <span class="tech-pill">Netlify</span>
-        <span class="tech-pill">Tailwind CSS</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/SoldergG/Transcript1-28" class="project-link" target="_blank">GitHub →</a>
-      </div>
-      <div class="project-number">05</div>
-    </div>
-
-    <div class="project-card reveal tilt-card">
-      <div class="project-tag">iOS App · Swift</div>
-      <h3 class="project-name">SushiTracker</h3>
-      <p class="project-desc">
-        iOS app for tracking sushi consumption sessions with social features.
-        Real-time piece counter, personal records, statistics, friend sharing,
-        and a continuous mode that keeps the screen awake during rodízio.
-      </p>
-      <div class="project-tech">
-        <span class="tech-pill">Swift</span>
-        <span class="tech-pill">SwiftUI</span>
-        <span class="tech-pill">Supabase</span>
-        <span class="tech-pill">Charts</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/SoldergG/sushi-tracker" class="project-link" target="_blank">GitHub →</a>
-      </div>
-      <div class="project-number">06</div>
-    </div>
-
-    <div class="project-card reveal tilt-card">
-      <div class="project-tag">Web App · React · Node.js</div>
-      <h3 class="project-name">Solar Simulator</h3>
-      <p class="project-desc">
-        Photovoltaic energy calculator with a Vision OS–inspired interface.
-        Interactive map for location selection, solar panel catalog, monthly production charts,
-        and real data from the PVGIS API.
-      </p>
-      <div class="project-tech">
-        <span class="tech-pill">React</span>
-        <span class="tech-pill">Vite</span>
-        <span class="tech-pill">Node.js</span>
-        <span class="tech-pill">Leaflet</span>
-        <span class="tech-pill">Chart.js</span>
-        <span class="tech-pill">PVGIS API</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/SoldergG/solar-simulator" class="project-link" target="_blank">GitHub →</a>
-      </div>
-      <div class="project-number">07</div>
-    </div>
-
-    <div class="project-card reveal tilt-card">
-      <div class="project-tag">iOS App · Swift</div>
-      <h3 class="project-name">GroupMemo</h3>
-      <p class="project-desc">
-        Collaborative note-taking iOS app with real-time sync. Share and edit notes with groups,
-        perfect for study sessions, teams, and shared task lists.
-      </p>
-      <div class="project-tech">
-        <span class="tech-pill">Swift</span>
-        <span class="tech-pill">SwiftUI</span>
-        <span class="tech-pill">Supabase</span>
-        <span class="tech-pill">Real-time</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/SoldergG/GroupMemo" class="project-link" target="_blank">GitHub →</a>
-      </div>
-      <div class="project-number">08</div>
-    </div>
-
-    <div class="project-card reveal tilt-card">
-      <div class="project-tag">Web App · Next.js · Supabase</div>
-      <h3 class="project-name">Expense Tracker</h3>
-      <p class="project-desc">
-        Full-stack expense tracking app with beautiful charts and analytics.
-        Built with Next.js 15, Recharts, and Supabase for real-time data persistence.
-      </p>
-      <div class="project-tech">
-        <span class="tech-pill">Next.js 15</span>
-        <span class="tech-pill">Recharts</span>
-        <span class="tech-pill">Supabase</span>
-        <span class="tech-pill">Tailwind</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/SoldergG/expense-tracker" class="project-link" target="_blank">GitHub →</a>
-      </div>
-      <div class="project-number">09</div>
-    </div>
-
-    <div class="project-card reveal tilt-card">
-      <div class="project-tag">Web App · Next.js · React Flow</div>
-      <h3 class="project-name">Schema Visualizer</h3>
-      <p class="project-desc">
-        SQL-to-ER diagram generator. Paste SQL schema, get an interactive entity-relationship diagram
-        powered by React Flow. Instantly visualize database structures.
-      </p>
-      <div class="project-tech">
-        <span class="tech-pill">Next.js 15</span>
-        <span class="tech-pill">React Flow</span>
-        <span class="tech-pill">TypeScript</span>
-        <span class="tech-pill">Tailwind</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/SoldergG/schema-visualizer" class="project-link" target="_blank">GitHub →</a>
-      </div>
-      <div class="project-number">10</div>
-    </div>
-
-    <div class="project-card reveal tilt-card">
-      <div class="project-tag">Web App · Next.js · SwiftUI</div>
-      <h3 class="project-name">SwiftUI Gallery</h3>
-      <p class="project-desc">
-        Interactive showcase of 35+ SwiftUI components with live code previews powered by Prism.js.
-        A reference library for iOS developers.
-      </p>
-      <div class="project-tech">
-        <span class="tech-pill">Next.js 15</span>
-        <span class="tech-pill">Prism.js</span>
-        <span class="tech-pill">TypeScript</span>
-        <span class="tech-pill">Tailwind</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/SoldergG/swiftui-gallery" class="project-link" target="_blank">GitHub →</a>
-      </div>
-      <div class="project-number">11</div>
-    </div>
-
-    <div class="project-card reveal tilt-card">
-      <div class="project-tag">iOS App · Swift · Claude API</div>
-      <h3 class="project-name">AI Chat Swift</h3>
-      <p class="project-desc">
-        Native iOS AI chat app with streaming responses via the Claude API.
-        Clean SwiftUI interface with real-time token streaming, conversation history, and markdown rendering.
-      </p>
-      <div class="project-tech">
-        <span class="tech-pill">Swift</span>
-        <span class="tech-pill">SwiftUI</span>
-        <span class="tech-pill">Claude API</span>
-        <span class="tech-pill">Streaming</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/SoldergG/ai-chat-swift" class="project-link" target="_blank">GitHub →</a>
-      </div>
-      <div class="project-number">12</div>
-    </div>
-
-    <div class="project-card reveal tilt-card">
-      <div class="project-tag">Web App · Next.js · PT</div>
-      <h3 class="project-name">Procura Escola</h3>
-      <p class="project-desc">
-        Portuguese university course comparator. Compare degrees side-by-side, filter by district,
-        access scores, and find the best fit for your academic path.
-      </p>
-      <div class="project-tech">
-        <span class="tech-pill">Next.js 15</span>
-        <span class="tech-pill">TypeScript</span>
-        <span class="tech-pill">Tailwind</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/SoldergG/procura-escola" class="project-link" target="_blank">GitHub →</a>
-      </div>
-      <div class="project-number">13</div>
-    </div>
-
   </div>
 </section>
 
-<!-- Skills -->
+<!-- SKILLS -->
 <section id="skills">
-  <div class="section-label">Technical profile</div>
-  <h2 class="section-title">Skills</h2>
-  <div class="skills-layout">
-    <div>
-      <p class="skills-intro">
-        Self-taught developer with a strong foundation in <strong>iOS development</strong>
-        and growing expertise in <strong>full-stack web</strong> and <strong>AI integration</strong>.
-        I build real things — apps that run on real devices and products that ship.
-      </p>
-      <p class="skills-intro">
-        Always learning — actively developing and maintaining production-grade projects
-        while continuously expanding my technical knowledge.
-      </p>
+  <div class="section-inner">
+    <span class="section-eyebrow reveal">Technical Profile</span>
+    <h2 class="section-h2 reveal">Built from scratch,<br>shipped to production.</h2>
+    <div class="skills-grid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="skill-cat reveal">
+        <div class="skill-cat-icon">📱</div>
+        <h4>iOS & Mobile</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">Swift</span><span class="skill-tag">SwiftUI</span><span class="skill-tag">UIKit</span><span class="skill-tag">MapKit</span><span class="skill-tag">SwiftData</span><span class="skill-tag">CoreLocation</span><span class="skill-tag">TestFlight</span>
+        </div>
+      </div>
+      <div class="skill-cat reveal reveal-delay-1">
+        <div class="skill-cat-icon">🖥</div>
+        <h4>Infrastructure</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">Docker</span><span class="skill-tag">Linux</span><span class="skill-tag">Nginx</span><span class="skill-tag">Tailscale</span><span class="skill-tag">SSH</span><span class="skill-tag">Home Assistant</span>
+        </div>
+      </div>
+      <div class="skill-cat reveal reveal-delay-2">
+        <div class="skill-cat-icon">🌐</div>
+        <h4>Web & Full-Stack</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">Next.js 15</span><span class="skill-tag">React</span><span class="skill-tag">TypeScript</span><span class="skill-tag">Three.js</span><span class="skill-tag">Supabase</span><span class="skill-tag">Tailwind</span>
+        </div>
+      </div>
+      <div class="skill-cat reveal reveal-delay-3" style="border:1px solid rgba(255,107,53,.2);background:rgba(255,107,53,.03)">
+        <div class="skill-cat-icon">🧠</div>
+        <h4 style="color:var(--orange)">AI & Claude</h4>
+        <div class="skill-tags">
+          <span class="skill-tag" style="border-color:rgba(255,107,53,.2);color:var(--orange)">Claude Expert</span>
+          <span class="skill-tag">Prompt Eng.</span>
+          <span class="skill-tag">OpenAI API</span>
+          <span class="skill-tag">ElevenLabs</span>
+          <span class="skill-tag">OpenRouter</span>
+          <span class="skill-tag">AI Products</span>
+        </div>
+      </div>
     </div>
-    <div>
-      <div class="skill-category reveal">
-        <div class="skill-category-title">iOS &amp; Mobile</div>
-        <div class="skill-list">
-          <span class="skill-item core">Swift</span>
-          <span class="skill-item core">SwiftUI</span>
-          <span class="skill-item">UIKit</span>
-          <span class="skill-item">Xcode</span>
-          <span class="skill-item">Xcode Cloud</span>
-          <span class="skill-item">MapKit</span>
-          <span class="skill-item">CoreLocation</span>
-          <span class="skill-item">TestFlight</span>
-        </div>
+
+    <!-- Claude callout -->
+    <div class="reveal" style="margin-top:24px;background:linear-gradient(135deg,rgba(255,107,53,.06),rgba(255,149,0,.06));border:1px solid rgba(255,107,53,.18);border-radius:20px;padding:28px 32px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+      <div style="font-size:2.4rem;flex-shrink:0">🧠</div>
+      <div style="flex:1;min-width:200px">
+        <div style="font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-.02em">Expert in building with Claude AI</div>
+        <div style="font-size:.88rem;color:var(--muted);line-height:1.7">From building AI-powered iOS apps to self-hosted assistants and agentic workflows — Lucas ships real products with Claude at the core. Capable of rapid prototyping, full-stack AI integration, and prompt engineering for production use.</div>
       </div>
-      <div class="skill-category reveal">
-        <div class="skill-category-title">Web &amp; Frontend</div>
-        <div class="skill-list">
-          <span class="skill-item core">Next.js 15</span>
-          <span class="skill-item core">React</span>
-          <span class="skill-item">TypeScript</span>
-          <span class="skill-item">Tailwind CSS</span>
-          <span class="skill-item">Three.js</span>
-          <span class="skill-item">React Three Fiber</span>
-          <span class="skill-item">Recharts</span>
-        </div>
-      </div>
-      <div class="skill-category reveal">
-        <div class="skill-category-title">Backend &amp; Tools</div>
-        <div class="skill-list">
-          <span class="skill-item core">Supabase</span>
-          <span class="skill-item">Node.js</span>
-          <span class="skill-item">PostgreSQL</span>
-          <span class="skill-item">Docker</span>
-          <span class="skill-item">Git / GitHub</span>
-          <span class="skill-item">REST APIs</span>
-          <span class="skill-item">Linux</span>
-        </div>
-      </div>
-      <div class="skill-category reveal">
-        <div class="skill-category-title">AI &amp; Workflow</div>
-        <div class="skill-list">
-          <span class="skill-item core">Claude API</span>
-          <span class="skill-item">Claude Code</span>
-          <span class="skill-item">OpenAI Whisper</span>
-          <span class="skill-item">ElevenLabs</span>
-          <span class="skill-item">OpenRouter</span>
-        </div>
+      <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+        <div style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--text2);font-weight:500"><span style="color:var(--orange)">✓</span> AI product development</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--text2);font-weight:500"><span style="color:var(--orange)">✓</span> LLM API integration</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--text2);font-weight:500"><span style="color:var(--orange)">✓</span> Voice + AI assistants</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--text2);font-weight:500"><span style="color:var(--orange)">✓</span> Rapid UI prototyping</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- About -->
-<section id="about">
-  <div class="section-label">Background</div>
-  <h2 class="section-title">About me</h2>
-  <div class="about-layout">
-    <div class="about-visual">
-      <div class="about-frame">
-        <img src="lucas_photo.jpg" alt="Lucas Salvador">
-        <div class="corner-tl about-frame-corner"></div>
-        <div class="corner-tr about-frame-corner"></div>
-        <div class="corner-bl about-frame-corner"></div>
-        <div class="corner-br about-frame-corner"></div>
-      </div>
-      <div class="about-badge"><strong>Lisbon</strong>iOS &amp; Web Dev<br>Open to work</div>
+<!-- CONTACT -->
+<section id="contact" style="background:var(--bg2);padding:120px 32px">
+  <div style="max-width:860px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center">
+    <div>
+      <span class="section-eyebrow reveal">Let's work together</span>
+      <h2 class="reveal" style="font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin:16px 0 18px;color:var(--text)">Got a project<br>in <span style="background:linear-gradient(135deg,var(--orange),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">mind?</span></h2>
+      <p class="reveal" style="font-size:.97rem;color:var(--muted);line-height:1.8;margin-bottom:28px">Available for iOS apps, full-stack web products, and AI-powered tools. Based in Lisbon, Portugal — working globally.</p>
+      <a href="mailto:Lucs2.8@icloud.com" class="btn-primary reveal" style="font-size:.92rem;padding:14px 28px;background:linear-gradient(135deg,var(--orange),var(--amber));box-shadow:0 8px 24px rgba(255,107,53,.25)">Send a message →</a>
     </div>
-    <div class="about-text">
-      <p class="about-bio">
-        I'm a <em>developer</em> from <strong>Lisbon, Portugal</strong>, passionate about building software
-        that actually gets used. I started with iOS development and expanded into full-stack web,
-        building products end-to-end — from native Swift apps to Next.js platforms with Supabase backends.
-      </p>
-      <p class="about-bio">
-        I believe in <strong>learning by building</strong> — every project I take on solves a real problem.
-        Whether it's a native Swift app or a full-stack web product, I ship things that work and look great.
-      </p>
-      <p class="about-bio">
-        Outside of tech, I play <strong>golf</strong> and go to the gym regularly. I also enjoy cooking
-        simple, good food — which might explain why KebabLocator exists.
-      </p>
-      <div class="about-facts reveal">
-        <div class="about-fact"><div class="fact-label">Location</div><div class="fact-value">Lisbon, Portugal</div></div>
-        <div class="about-fact"><div class="fact-label">Status</div><div class="fact-value">Open to opportunities</div></div>
-        <div class="about-fact"><div class="fact-label">Focus</div><div class="fact-value">iOS &amp; Full-Stack Web</div></div>
-        <div class="about-fact"><div class="fact-label">Languages</div><div class="fact-value">PT · EN · ES</div></div>
+    <div class="reveal" style="display:flex;flex-direction:column;gap:10px">
+      <a href="https://github.com/SoldergG" target="_blank" style="display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--sep2);border-radius:14px;padding:14px 18px;text-decoration:none;color:var(--text);transition:border-color .2s,transform .2s" onmouseover="this.style.borderColor='#ff6b35';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='';this.style.transform=''">
+        <span style="font-size:1.2rem">⌨️</span>
+        <div><div style="font-size:.88rem;font-weight:600">github.com/SoldergG</div><div style="font-size:.76rem;color:var(--muted)">13 public repos — iOS apps &amp; web projects</div></div>
+        <span style="margin-left:auto;color:var(--muted)">↗</span>
+      </a>
+      <a href="mailto:Lucs2.8@icloud.com" style="display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--sep2);border-radius:14px;padding:14px 18px;text-decoration:none;color:var(--text);transition:border-color .2s,transform .2s" onmouseover="this.style.borderColor='#ff6b35';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='';this.style.transform=''">
+        <span style="font-size:1.2rem">✉️</span>
+        <div><div style="font-size:.88rem;font-weight:600">Lucs2.8@icloud.com</div><div style="font-size:.76rem;color:var(--muted)">Preferred contact</div></div>
+        <span style="margin-left:auto;color:var(--muted)">↗</span>
+      </a>
+      <a href="https://instagram.com/Lucs2.8" target="_blank" style="display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--sep2);border-radius:14px;padding:14px 18px;text-decoration:none;color:var(--text);transition:border-color .2s,transform .2s" onmouseover="this.style.borderColor='#ff6b35';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='';this.style.transform=''">
+        <span style="font-size:1.2rem">📸</span>
+        <div><div style="font-size:.88rem;font-weight:600">@Lucs2.8</div><div style="font-size:.76rem;color:var(--muted)">Instagram</div></div>
+        <span style="margin-left:auto;color:var(--muted)">↗</span>
+      </a>
+      <div style="background:rgba(27,77,46,.06);border:1px solid rgba(27,77,46,.12);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:10px">
+        <div style="width:8px;height:8px;background:#34c759;border-radius:50%;animation:pulse-dot 2s infinite;flex-shrink:0"></div>
+        <div style="font-size:.82rem;color:#1B4D2E;font-weight:600">Available for new projects · Lisbon 🇵🇹</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Contact -->
-<section id="contact">
-  <div class="contact-layout">
-    <div>
-      <div class="section-label">Let's talk</div>
-      <h2 class="contact-big-text">Got a project<br>in mind<span class="highlight">?</span></h2>
-      <p class="contact-sub">
-        I'm available for freelance projects, internships, and collaborations.
-        Whether you need an iOS app or help with your infrastructure — let's build something together.
-      </p>
-      <a href="mailto:Lucs2.8@icloud.com" class="contact-cta">Send a message →</a>
-    </div>
-    <div>
-      <ul class="contact-links-list reveal">
-        <li>
-          <a href="https://github.com/SoldergG" class="contact-link-item" target="_blank">
-            <div><div class="contact-link-label">Code</div><div>github.com/SoldergG</div></div>
-            <span class="link-arrow">↗</span>
-          </a>
-        </li>
-        <li>
-          <a href="mailto:Lucs2.8@icloud.com" class="contact-link-item">
-            <div><div class="contact-link-label">Email (preferred)</div><div>Lucs2.8@icloud.com</div></div>
-            <span class="link-arrow">↗</span>
-          </a>
-        </li>
-        <li>
-          <a href="mailto:lucascorreiasalvador28@gmail.com" class="contact-link-item">
-            <div><div class="contact-link-label">Email (alternative)</div><div>lucascorreiasalvador28@gmail.com</div></div>
-            <span class="link-arrow">↗</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://www.instagram.com/Lucs2.8" class="contact-link-item" target="_blank">
-            <div><div class="contact-link-label">Instagram</div><div>@Lucs2.8</div></div>
-            <span class="link-arrow">↗</span>
-          </a>
-        </li>
-      </ul>
-    </div>
+<footer style="background:var(--bg);border-top:1px solid var(--sep);padding:28px 32px;display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--muted);flex-wrap:wrap;gap:10px">
+  <div style="display:flex;align-items:center;gap:8px">
+    <div style="width:18px;height:18px;background:linear-gradient(135deg,var(--orange),var(--amber));clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)"></div>
+    <span>© 2025 Lucas Salvador</span>
   </div>
-</section>
-
-<footer>
-  <div>© 2025 Lucas Salvador. Built with HTML, CSS, Three.js &amp; coffee.</div>
-  <div>Lisbon, Portugal 🇵🇹</div>
-  <div style="display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;">
-    <span>Lucs2.8@icloud.com</span>
-    <a href="https://www.instagram.com/Lucs2.8" target="_blank">Instagram ↗</a>
+  <span>Lisbon · Portugal 🇵🇹</span>
+  <div style="display:flex;gap:20px">
+    <a href="https://github.com/SoldergG" target="_blank" style="color:var(--muted);text-decoration:none;transition:color .2s" onmouseover="this.style.color='#ff6b35'" onmouseout="this.style.color=''">GitHub</a>
+    <a href="https://apps.apple.com/us/app/kebablocator/id6761265002" target="_blank" style="color:var(--muted);text-decoration:none;transition:color .2s" onmouseover="this.style.color='#ff6b35'" onmouseout="this.style.color=''">App Store</a>
+    <a href="mailto:Lucs2.8@icloud.com" style="color:var(--muted);text-decoration:none;transition:color .2s" onmouseover="this.style.color='#ff6b35'" onmouseout="this.style.color=''">Email</a>
   </div>
 </footer>
 
 <script>
-// ─── Custom Cursor ────────────────────────────────────────────────────────────
-const cursor = document.getElementById('cursor');
-const cursorRing = document.getElementById('cursor-ring');
-let cursorX = 0, cursorY = 0, ringX = 0, ringY = 0;
-document.addEventListener('mousemove', e => {
-  cursorX = e.clientX; cursorY = e.clientY;
-  cursor.style.left = cursorX + 'px';
-  cursor.style.top = cursorY + 'px';
-});
-function animateRing() {
-  ringX += (cursorX - ringX) * 0.12;
-  ringY += (cursorY - ringY) * 0.12;
-  cursorRing.style.left = ringX + 'px';
-  cursorRing.style.top = ringY + 'px';
-  requestAnimationFrame(animateRing);
-}
-animateRing();
-
-// ─── Three.js Scene ───────────────────────────────────────────────────────────
-const canvas = document.getElementById('three-canvas');
-const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0x000000, 0);
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 30;
-
-// Colors matching CSS vars
-const C_ACCENT  = new THREE.Color(0xc8ff6e);
-const C_ACCENT2 = new THREE.Color(0x6e8fff);
-const C_ACCENT3 = new THREE.Color(0xff6eb4);
-const C_MUTED   = new THREE.Color(0x3a3a4a);
-
-// ── Floating geometric objects ──
-const objects = [];
-
-function makeWireframe(geo, color, x, y, z, scale = 1) {
-  const mat = new THREE.MeshBasicMaterial({ color, wireframe: true, transparent: true, opacity: 0.35 });
-  const mesh = new THREE.Mesh(geo, mat);
-  mesh.position.set(x, y, z);
-  mesh.scale.setScalar(scale);
-  scene.add(mesh);
-  return mesh;
-}
-
-// iOS phone shape (rounded box approximation)
-const phoneGeo = new THREE.BoxGeometry(3.5, 7, 0.5, 2, 4, 1);
-objects.push({ mesh: makeWireframe(phoneGeo, C_ACCENT, -22, 6, -10, 1), rx: 0.003, ry: 0.007, rz: 0.001 });
-objects.push({ mesh: makeWireframe(phoneGeo, C_ACCENT2, 20, -4, -15, 0.8), rx: -0.005, ry: 0.004, rz: 0.002 });
-
-// Torus (ring / app icon)
-const torusGeo = new THREE.TorusGeometry(4, 0.5, 8, 24);
-objects.push({ mesh: makeWireframe(torusGeo, C_ACCENT, 18, 10, -18, 1), rx: 0.006, ry: 0.003, rz: 0.004 });
-objects.push({ mesh: makeWireframe(torusGeo, C_ACCENT3, -18, -8, -20, 0.7), rx: -0.004, ry: 0.008, rz: -0.003 });
-
-// Torus knot (complex / server infra feel)
-const knotGeo = new THREE.TorusKnotGeometry(3, 0.6, 80, 12, 2, 3);
-objects.push({ mesh: makeWireframe(knotGeo, C_ACCENT2, 0, 0, -25, 1.1), rx: 0.004, ry: 0.003, rz: 0.002 });
-
-// Icosahedron (geometric / clean)
-const icoGeo = new THREE.IcosahedronGeometry(3, 0);
-objects.push({ mesh: makeWireframe(icoGeo, C_ACCENT, -10, -12, -12, 1), rx: 0.005, ry: 0.006, rz: 0.002 });
-objects.push({ mesh: makeWireframe(icoGeo, C_MUTED, 14, 14, -22, 0.8), rx: 0.003, ry: -0.004, rz: 0.005 });
-
-// Octahedron (sharp / precision)
-const octGeo = new THREE.OctahedronGeometry(2.5, 0);
-objects.push({ mesh: makeWireframe(octGeo, C_ACCENT3, -6, 10, -8, 1), rx: -0.006, ry: 0.005, rz: 0.003 });
-objects.push({ mesh: makeWireframe(octGeo, C_ACCENT2, 8, -10, -10, 0.9), rx: 0.004, ry: -0.007, rz: -0.002 });
-
-// Small scattered spheres
-for (let i = 0; i < 12; i++) {
-  const sGeo = new THREE.SphereGeometry(0.4 + Math.random() * 0.6, 6, 6);
-  const color = [C_ACCENT, C_ACCENT2, C_ACCENT3][Math.floor(Math.random() * 3)];
-  const x = (Math.random() - 0.5) * 60;
-  const y = (Math.random() - 0.5) * 40;
-  const z = -8 - Math.random() * 20;
-  objects.push({ mesh: makeWireframe(sGeo, color, x, y, z, 1), rx: (Math.random() - 0.5) * 0.01, ry: (Math.random() - 0.5) * 0.01, rz: (Math.random() - 0.5) * 0.005 });
-}
-
-// ── Star / particle field ──
-const starGeo = new THREE.BufferGeometry();
-const starCount = 800;
-const starPos = new Float32Array(starCount * 3);
-for (let i = 0; i < starCount; i++) {
-  starPos[i * 3]     = (Math.random() - 0.5) * 200;
-  starPos[i * 3 + 1] = (Math.random() - 0.5) * 120;
-  starPos[i * 3 + 2] = -20 - Math.random() * 80;
-}
-starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-const starMat = new THREE.PointsMaterial({ color: 0xc8ff6e, size: 0.08, transparent: true, opacity: 0.5 });
-const stars = new THREE.Points(starGeo, starMat);
-scene.add(stars);
-
-// ── Grid plane at bottom ──
-const gridHelper = new THREE.GridHelper(80, 30, 0x1a1a2e, 0x111118);
-gridHelper.position.y = -20;
-gridHelper.position.z = -10;
-gridHelper.material.transparent = true;
-gridHelper.material.opacity = 0.4;
-scene.add(gridHelper);
-
-// ── Mouse parallax ──
-let mouseX = 0, mouseY = 0;
-let targetX = 0, targetY = 0;
-document.addEventListener('mousemove', e => {
-  mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-  mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-});
-
-// ── Scroll reactive ──
-let scrollY = 0;
-window.addEventListener('scroll', () => { scrollY = window.scrollY; });
-
-// ── Resize ──
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
-// ── Animation loop ──
-const clock = new THREE.Clock();
-function animate() {
-  requestAnimationFrame(animate);
-  const t = clock.getElapsedTime();
-
-  // Smooth mouse follow
-  targetX += (mouseX - targetX) * 0.04;
-  targetY += (mouseY - targetY) * 0.04;
-
-  // Camera subtle drift
-  camera.position.x = targetX * 3;
-  camera.position.y = -targetY * 2 - scrollY * 0.003;
-  camera.lookAt(0, -scrollY * 0.003, 0);
-
-  // Rotate all objects
-  objects.forEach(({ mesh, rx, ry, rz }) => {
-    mesh.rotation.x += rx;
-    mesh.rotation.y += ry;
-    mesh.rotation.z += rz;
-  });
-
-  // Star field drift
-  stars.rotation.y = t * 0.005;
-  stars.rotation.x = t * 0.002;
-
-  // Grid parallax
-  gridHelper.position.z = -10 - scrollY * 0.05;
-
-  // Pulse opacity on torus knot
-  const knot = objects[4].mesh;
-  knot.material.opacity = 0.2 + Math.sin(t * 0.8) * 0.15;
-
-  renderer.render(scene, camera);
-}
-animate();
-
-// ─── Nav scroll ──────────────────────────────────────────────────────────────
-const nav = document.getElementById('nav');
+// ── Nav stuck ──
 window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 50);
+  document.getElementById('nav').classList.toggle('stuck', window.scrollY > 20);
 });
 
-// ─── Intersection Observer (reveal) ──────────────────────────────────────────
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+// ── Scroll reveal ──
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-// ─── Stat counter ─────────────────────────────────────────────────────────────
-function animateValue(el, start, end, duration, suffix = '') {
-  const startTime = performance.now();
-  function update(now) {
-    const p = Math.min((now - startTime) / duration, 1);
-    const eased = 1 - Math.pow(1 - p, 3);
-    el.textContent = Math.round(start + (end - start) * eased) + suffix;
-    if (p < 1) requestAnimationFrame(update);
+// ── Three.js hero — floating hexagon cluster ──
+(function initHero() {
+  const canvas = document.getElementById('hero-canvas');
+  const W = window.innerWidth, H = window.innerHeight;
+  canvas.width = W; canvas.height = H;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(W, H);
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, W/H, 0.1, 200);
+  camera.position.set(0, 0, 12);
+
+  // Subtle ambient + directional
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  const sun = new THREE.DirectionalLight(0xff8040, 2.5);
+  sun.position.set(4, 6, 5);
+  scene.add(sun);
+  const rim = new THREE.DirectionalLight(0x6080ff, 0.8);
+  rim.position.set(-4, -2, -3);
+  scene.add(rim);
+
+  // ── LT Logo arc: 6 hexagons in horseshoe/arc shape ──
+  // Matches the actual logo: arc from top-left→top-center(bridge)→top-right→right→bottom-right
+  // Opening faces lower-left where "LT" text lives
+  const hexShape = new THREE.Shape();
+  for (let i = 0; i < 6; i++) {
+    const angle = (Math.PI / 3) * i + Math.PI / 6;
+    const x = Math.cos(angle), y = Math.sin(angle);
+    i === 0 ? hexShape.moveTo(x, y) : hexShape.lineTo(x, y);
   }
-  requestAnimationFrame(update);
-}
-const statObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting && !e.target.dataset.animated) {
-      e.target.dataset.animated = 'true';
-      const t = e.target.getAttribute('data-target');
-      const s = e.target.getAttribute('data-suffix') || '';
-      if (t) animateValue(e.target, 0, parseInt(t), 1200, s);
-    }
-  });
-}, { threshold: 0.5 });
-document.querySelectorAll('.stat-num[data-target]').forEach(el => statObs.observe(el));
+  hexShape.closePath();
 
-// ─── 3D Card Tilt Effect ──────────────────────────────────────────────────────
-document.querySelectorAll('.tilt-card').forEach(card => {
+  const extrudeSettings = { depth: 0.42, bevelEnabled: true, bevelThickness: 0.07, bevelSize: 0.05, bevelSegments: 5 };
+
+  // Arc positions matching the logo exactly:
+  // top-left, top-right (bridge), left-mid, right-upper, right-lower, bottom-right
+  const hexPositions = [
+    [-0.58, 1.38, 0],    // top-left (bridge left)
+    [ 0.58, 1.38, 0],    // top-right (bridge right)
+    [-1.32, 0.12, 0.08], // left-middle (large hex)
+    [ 1.30, 0.52, 0.04], // right-upper
+    [ 1.20,-0.68, 0.08], // right-lower
+    [ 0.72,-1.55, 0.12], // bottom-right
+  ];
+
+  const mat = new THREE.MeshPhysicalMaterial({
+    color: 0x1d1d1f,
+    metalness: 0.55,
+    roughness: 0.18,
+    clearcoat: 1.0,
+    clearcoatRoughness: 0.08,
+    reflectivity: 0.9,
+  });
+
+  const hexGroup = new THREE.Group();
+  hexPositions.forEach(([x, y, zOff]) => {
+    const geo = new THREE.ExtrudeGeometry(hexShape, extrudeSettings);
+    geo.center();
+    const mesh = new THREE.Mesh(geo, mat.clone());
+    mesh.position.set(x, y, zOff);
+    mesh.scale.setScalar(0.72);
+    hexGroup.add(mesh);
+  });
+
+  hexGroup.position.set(3.8, 0.1, -1.5);
+  hexGroup.rotation.set(0.12, -0.18, 0.05);
+  scene.add(hexGroup);
+
+  // Particles
+  const pGeo = new THREE.BufferGeometry();
+  const pPos = new Float32Array(600 * 3);
+  for (let i = 0; i < 600; i++) {
+    pPos[i*3] = (Math.random() - 0.5) * 30;
+    pPos[i*3+1] = (Math.random() - 0.5) * 20;
+    pPos[i*3+2] = (Math.random() - 0.5) * 15 - 5;
+  }
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+  scene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0xff6b35, size: 0.045, transparent: true, opacity: 0.35, sizeAttenuation: true })));
+
+  let mx = 0, my = 0, tmx = 0, tmy = 0;
+  let scrollY = 0;
+  document.addEventListener('mousemove', e => {
+    mx = (e.clientX / window.innerWidth - 0.5) * 2;
+    my = (e.clientY / window.innerHeight - 0.5) * 2;
+  });
+  window.addEventListener('scroll', () => { scrollY = window.scrollY; });
+  window.addEventListener('resize', () => {
+    const W2 = window.innerWidth, H2 = window.innerHeight;
+    camera.aspect = W2/H2; camera.updateProjectionMatrix();
+    renderer.setSize(W2, H2);
+  });
+
+  let heroEnabled = true;
+  const clock = new THREE.Clock();
+  (function loop() {
+    requestAnimationFrame(loop);
+    if (!heroEnabled) return;
+    const t = clock.getElapsedTime();
+    tmx += (mx - tmx) * 0.04;
+    tmy += (my - tmy) * 0.04;
+
+    hexGroup.rotation.y = -0.15 + tmx * 0.35;
+    hexGroup.rotation.x = 0.1 + tmy * 0.2;
+    hexGroup.rotation.z = 0.1 + Math.sin(t * 0.4) * 0.04;
+    hexGroup.position.y = Math.sin(t * 0.6) * 0.12;
+
+    // Scroll parallax — hex drifts out as user scrolls
+    const scrollFade = Math.max(0, 1 - scrollY / 400);
+    hexGroup.position.z = -2 - scrollY * 0.008;
+    hexGroup.children.forEach(h => { h.material.opacity = scrollFade; });
+    hexGroup.children.forEach(h => { h.material.transparent = true; });
+
+    renderer.render(scene, camera);
+  })();
+
+  window.__heroEnabled = (v) => { heroEnabled = v; canvas.style.opacity = v ? '1' : '0'; };
+})();
+
+// ── 3D card tilt on hover ──
+document.querySelectorAll('.feat-card-3d').forEach(card => {
   card.addEventListener('mousemove', e => {
-    const rect = card.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    const dx = (e.clientX - cx) / (rect.width / 2);
-    const dy = (e.clientY - cy) / (rect.height / 2);
-    const rotX = dy * -8;
-    const rotY = dx * 10;
-    card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-4px)`;
-    card.style.boxShadow = `${-rotY * 2}px ${rotX * 2}px 40px rgba(0,0,0,0.35), 0 0 30px rgba(200,255,110,0.06)`;
-    // Update CSS vars for spotlight
-    const px = ((e.clientX - rect.left) / rect.width) * 100;
-    const py = ((e.clientY - rect.top) / rect.height) * 100;
-    card.style.setProperty('--mouse-x', px + '%');
-    card.style.setProperty('--mouse-y', py + '%');
+    const r = card.getBoundingClientRect();
+    const dx = (e.clientX - r.left - r.width/2) / (r.width/2);
+    const dy = (e.clientY - r.top - r.height/2) / (r.height/2);
+    card.style.transform = `perspective(1000px) rotateX(${-dy * 10}deg) rotateY(${dx * 10}deg) translateY(-8px) scale(1.02)`;
+    card.style.transition = 'transform .08s ease';
   });
   card.addEventListener('mouseleave', () => {
     card.style.transform = '';
-    card.style.boxShadow = '';
-    card.style.removeProperty('--mouse-x');
-    card.style.removeProperty('--mouse-y');
+    card.style.transition = 'transform .5s cubic-bezier(.23,1,.32,1)';
   });
 });
 
-// ─── CSS Particle System ─────────────────────────────────────────────────────
-function createParticle() {
-  const p = document.createElement('div');
-  p.className = 'particle';
-  p.style.left = Math.random() * 100 + 'vw';
-  p.style.top = Math.random() * 100 + 'vh';
-  p.style.setProperty('--dx', (Math.random() - 0.5) * 200 + 'px');
-  p.style.setProperty('--dy', (Math.random() - 0.5) * 200 + 'px');
-  p.style.animation = `particleDrift ${8 + Math.random() * 12}s linear forwards`;
-  p.style.width = (2 + Math.random() * 2) + 'px';
-  p.style.height = p.style.width;
-  const colors = ['var(--accent)', 'var(--accent2)', 'var(--accent3)'];
-  p.style.background = colors[Math.floor(Math.random() * 3)];
-  document.body.appendChild(p);
-  p.addEventListener('animationend', () => p.remove());
+// ── Scroll-driven 3D parallax on feature sections ──
+function onScroll() {
+  const teeup = document.getElementById('teeup-card');
+  const solar = document.getElementById('solar-card');
+  if (teeup) {
+    const r = teeup.closest('.feature').getBoundingClientRect();
+    const p = Math.max(0, Math.min(1, 1 - r.top / window.innerHeight));
+    teeup.style.transform = `perspective(1000px) rotateY(${-6 + p * 12}deg) rotateX(${3 - p * 6}deg) translateY(${-p * 12}px)`;
+  }
+  if (solar) {
+    const r = solar.closest('.feature').getBoundingClientRect();
+    const p = Math.max(0, Math.min(1, 1 - r.top / window.innerHeight));
+    solar.style.transform = `perspective(1000px) rotateY(${6 - p * 12}deg) rotateX(${3 - p * 6}deg) translateY(${-p * 12}px)`;
+  }
 }
-setInterval(createParticle, 2000);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
 
-// ─── Smooth scroll ───────────────────────────────────────────────────────────
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-});
 </script>
 </body>
 </html>
