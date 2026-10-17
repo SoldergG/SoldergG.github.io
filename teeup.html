@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en" data-title-pt="TeeUp · Lucas Salvador" data-page="teeup">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TeeUp · Lucas Salvador</title>
+<meta name="description" content="Case study: TeeUp, a SwiftUI golf companion with scorecards and the World Handicap System.">
+<meta name="theme-color" content="#F7F5F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1424" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="TeeUp · Lucas Salvador">
+<meta property="og:description" content="Case study: TeeUp, a SwiftUI golf companion with scorecards and the World Handicap System.">
+<meta property="og:image" content="https://soldergg.github.io/assets/img/solarcalc.jpg">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/vendor/lenis-1.3.26.css">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 9.5h17M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" fill="currentColor"/></symbol>
+  <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 19.5c0-3.4 2.7-5.4 6-5.4s6 2 6 5.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16.5" cy="9" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M16.5 14c2.6 0 4.5 1.6 4.5 4.3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 21V3.5M6 4h11l-2.5 4L17 12H6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2" fill="currentColor"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 16 16"><path d="M4.5 11.5l7-7M5.5 4.5h6v6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-back" viewBox="0 0 16 16"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header class="nav" id="nav">
+  <nav class="wrap nav-in" aria-label="Main">
+    <a class="brand" href="index.html">Lucas Salvador</a>
+    <div class="nav-links" id="navLinks">
+      <a href="work.html" data-i18n="nav.work">Work</a>
+      <a href="index.html#about" data-i18n="nav.about">About</a>
+      <a href="index.html#contact" data-contact data-i18n="nav.contact">Contact</a>
+    </div>
+    <div class="nav-end">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="pt" aria-pressed="false">PT</button>
+      </div>
+      <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="navLinks" aria-label="Open menu" data-i18n-label="menu.open"><span></span><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+<section class="cs-hero wrap">
+  <a class="cs-back" href="work.html"><svg><use href="#i-arrow"/></svg><span data-i18n="back.all">All work</span></a>
+  <div class="app-id"><img class="app-icon lg" src="assets/img/logos/teeup.png" width="96" height="96" alt=""><p class="mono kicker">case study · ios · 2026</p></div>
+  <h1 data-i18n="te.h1" data-reveal="words">Golf, <em>hole by hole.</em></h1>
+  <p class="lede" data-i18n="te.lede" data-reveal="up">TeeUp is a golf companion for players in Portugal: scorecards, the official handicap, nearby courses and rounds with friends.</p>
+  <dl class="cs-meta" data-reveal="stagger">
+      <div><dt data-i18n="m1.k">role</dt><dd data-i18n="m1.v">Design and iOS</dd></div>
+      <div><dt data-i18n="m2.k">platform</dt><dd data-i18n="m2.v">iPhone</dd></div>
+      <div><dt data-i18n="m3.k">stack</dt><dd>SwiftUI · MapKit · WeatherKit · Supabase</dd></div>
+      <div><dt data-i18n="m4.k">code</dt><dd><a class="link" href="https://github.com/SoldergG/TeeUp" target="_blank" rel="noopener">github.com/SoldergG/TeeUp <svg class="ic"><use href="#i-arrow"/></svg></a></dd></div>
+  </dl>
+</section>
+<section class="wrap"><div class="feat-media teeup cs-phones" aria-hidden="true" data-reveal="shutter">
+    <div class="tu-phone tu-a">
+        <div class="tu-scr">
+          <div class="tu-bar"><b>9:41</b></div>
+          <p class="tu-small">Ronda · 18 buracos</p>
+          <p class="tu-title">Oitavos Dunes</p>
+          <div class="tu-hole">
+            <span class="tu-k">Buraco 7 · Par 4 · 362 m</span>
+            <span class="tu-score">5</span>
+            <span class="tu-sub">+1 · 2 putts · fairway ✓</span>
+          </div>
+          <div class="tu-card">
+            <div class="tu-row h"><span>B</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
+            <div class="tu-row"><span>Par</span><span>4</span><span>3</span><span>5</span><span>4</span><span>4</span><span>3</span><span>4</span></div>
+            <div class="tu-row s"><span>Tu</span><span>4</span><span>3</span><span class="b">6</span><span>4</span><span class="g">3</span><span>3</span><span class="b">5</span></div>
+          </div>
+          <div class="tu-tot"><span>Total</span><b>28 · +1</b></div>
+          <div class="tu-tabs"><span class="on"><svg><use href="#i-flag"/></svg>Ronda</span><span><svg><use href="#i-map"/></svg>Campos</span><span><svg><use href="#i-chart"/></svg>Stats</span><span><svg><use href="#i-people"/></svg>Amigos</span></div>
+        </div>
+      </div>
+      <div class="tu-phone tu-b">
+        <div class="tu-scr">
+          <div class="tu-bar"><b>9:41</b></div>
+          <p class="tu-small">World Handicap System</p>
+          <p class="tu-title">Handicap</p>
+          <div class="tu-hcp"><b>14,2</b><span>−0,6 este mês</span></div>
+          <div class="tu-bars"><i style="--v:62%"></i><i style="--v:58%"></i><i style="--v:66%"></i><i style="--v:55%"></i><i style="--v:51%"></i><i style="--v:54%"></i><i style="--v:47%"></i><i style="--v:45%"></i></div>
+          <div class="tu-list">
+            <div><span>Melhores 8 de 20</span><b>13,9</b></div>
+            <div><span>Última ronda</span><b>82</b></div>
+            <div><span>Greens em regulamento</span><b>38%</b></div>
+          </div>
+          <div class="tu-tabs"><span><svg><use href="#i-flag"/></svg>Ronda</span><span><svg><use href="#i-map"/></svg>Campos</span><span class="on"><svg><use href="#i-chart"/></svg>Stats</span><span><svg><use href="#i-people"/></svg>Amigos</span></div>
+        </div>
+      </div>
+  </div></section>
+<section class="cs-block wrap">
+  <div class="cs-lead">
+    <h2 data-i18n="te.lead.h" data-reveal="words">A round is four hours. The app should need seconds.</h2>
+    <div class="prose" data-reveal="stagger">
+      <p data-i18n="te.lead.p1">On the course nobody wants to type. TeeUp records a hole with a few taps: strokes, putts, fairway and penalties, and keeps the total against par in view.</p>
+      <p data-i18n="te.lead.p2">It is <strong>offline first</strong>: everything is saved on the phone and synced when the signal comes back, which on most Portuguese courses is a real concern.</p>
+    </div>
+  </div>
+</section>
+<section class="pin round" aria-labelledby="te-round-h">
+  <div class="pin-frame">
+    <div class="wrap round-in">
+      <div class="hole-art" aria-hidden="true">
+        <span class="hole-num">hole <b class="hn">1</b> · par <b class="hp">4</b></span>
+        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <path d="M120 470 C 80 380, 150 320, 210 260 S 300 120, 250 60" fill="none" stroke="#BFD2C2" stroke-width="86" stroke-linecap="round"/>
+          <ellipse cx="250" cy="66" rx="58" ry="40" fill="#A9C7AE"/>
+          <circle cx="300" cy="300" r="34" fill="#E8DCC0"/>
+          <path class="shot-line" d="M120 450 C 150 360, 190 300, 205 260 S 260 140, 250 70" fill="none" stroke="#1F5A3A" stroke-width="3" stroke-dasharray="1 0" stroke-linecap="round"/>
+          <line x1="252" y1="66" x2="252" y2="18" stroke="#1F5A3A" stroke-width="3"/>
+          <path d="M252 18 l30 9 -30 9z" fill="#C8432E"/>
+          <circle class="ball" cx="120" cy="450" r="7" fill="#fff" stroke="#1F5A3A" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="round-copy">
+        <h2 id="te-round-h" data-i18n="te.round.h">Nine holes, as you scroll.</h2>
+        <div class="big-score" aria-hidden="true"><b class="bs">4</b><span class="bs-l">par · hole 1</span></div>
+        <div class="card9" role="img" aria-label="Example scorecard for nine holes, 37 strokes, one over par" data-i18n-label="te.cardlabel"><span class="lbl" data-i18n="tu.hole">hole</span><span class="hd">1</span><span class="hd">2</span><span class="hd">3</span><span class="hd">4</span><span class="hd">5</span><span class="hd">6</span><span class="hd">7</span><span class="hd">8</span><span class="hd">9</span><span class="lbl">par</span><span class="hd">4</span><span class="hd">3</span><span class="hd">5</span><span class="hd">4</span><span class="hd">4</span><span class="hd">3</span><span class="hd">4</span><span class="hd">5</span><span class="hd">4</span><span class="lbl" data-i18n="tu.you">you</span><span class="sc" data-i="0">4</span><span class="sc" data-i="1">3</span><span class="sc" data-i="2">6</span><span class="sc" data-i="3">4</span><span class="sc" data-i="4">3</span><span class="sc" data-i="5">3</span><span class="sc" data-i="6">5</span><span class="sc" data-i="7">5</span><span class="sc" data-i="8">4</span></div>
+        <p class="mono kicker" data-i18n="te.example">example round · 37 strokes · +1</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="cs-block tint">
+  <div class="wrap">
+    <h2 class="sec-h" data-i18n="te.dec.h" data-reveal="words">Decisions</h2>
+    <ul class="decisions" data-reveal="stagger">
+    <li><h3 data-i18n="td1.h">The official handicap</h3><p data-i18n="td1.p">The handicap index follows the World Handicap System: the best 8 of the last 20 differentials, adjusted for each course’s rating.</p></li>
+    <li><h3 data-i18n="td2.h">Courses nearby</h3><p data-i18n="td2.p">Google Places and MapKit find courses around you; WeatherKit adds the wind at the tee.</p></li>
+    <li><h3 data-i18n="td3.h">Undo on every hole</h3><p data-i18n="td3.p">A wrong tap is fixed with undo, and scores can be exported as CSV or JSON.</p></li>
+    <li><h3 data-i18n="td4.h">Rounds with friends</h3><p data-i18n="td4.p">Play the same round on several phones and see everyone’s card fill in.</p></li>
+    </ul>
+  </div>
+</section>
+<a class="next" href="podcast-helper.html">
+  <div class="wrap next-in">
+    <p class="mono" data-i18n="next.k">next project</p>
+    <div class="next-row"><img class="app-icon lg" src="assets/img/logos/podcasthelper.png" width="96" height="96" alt=""><b>Podcast Helper</b><svg><use href="#i-arrow"/></svg></div>
+  </div>
+</a>
+</main>
+
+<footer class="contact page-foot" id="contact">
+  <div class="wrap contact-in">
+    <h2 data-i18n="contact.h" data-reveal="words">Have an app in mind? <em>Let's talk.</em></h2>
+    <div class="cta">
+      <a class="btn light" href="mailto:Lucs2.8@icloud.com" data-contact data-i18n="contact.write">Write to me</a>
+      <a class="btn ghost-light" href="tel:+351933258349">+351 933 258 349</a>
+      <a class="btn ghost-light" href="https://github.com/SoldergG" target="_blank" rel="noopener">GitHub <svg class="ic"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="foot mono">
+      <span>© 2026 Lucas Salvador</span>
+      <a href="privacy.html" data-i18n="foot.privacy">privacy</a>
+      <span data-i18n="foot.place">lisbon · portugal</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/pt/teeup.js" defer></script>
+<script src="assets/vendor/gsap-3.15.0.min.js" defer></script>
+<script src="assets/vendor/ScrollTrigger-3.15.0.min.js" defer></script>
+<script src="assets/vendor/lenis-1.3.26.min.js" defer></script>
+<script src="assets/js/core.js" defer></script>
+<script src="assets/js/case.js" defer></script>
+</body>
+</html>

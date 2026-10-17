@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en" data-title-pt="Lunar · Lucas Salvador" data-page="lunar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lunar · Lucas Salvador</title>
+<meta name="description" content="Case study: Lunar, a school assistant for iPhone, web and Android, designed and built by Lucas Salvador.">
+<meta name="theme-color" content="#F7F5F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1424" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Lunar · Lucas Salvador">
+<meta property="og:description" content="Case study: Lunar, a school assistant for iPhone, web and Android, designed and built by Lucas Salvador.">
+<meta property="og:image" content="https://soldergg.github.io/assets/img/lunar.jpg">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/vendor/lenis-1.3.26.css">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 9.5h17M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" fill="currentColor"/></symbol>
+  <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 19.5c0-3.4 2.7-5.4 6-5.4s6 2 6 5.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16.5" cy="9" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M16.5 14c2.6 0 4.5 1.6 4.5 4.3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 21V3.5M6 4h11l-2.5 4L17 12H6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2" fill="currentColor"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 16 16"><path d="M4.5 11.5l7-7M5.5 4.5h6v6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-back" viewBox="0 0 16 16"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header class="nav" id="nav">
+  <nav class="wrap nav-in" aria-label="Main">
+    <a class="brand" href="index.html">Lucas Salvador</a>
+    <div class="nav-links" id="navLinks">
+      <a href="work.html" data-i18n="nav.work">Work</a>
+      <a href="index.html#about" data-i18n="nav.about">About</a>
+      <a href="index.html#contact" data-contact data-i18n="nav.contact">Contact</a>
+    </div>
+    <div class="nav-end">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="pt" aria-pressed="false">PT</button>
+      </div>
+      <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="navLinks" aria-label="Open menu" data-i18n-label="menu.open"><span></span><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+<section class="cs-hero wrap">
+  <a class="cs-back" href="work.html"><svg><use href="#i-arrow"/></svg><span data-i18n="back.all">All work</span></a>
+  <div class="app-id"><img class="app-icon lg" src="assets/img/logos/lunar.png" width="96" height="96" alt=""><p class="mono kicker">case study · ios, web, android · 2026</p></div>
+  <h1 data-i18n="lu.h1" data-reveal="words">The whole school year, <em>in one app.</em></h1>
+  <p class="lede" data-i18n="lu.lede" data-reveal="up">Lunar is a school assistant for Portuguese secondary students. I designed and built it alone: the iPhone app, the web app, the Android app and the backend they share.</p>
+  <dl class="cs-meta" data-reveal="stagger">
+      <div><dt data-i18n="m1.k">role</dt><dd data-i18n="m1.v">Design, iOS, web, Android, backend</dd></div>
+      <div><dt data-i18n="m2.k">platforms</dt><dd data-i18n="m2.v">iPhone, web, Android</dd></div>
+      <div><dt data-i18n="m3.k">stack</dt><dd>SwiftUI · WidgetKit · Kotlin · Supabase</dd></div>
+      <div><dt data-i18n="m4.k">live</dt><dd><a class="link" href="https://lunar-escola.vercel.app" target="_blank" rel="noopener">lunar-escola.vercel.app <svg class="ic"><use href="#i-arrow"/></svg></a></dd></div>
+  </dl>
+</section>
+<section class="pin zoom lunar" aria-label="Lunar on iPhone" data-i18n-label="lu.zoomlabel">
+  <div class="pin-frame">
+    <div class="zoom-phone" aria-hidden="true"><div class="dev" style="transform:none"><div class="dev-face"><div class="dev-screen"><i class="ph-island"></i>
+<div class="scr on" data-i="0">
+                  <div class="ph-status"><b>08:21</b><span class="ph-sys"><i></i><i></i><i></i><i></i><u></u></span></div>
+                  <div class="ph-body">
+                    <div class="ph-top"><span class="ph-modes"><b>Escola</b><span>Futuro</span></span><span class="ph-av">T</span></div>
+                    <div class="ph-date">Terça, 6 de outubro</div>
+                    <div class="ph-title">Hoje</div>
+                    <div class="ph-now">
+                      <div class="ph-k">Agora · até 09:55</div>
+                      <div class="ph-big">Português</div>
+                      <div class="ph-s">Sala A3 · faltam 1 h 34</div>
+                      <div class="ph-meter"><i style="width:6%"></i></div>
+                      <div class="ph-next">A seguir: <b>Matemática A</b> às 10:10, na B12</div>
+                    </div>
+                    <div class="ph-group">
+                      <div class="ph-row"><div><b>Teste de Matemática A</b><span>Trigonometria, na sexta</span></div><span class="ph-pill red">3 dias</span></div>
+                      <div class="ph-row"><div><b>TPC de Filosofia</b><span>Página 84, para amanhã</span></div><span class="ph-pill">TPC</span></div>
+                      <div class="ph-row"><div><b>Levar amanhã</b><span>Calculadora gráfica e atlas</span></div><span class="ph-pill amber">material</span></div>
+                    </div>
+                    <div class="ph-h">Estudo de hoje</div>
+                    <div class="ph-group">
+                      <div class="ph-row"><div><b>Matemática A, 17:00 às 17:45</b><span>Círculo trigonométrico</span></div><span class="ph-pill blue">plano</span></div>
+                      <div class="ph-row"><div><b>Faltas a Educação Física</b><span>2 de 4 injustificadas</span></div><span class="ph-pill amber">metade</span></div>
+                    </div>
+                  </div>
+                  <div class="ph-tabs"><span class="on"><svg><use href="#i-sun"/></svg>Hoje</span><span><svg><use href="#i-cal"/></svg>Horário</span><span><svg><use href="#i-book"/></svg>Testes</span><span><svg><use href="#i-spark"/></svg>Assistente</span><span><svg><use href="#i-people"/></svg>Colegas</span></div>
+                </div>
+</div></div></div></div>
+    <div class="zoom-copy"><p data-i18n="lu.zoom">Built for the five minutes <em>between classes.</em></p></div>
+  </div>
+</section>
+<section class="cs-block wrap">
+  <div class="cs-lead">
+    <h2 data-i18n="lu.lead.h" data-reveal="words">A school year lives in too many places.</h2>
+    <div class="prose" data-reveal="stagger">
+      <p data-i18n="lu.lead.p1">The timetable is on paper, tests are announced in a group chat, grades sit in the school portal and homework is in a notebook. Lunar puts all of it on one screen that follows the day.</p>
+      <p data-i18n="lu.lead.p2">It has two modes. <strong>School</strong> runs the day: classes, absences, tests, homework and an assistant. <strong>Future</strong> looks ahead to university, with every course, its entry grades and practice for the national exams.</p>
+    </div>
+  </div>
+</section>
+<section class="pin hscroll lunar" aria-labelledby="lu-h-h">
+  <div class="pin-frame">
+    <div class="wrap h-head"><h2 id="lu-h-h" data-i18n="lu.h.h">Four screens that carry the day.</h2><span class="h-count" aria-hidden="true"><b class="h-cur">01</b> / 04</span></div>
+    <div class="h-track">
+      <figure class="h-item">
+        <div class="mini lunar-mini"><div class="mini-scr"><div class="dev-face"><div class="dev-screen"><i class="ph-island"></i>
+<div class="scr on" data-i="0">
+                  <div class="ph-status"><b>08:21</b><span class="ph-sys"><i></i><i></i><i></i><i></i><u></u></span></div>
+                  <div class="ph-body">
+                    <div class="ph-top"><span class="ph-modes"><b>Escola</b><span>Futuro</span></span><span class="ph-av">T</span></div>
+                    <div class="ph-date">Terça, 6 de outubro</div>
+                    <div class="ph-title">Hoje</div>
+                    <div class="ph-now">
+                      <div class="ph-k">Agora · até 09:55</div>
+                      <div class="ph-big">Português</div>
+                      <div class="ph-s">Sala A3 · faltam 1 h 34</div>
+                      <div class="ph-meter"><i style="width:6%"></i></div>
+                      <div class="ph-next">A seguir: <b>Matemática A</b> às 10:10, na B12</div>
+                    </div>
+                    <div class="ph-group">
+                      <div class="ph-row"><div><b>Teste de Matemática A</b><span>Trigonometria, na sexta</span></div><span class="ph-pill red">3 dias</span></div>
+                      <div class="ph-row"><div><b>TPC de Filosofia</b><span>Página 84, para amanhã</span></div><span class="ph-pill">TPC</span></div>
+                      <div class="ph-row"><div><b>Levar amanhã</b><span>Calculadora gráfica e atlas</span></div><span class="ph-pill amber">material</span></div>
+                    </div>
+                    <div class="ph-h">Estudo de hoje</div>
+                    <div class="ph-group">
+                      <div class="ph-row"><div><b>Matemática A, 17:00 às 17:45</b><span>Círculo trigonométrico</span></div><span class="ph-pill blue">plano</span></div>
+                      <div class="ph-row"><div><b>Faltas a Educação Física</b><span>2 de 4 injustificadas</span></div><span class="ph-pill amber">metade</span></div>
+                    </div>
+                  </div>
+                  <div class="ph-tabs"><span class="on"><svg><use href="#i-sun"/></svg>Hoje</span><span><svg><use href="#i-cal"/></svg>Horário</span><span><svg><use href="#i-book"/></svg>Testes</span><span><svg><use href="#i-spark"/></svg>Assistente</span><span><svg><use href="#i-people"/></svg>Colegas</span></div>
+                </div>
+</div></div></div></div>
+        <figcaption><h3 data-i18n="lh0.h">Today</h3><p data-i18n="lh0.p">The class happening now, what comes next, and the evening study plan.</p></figcaption>
+      </figure>
+      <figure class="h-item">
+        <div class="mini lunar-mini"><div class="mini-scr"><div class="dev-face"><div class="dev-screen"><i class="ph-island"></i>
+<div class="scr on" data-i="1">
+                  <div class="ph-status"><b>10:42</b><span class="ph-sys"><i></i><i></i><i></i><i></i><u></u></span></div>
+                  <div class="ph-body">
+                    <div class="ph-date">Lido da foto, 11.º C</div>
+                    <div class="ph-title">Horário</div>
+                    <div class="ph-tt">
+                      <span></span><b>Seg</b><b>Ter</b><b>Qua</b><b>Qui</b><b>Sex</b>
+                      <time>08:15</time><i>Port.<small>A3</small></i><i>Port.<small>A3</small></i><i>Econ.<small>C2</small></i><i>Inglês<small>A1</small></i><i>Mat. A<small>B12</small></i>
+                      <time>10:10</time><i>Econ.<small>C2</small></i><i>Mat. A<small>B12</small></i><i>Filos.<small>B4</small></i><i class="q">Mat. A<small>B12?</small></i><i>Econ.<small>C2</small></i>
+                      <time>12:00</time><i>Geo.<small>C5</small></i><i>Inglês<small>A1</small></i><i>Mat. A<small>B12</small></i><i>Filos.<small>B4</small></i><i>Port.<small>A3</small></i>
+                      <time>14:00</time><span></span><i>Ed. Fís.<small>Pav.</small></i><i>Geo.<small>C5</small></i><span></span><span></span>
+                    </div>
+                    <div class="ph-note">Uma aula por confirmar: a sala da Matemática A de quinta não se lê bem na foto.</div>
+                    <div class="ph-group">
+                      <div class="ph-row"><div><b>Horas dos tempos</b><span>Das 08:15 às 15:40, com os intervalos</span></div></div>
+                      <div class="ph-row"><div><b>7 disciplinas</b><span>Português, Inglês, Filosofia, Mat. A, Econ. A, Geo. A, Ed. Física</span></div></div>
+                    </div>
+                    <div class="ph-btn">Guardar o horário</div>
+                  </div>
+                  <div class="ph-tabs"><span><svg><use href="#i-sun"/></svg>Hoje</span><span class="on"><svg><use href="#i-cal"/></svg>Horário</span><span><svg><use href="#i-book"/></svg>Testes</span><span><svg><use href="#i-spark"/></svg>Assistente</span><span><svg><use href="#i-people"/></svg>Colegas</span></div>
+                </div>
+</div></div></div></div>
+        <figcaption><h3 data-i18n="lh1.h">Timetable</h3><p data-i18n="lh1.p">Read from a photo of the printed timetable, with one question for the slot it could not read.</p></figcaption>
+      </figure>
+      <figure class="h-item">
+        <div class="mini lunar-mini"><div class="mini-scr"><div class="dev-face"><div class="dev-screen"><i class="ph-island"></i>
+<div class="scr on" data-i="2">
+                  <div class="ph-status"><b>16:32</b><span class="ph-sys"><i></i><i></i><i></i><i></i><u></u></span></div>
+                  <div class="ph-body">
+                    <div class="ph-title">Testes e notas</div>
+                    <div class="ph-card">
+                      <div class="ph-k">Sexta, 9 de outubro</div>
+                      <div class="ph-big">Matemática A</div>
+                      <div class="ph-s">Trigonometria: círculo trigonométrico e equações</div>
+                      <span class="ph-pill red ph-corner">3 dias</span>
+                    </div>
+                    <div class="ph-h">Plano de estudo</div>
+                    <div class="ph-group">
+                      <div class="ph-row"><div><b>Hoje, 17:00 às 17:45</b><span>Círculo trigonométrico</span></div><span class="ph-check">✓</span></div>
+                      <div class="ph-row"><div><b>Quarta, 17:00 às 17:45</b><span>Equações do tipo sen x = a</span></div></div>
+                      <div class="ph-row"><div><b>Quinta, 17:00 às 17:30</b><span>Ficha de revisão do manual</span></div></div>
+                    </div>
+                    <div class="ph-note">Lembrete na véspera, às 20:00.</div>
+                    <div class="ph-h">A seguir</div>
+                    <div class="ph-group">
+                      <div class="ph-row"><div><b>Economia A</b><span>Quarta, 14 de outubro</span></div><span class="ph-pill">8 dias</span></div>
+                      <div class="ph-row"><div><b>Português</b><span>Segunda, 19 de outubro</span></div><span class="ph-pill">13 dias</span></div>
+                    </div>
+                  </div>
+                  <div class="ph-tabs"><span><svg><use href="#i-sun"/></svg>Hoje</span><span><svg><use href="#i-cal"/></svg>Horário</span><span class="on"><svg><use href="#i-book"/></svg>Testes</span><span><svg><use href="#i-spark"/></svg>Assistente</span><span><svg><use href="#i-people"/></svg>Colegas</span></div>
+                </div>
+</div></div></div></div>
+        <figcaption><h3 data-i18n="lh2.h">Tests</h3><p data-i18n="lh2.p">Every test gets short study sessions spread across the days before it.</p></figcaption>
+      </figure>
+      <figure class="h-item">
+        <div class="mini lunar-mini"><div class="mini-scr"><div class="dev-face"><div class="dev-screen"><i class="ph-island"></i>
+<div class="scr on" data-i="3">
+                  <div class="ph-status"><b>19:08</b><span class="ph-sys"><i></i><i></i><i></i><i></i><u></u></span></div>
+                  <div class="ph-body">
+                    <div class="ph-title">Assistente</div>
+                    <div class="ph-q"><span>Da tua foto</span>Resolve a equação 2 sen x = 1 no intervalo [0, 2π].</div>
+                    <ol class="ph-steps">
+                      <li>Isola o seno: <b>sen x = 1/2</b>.</li>
+                      <li>No círculo trigonométrico, o seno vale 1/2 em <b>π/6</b> e em <b>π − π/6</b>.</li>
+                      <li>Em [0, 2π] não há mais ângulos com esse seno.</li>
+                    </ol>
+                    <div class="ph-card ph-result">Solução: <b>x = π/6</b> ou <b>x = 5π/6</b>.<span>Agora tu: resolve 2 cos x = √3 no mesmo intervalo.</span></div>
+                    <div class="ph-input">Pergunta outra coisa</div>
+                  </div>
+                  <div class="ph-tabs"><span><svg><use href="#i-sun"/></svg>Hoje</span><span><svg><use href="#i-cal"/></svg>Horário</span><span><svg><use href="#i-book"/></svg>Testes</span><span class="on"><svg><use href="#i-spark"/></svg>Assistente</span><span><svg><use href="#i-people"/></svg>Colegas</span></div>
+                </div>
+</div></div></div></div>
+        <figcaption><h3 data-i18n="lh3.h">Assistant</h3><p data-i18n="lh3.p">Solves an exercise from a photo step by step, then hands the student a similar one.</p></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+<section class="cs-block tint">
+  <div class="wrap">
+    <h2 class="sec-h" data-i18n="lu.dec.h" data-reveal="words">Under the hood</h2>
+    <ul class="decisions" data-reveal="stagger">
+    <li><h3 data-i18n="ld1.h">One backend for three apps</h3><p data-i18n="ld1.p">iPhone, web and Android share a single Supabase project with row level security. Server functions run the assistant and delete accounts on request.</p></li>
+    <li><h3 data-i18n="ld2.h">An assistant that asks first</h3><p data-i18n="ld2.p">It can mark homework done, log a grade or add a test, and every action waits for a tap to confirm. It searches the web only when a question needs it.</p></li>
+    <li><h3 data-i18n="ld3.h">On the lock screen</h3><p data-i18n="ld3.p">Widgets show the next classes, tests and homework, and a Live Activity counts down the class in progress.</p></li>
+    <li><h3 data-i18n="ld4.h">Signing in without a password</h3><p data-i18n="ld4.p">Passkeys on the web and on iPhone, next to Sign in with Apple and email.</p></li>
+    <li><h3 data-i18n="ld5.h">Classmates, kept safe</h3><p data-i18n="ld5.p">Friends are added only by code or QR, photos stay blurred until tapped, and reports hide a message automatically.</p></li>
+    </ul>
+  </div>
+</section>
+<a class="next" href="solarcalc.html">
+  <div class="wrap next-in">
+    <p class="mono" data-i18n="next.k">next project</p>
+    <div class="next-row"><img class="app-icon lg" src="assets/img/logos/solarcalc.svg" width="96" height="96" alt=""><b>SolarCalc</b><svg><use href="#i-arrow"/></svg></div>
+  </div>
+</a>
+</main>
+
+<footer class="contact page-foot" id="contact">
+  <div class="wrap contact-in">
+    <h2 data-i18n="contact.h" data-reveal="words">Have an app in mind? <em>Let's talk.</em></h2>
+    <div class="cta">
+      <a class="btn light" href="mailto:Lucs2.8@icloud.com" data-contact data-i18n="contact.write">Write to me</a>
+      <a class="btn ghost-light" href="tel:+351933258349">+351 933 258 349</a>
+      <a class="btn ghost-light" href="https://github.com/SoldergG" target="_blank" rel="noopener">GitHub <svg class="ic"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="foot mono">
+      <span>© 2026 Lucas Salvador</span>
+      <a href="privacy.html" data-i18n="foot.privacy">privacy</a>
+      <span data-i18n="foot.place">lisbon · portugal</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/pt/lunar.js" defer></script>
+<script src="assets/vendor/gsap-3.15.0.min.js" defer></script>
+<script src="assets/vendor/ScrollTrigger-3.15.0.min.js" defer></script>
+<script src="assets/vendor/lenis-1.3.26.min.js" defer></script>
+<script src="assets/js/core.js" defer></script>
+<script src="assets/js/case.js" defer></script>
+</body>
+</html>

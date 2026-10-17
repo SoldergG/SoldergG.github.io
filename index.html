@@ -1,1246 +1,423 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-title-pt="Lucas Salvador · Programador iOS e Full-Stack">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lucas Salvador — iOS & Full-Stack Developer</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --bg: #ffffff;
-  --bg2: #f5f5f7;
-  --bg3: #fafafa;
-  --text: #1d1d1f;
-  --text2: #424245;
-  --muted: #6e6e73;
-  --sep: rgba(0,0,0,0.08);
-  --sep2: rgba(0,0,0,0.12);
-  --orange: #ff6b35;
-  --amber: #ff9500;
-  --surface: #ffffff;
-  --font-d: 'Syne', sans-serif;
-  --font-b: 'DM Sans', -apple-system, sans-serif;
-}
-
-html { scroll-behavior: smooth; overflow-x: hidden; }
-body { background: var(--bg); color: var(--text); font-family: var(--font-b); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-
-/* ─── NAV ─────────────────────────────────────── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
-  height: 52px;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 32px;
-  transition: background .4s, backdrop-filter .4s, box-shadow .4s;
-}
-nav.stuck {
-  background: rgba(255,255,255,0.82);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  box-shadow: 0 1px 0 var(--sep);
-}
-.logo {
-  font-family: var(--font-d); font-weight: 800; font-size: 1rem;
-  letter-spacing: -.02em; color: var(--text);
-  display: flex; align-items: center; gap: 16px;
-}
-.nav-links { list-style: none; display: flex; gap: 28px; align-items: center; }
-.nav-links a {
-  font-family: var(--font-b); font-size: .84rem; font-weight: 500;
-  color: var(--muted); text-decoration: none;
-  transition: color .2s;
-}
-.nav-links a:hover { color: var(--text); }
-.nav-cta {
-  background: var(--text) !important;
-  color: #fff !important;
-  padding: 7px 18px;
-  border-radius: 100px;
-  font-size: .82rem !important;
-  font-weight: 600 !important;
-  transition: background .2s, transform .15s !important;
-}
-.nav-cta:hover { background: #333 !important; transform: translateY(-1px); }
-
-/* ─── HERO ────────────────────────────────────── */
-.hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center;
-  padding: 120px 32px 80px;
-  position: relative;
-  overflow: hidden;
-}
-#hero-canvas {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  pointer-events: none; z-index: 0;
-}
-.hero-inner { position: relative; z-index: 1; max-width: 900px; }
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(0,0,0,0.04);
-  border: 1px solid var(--sep2);
-  border-radius: 100px;
-  padding: 6px 16px;
-  font-size: .78rem; font-weight: 600; color: var(--muted);
-  letter-spacing: .04em; margin-bottom: 32px;
-  opacity: 0; animation: fadeUp .8s .1s ease forwards;
-}
-.status-dot { width: 6px; height: 6px; background: #34c759; border-radius: 50%; animation: pulse-dot 2s infinite; }
-@keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
-.hero-h1 {
-  font-family: var(--font-d);
-  font-size: clamp(3.2rem, 7vw, 7rem);
-  font-weight: 800;
-  letter-spacing: -.04em;
-  line-height: .92;
-  margin-bottom: 28px;
-  opacity: 0; animation: fadeUp .9s .25s ease forwards;
-}
-.hero-h1 .grad {
-  background: linear-gradient(135deg, var(--orange) 0%, var(--amber) 60%, #ffcc02 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.hero-h1 .muted { color: #b0b0b5; -webkit-text-fill-color: #b0b0b5; }
-.hero-sub {
-  font-size: 1.05rem; color: var(--muted); line-height: 1.75;
-  max-width: 500px; margin: 0 auto 40px;
-  font-weight: 400;
-  opacity: 0; animation: fadeUp .9s .4s ease forwards;
-}
-.hero-actions {
-  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
-  opacity: 0; animation: fadeUp .9s .55s ease forwards;
-}
-.btn-primary {
-  background: var(--text); color: #fff;
-  font-family: var(--font-b); font-weight: 600; font-size: .92rem;
-  padding: 14px 28px; border-radius: 100px;
-  text-decoration: none; border: none; cursor: pointer;
-  transition: background .2s, transform .15s, box-shadow .2s;
-  display: inline-flex; align-items: center; gap: 6px;
-}
-.btn-primary:hover { background: #333; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.18); }
-.btn-ghost {
-  background: transparent; color: var(--text);
-  font-family: var(--font-b); font-weight: 500; font-size: .92rem;
-  padding: 14px 24px; border-radius: 100px;
-  border: 1px solid var(--sep2);
-  text-decoration: none; cursor: pointer;
-  transition: background .2s, border-color .2s, transform .15s;
-  display: inline-flex; align-items: center; gap: 6px;
-}
-.btn-ghost:hover { background: var(--bg2); transform: translateY(-2px); }
-.hero-stats {
-  display: flex; gap: 40px; justify-content: center; margin-top: 60px;
-  opacity: 0; animation: fadeUp .9s .7s ease forwards;
-}
-.h-stat-n { font-family: var(--font-d); font-size: 2rem; font-weight: 800; color: var(--text); letter-spacing: -.04em; }
-.h-stat-l { font-size: .78rem; color: var(--muted); font-weight: 500; margin-top: 2px; }
-.stat-sep { width: 1px; background: var(--sep2); align-self: stretch; }
-
-/* 3D scroll object */
-#scroll-obj {
-  position: absolute;
-  right: -80px; top: 50%;
-  transform: translateY(-50%);
-  width: 420px; height: 420px;
-  pointer-events: none; z-index: 0;
-  opacity: .85;
-}
-
-/* ─── MARQUEE BAND ────────────────────────────── */
-.band {
-  background: var(--bg2);
-  border-top: 1px solid var(--sep);
-  border-bottom: 1px solid var(--sep);
-  padding: 14px 0;
-  overflow: hidden;
-}
-.band-track {
-  display: flex; gap: 48px;
-  animation: marquee 28s linear infinite;
-  width: max-content;
-}
-.band-item {
-  display: flex; align-items: center; gap: 10px;
-  font-size: .8rem; font-weight: 500; color: var(--muted);
-  white-space: nowrap;
-}
-.band-item strong { color: var(--text); }
-@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-
-/* ─── FEATURE SECTIONS (3D scroll) ───────────── */
-.feature {
-  padding: 120px 32px;
-  max-width: 1160px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-}
-.feature.reverse { direction: rtl; }
-.feature.reverse > * { direction: ltr; }
-.feat-label {
-  font-size: .7rem; font-weight: 700; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--orange);
-  background: rgba(255,107,53,.08);
-  border: 1px solid rgba(255,107,53,.18);
-  border-radius: 100px;
-  padding: 4px 12px;
-  display: inline-block; margin-bottom: 18px;
-}
-.feat-h2 {
-  font-family: var(--font-d);
-  font-size: clamp(1.8rem, 3vw, 2.8rem);
-  font-weight: 800; letter-spacing: -.04em;
-  line-height: 1.05; margin-bottom: 18px; color: var(--text);
-}
-.feat-desc {
-  font-size: .97rem; color: var(--muted);
-  line-height: 1.8; margin-bottom: 28px;
-  max-width: 440px; font-weight: 400;
-}
-.feat-links { display: flex; gap: 14px; flex-wrap: wrap; }
-
-/* 3D card visual */
-.feat-visual {
-  perspective: 1000px;
-}
-.feat-card-3d {
-  background: linear-gradient(135deg, #1d1d1f 0%, #2d2d2f 100%);
-  border-radius: 24px;
-  padding: 32px;
-  box-shadow: 0 40px 80px rgba(0,0,0,.18), 0 0 0 1px rgba(255,255,255,.06);
-  transform-style: preserve-3d;
-  transition: transform .6s cubic-bezier(.23,1,.32,1);
-  will-change: transform;
-}
-.feat-card-3d:hover {
-  transform: rotateY(-8deg) rotateX(3deg) translateY(-8px);
-  box-shadow: 0 60px 100px rgba(0,0,0,.25);
-}
-
-/* iPhone mockup inside card */
-.phone-mock {
-  background: #000;
-  border-radius: 32px;
-  overflow: hidden;
-  width: 180px;
-  margin: 0 auto;
-  box-shadow: 0 24px 60px rgba(0,0,0,.5);
-  border: 6px solid #1a1a1a;
-}
-.phone-notch { width: 60px; height: 6px; background: #1a1a1a; border-radius: 0 0 10px 10px; margin: 8px auto 0; }
-.phone-screen { background: #f2f2f7; padding: 10px 12px 14px; }
-
-/* Web card */
-.web-card-mock {
-  background: var(--bg3);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0,0,0,.1);
-  border: 1px solid var(--sep);
-}
-.wc-topbar {
-  background: rgba(255,255,255,.9);
-  padding: 10px 14px;
-  display: flex; align-items: center; gap: 6px;
-  border-bottom: 1px solid var(--sep);
-}
-.wc-dot { width: 8px; height: 8px; border-radius: 50%; }
-.wc-url { flex: 1; background: var(--bg2); border-radius: 6px; padding: 4px 10px; font-size: 9px; color: var(--muted); margin-left: 8px; }
-.wc-body { padding: 16px; }
-
-/* ─── PROJECTS GRID ───────────────────────────── */
-#projects { background: var(--bg2); padding: 120px 0; }
-.section-inner { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
-.section-eyebrow {
-  font-size: .72rem; font-weight: 700; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--orange);
-  background: rgba(255,107,53,.08);
-  border: 1px solid rgba(255,107,53,.18);
-  border-radius: 100px;
-  padding: 4px 12px;
-  display: inline-block; margin-bottom: 16px;
-}
-.section-h2 {
-  font-family: var(--font-d);
-  font-size: clamp(2rem, 3.5vw, 3rem);
-  font-weight: 800; letter-spacing: -.04em; margin-bottom: 48px;
-}
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-.pcard {
-  background: var(--surface);
-  border-radius: 20px;
-  padding: 24px;
-  border: 1px solid var(--sep);
-  box-shadow: 0 2px 12px rgba(0,0,0,.05);
-  transition: transform .3s cubic-bezier(.23,1,.32,1), box-shadow .3s;
-  cursor: default;
-}
-.pcard:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 48px rgba(0,0,0,.12);
-}
-.pcard.wide { grid-column: span 2; }
-.pcard-icon {
-  width: 48px; height: 48px;
-  border-radius: 14px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.4rem; margin-bottom: 16px;
-  box-shadow: 0 4px 16px rgba(0,0,0,.12);
-}
-.pcard-tags { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
-.ptag {
-  font-size: .68rem; font-weight: 700;
-  padding: 3px 9px; border-radius: 100px;
-  letter-spacing: .04em; text-transform: uppercase;
-}
-.pcard h3 {
-  font-family: var(--font-d); font-size: 1.05rem; font-weight: 700;
-  letter-spacing: -.02em; margin-bottom: 8px; color: var(--text);
-}
-.pcard p {
-  font-size: .84rem; color: var(--muted); line-height: 1.7; margin-bottom: 16px;
-}
-.pcard-footer {
-  display: flex; align-items: center; justify-content: space-between;
-  border-top: 1px solid var(--sep); padding-top: 12px; margin-top: auto;
-}
-.pcard-tech { display: flex; gap: 6px; flex-wrap: wrap; }
-.tech-tag {
-  font-size: .68rem; background: var(--bg2);
-  border: 1px solid var(--sep); border-radius: 6px;
-  padding: 3px 8px; color: var(--muted); font-weight: 500;
-}
-.pcard-link {
-  font-size: .78rem; font-weight: 600; color: var(--orange);
-  text-decoration: none;
-  display: flex; align-items: center; gap: 4px;
-  transition: gap .15s;
-}
-.pcard-link:hover { gap: 7px; }
-
-/* ─── SKILLS ──────────────────────────────────── */
-#skills { padding: 120px 0; background: var(--bg); }
-.skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 48px; }
-.skill-cat {
-  background: var(--bg2);
-  border: 1px solid var(--sep);
-  border-radius: 20px;
-  padding: 24px;
-  transition: transform .25s, box-shadow .25s;
-}
-.skill-cat:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.08); }
-.skill-cat-icon { font-size: 1.6rem; margin-bottom: 12px; }
-.skill-cat h4 { font-family: var(--font-d); font-size: .9rem; font-weight: 700; margin-bottom: 14px; color: var(--text); }
-.skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-.skill-tag {
-  font-size: .74rem; font-weight: 500;
-  background: #fff; border: 1px solid var(--sep);
-  border-radius: 8px; padding: 4px 10px; color: var(--text2);
-  transition: border-color .15s, color .15s;
-}
-.skill-tag:hover { border-color: var(--orange); color: var(--orange); }
-
-/* ─── CONTACT ─────────────────────────────────── */
-#contact {
-  background: #1d1d1f;
-  padding: 140px 32px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-#contact::before {
-  content: '';
-  position: absolute; top: -40%; left: 50%; transform: translateX(-50%);
-  width: 700px; height: 700px;
-  background: radial-gradient(circle, rgba(255,107,53,.12) 0%, transparent 60%);
-  border-radius: 50%; pointer-events: none;
-}
-.contact-inner { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
-.contact-h2 {
-  font-family: var(--font-d);
-  font-size: clamp(2.4rem, 5vw, 4.5rem);
-  font-weight: 800; letter-spacing: -.04em;
-  color: #fff; line-height: .95; margin-bottom: 20px;
-}
-.contact-h2 .grad2 {
-  background: linear-gradient(135deg, var(--orange), var(--amber));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.contact-sub { font-size: 1rem; color: rgba(255,255,255,.5); line-height: 1.75; margin-bottom: 40px; }
-.contact-links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 48px; }
-.contact-link {
-  display: flex; align-items: center; gap: 12px;
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 14px; padding: 14px 20px;
-  text-decoration: none; color: #fff;
-  transition: background .2s, border-color .2s, transform .2s;
-  font-size: .88rem; font-weight: 500;
-}
-.contact-link:hover { background: rgba(255,255,255,.08); border-color: rgba(255,107,53,.4); transform: translateY(-2px); }
-.contact-link span { font-size: 1.1rem; }
-
-/* ─── ABOUT ───────────────────────────────────── */
-#about { padding: 120px 0; background: var(--bg2); }
-.about-inner {
-  max-width: 1160px; margin: 0 auto; padding: 0 32px;
-  display: grid; grid-template-columns: 400px 1fr;
-  gap: 80px; align-items: start;
-}
-.about-photo-wrap {
-  position: relative;
-}
-.about-photo-wrap img {
-  width: 100%; aspect-ratio: 4/5; object-fit: cover;
-  border-radius: 24px;
-  box-shadow: 0 40px 80px rgba(0,0,0,.14);
-  display: block;
-}
-.about-photo-badge {
-  position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%);
-  background: #fff; border: 1px solid var(--sep2);
-  border-radius: 100px; padding: 10px 20px;
-  display: flex; align-items: center; gap: 8px;
-  font-size: .8rem; font-weight: 600; white-space: nowrap;
-  box-shadow: 0 8px 24px rgba(0,0,0,.08);
-}
-.about-photo-badge .dot { width: 8px; height: 8px; background: #34c759; border-radius: 50%; animation: pulse-dot 2s infinite; }
-.about-content { padding-top: 8px; }
-.about-bio {
-  font-size: 1rem; color: var(--text2); line-height: 1.85;
-  margin-bottom: 18px; font-weight: 400;
-}
-.about-bio strong { color: var(--text); font-weight: 600; }
-.about-bio em { font-style: italic; color: var(--text); }
-.about-facts {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 12px; margin-top: 36px;
-}
-.about-fact {
-  background: var(--surface); border: 1px solid var(--sep);
-  border-radius: 14px; padding: 14px 18px;
-}
-.fact-label { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--orange); margin-bottom: 4px; }
-.fact-value { font-size: .92rem; font-weight: 600; color: var(--text); }
-
-/* ─── FOOTER ──────────────────────────────────── */
-footer {
-  background: #1d1d1f;
-  border-top: 1px solid rgba(255,255,255,.08);
-  padding: 28px 32px;
-  display: flex; justify-content: space-between; align-items: center;
-  font-size: .78rem; color: rgba(255,255,255,.3);
-  flex-wrap: wrap; gap: 10px;
-}
-footer a { color: rgba(255,255,255,.35); text-decoration: none; transition: color .2s; }
-footer a:hover { color: rgba(255,255,255,.7); }
-
-/* ─── ANIMATIONS ──────────────────────────────── */
-@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-.reveal { opacity: 0; transform: translateY(32px); transition: opacity .8s cubic-bezier(.23,1,.32,1), transform .8s cubic-bezier(.23,1,.32,1); }
-.reveal.in { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: .1s; }
-.reveal-delay-2 { transition-delay: .2s; }
-.reveal-delay-3 { transition-delay: .3s; }
-
-/* ─── HAMBURGER ───────────────────────────────── */
-.nav-hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  padding: 6px;
-  background: none;
-  border: none;
-  z-index: 600;
-}
-.nav-hamburger span {
-  display: block;
-  width: 22px;
-  height: 2px;
-  background: var(--text);
-  border-radius: 2px;
-  transition: transform .3s, opacity .3s;
-}
-.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.nav-hamburger.open span:nth-child(2) { opacity: 0; }
-.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-.nav-mobile {
-  display: none;
-  position: fixed;
-  top: 52px; left: 0; right: 0;
-  background: rgba(255,255,255,0.97);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid var(--sep2);
-  padding: 8px 24px 20px;
-  flex-direction: column;
-  z-index: 499;
-  box-shadow: 0 8px 32px rgba(0,0,0,.08);
-}
-.nav-mobile.open { display: flex; }
-.nav-mobile a {
-  font-family: var(--font-b); font-weight: 500; font-size: 1rem;
-  color: var(--text); text-decoration: none;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--sep);
-}
-.nav-mobile a.nav-cta-mobile {
-  margin-top: 12px;
-  background: var(--text); color: #fff !important;
-  padding: 13px 20px;
-  border-radius: 100px;
-  text-align: center;
-  font-weight: 600;
-  border: none;
-}
-
-/* ─── RESPONSIVE ──────────────────────────────── */
-@media (max-width: 768px) {
-  .nav-links { display: none; }
-  .nav-hamburger { display: flex; }
-
-  nav { padding: 0 20px; }
-
-  .hero { padding: 100px 20px 60px; }
-  .hero-inner { max-width: 100%; }
-  .hero-sub { font-size: .95rem; }
-  #hero-canvas { opacity: 0.15; }
-
-  .feature {
-    grid-template-columns: 1fr !important;
-    gap: 32px;
-    padding: 60px 20px;
-  }
-  .feature.reverse { direction: ltr; }
-  .feat-visual { display: none; }
-
-  #projects { padding: 80px 0; }
-  .section-inner { padding: 0 20px; }
-  .section-h2 { margin-bottom: 28px; }
-  .projects-grid { grid-template-columns: 1fr !important; }
-  .pcard.wide { grid-column: span 1 !important; }
-
-  #skills { padding: 80px 0; }
-  .skills-grid { grid-template-columns: 1fr 1fr !important; margin-top: 28px; }
-
-  .about-inner {
-    grid-template-columns: 1fr !important;
-    gap: 48px;
-    padding: 0 20px;
-  }
-  .about-photo-wrap img { max-height: 360px; object-position: top center; }
-  .about-photo-badge { bottom: -12px; font-size: .75rem; padding: 8px 14px; }
-
-  #contact { padding: 80px 20px !important; }
-  #contact > div, .contact-grid { grid-template-columns: 1fr !important; gap: 40px; }
-
-  footer { padding: 24px 20px !important; }
-  footer > div { width: 100%; }
-}
-
-@media (max-width: 480px) {
-  .skills-grid { grid-template-columns: 1fr !important; }
-  .hero-stats { gap: 18px; }
-  .h-stat-n { font-size: 1.6rem; }
-  .hero-actions { flex-direction: column; align-items: center; }
-  .hero-actions a { width: 100%; text-align: center; }
-}
-
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lucas Salvador · iOS &amp; Full-Stack Developer</title>
+<meta name="description" content="Lucas Salvador builds native iOS apps in SwiftUI and full-stack web products with Next.js and Supabase, from the first sketch to the App Store. Based in Lisbon.">
+<meta name="theme-color" content="#F7F5F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1424" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Lucas Salvador · iOS &amp; Full-Stack Developer">
+<meta property="og:description" content="Native iOS and full-stack web, from the first sketch to the App Store. Lisbon, Portugal.">
+<meta property="og:image" content="https://soldergg.github.io/assets/img/solarcalc.jpg">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/vendor/lenis-1.3.26.css">
+<link rel="stylesheet" href="assets/css/site.css">
 </head>
 <body>
+<a class="skip" href="#main" data-i18n="skip">Skip to content</a>
 
-<!-- NAV -->
-<nav id="nav">
-  <div class="logo">
-    <img src="logo.png" alt="LT" style="width:28px;height:28px;object-fit:contain;flex-shrink:0;">
-    Lucas Salvador
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 9.5h17M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" fill="currentColor"/></symbol>
+  <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 19.5c0-3.4 2.7-5.4 6-5.4s6 2 6 5.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16.5" cy="9" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M16.5 14c2.6 0 4.5 1.6 4.5 4.3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 21V3.5M6 4h11l-2.5 4L17 12H6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2" fill="currentColor"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 16 16"><path d="M4.5 11.5l7-7M5.5 4.5h6v6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header class="nav" id="nav">
+  <nav class="wrap nav-in" aria-label="Main">
+    <a class="brand" href="index.html">Lucas Salvador</a>
+    <div class="nav-links" id="navLinks">
+      <a href="work.html" data-i18n="nav.work">Work</a>
+      <a href="#about" data-i18n="nav.about">About</a>
+      <a href="#contact" data-contact data-i18n="nav.contact">Contact</a>
+    </div>
+    <div class="nav-end">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="pt" aria-pressed="false">PT</button>
+      </div>
+      <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="navLinks" aria-label="Open menu" data-i18n-label="menu.open"><span></span><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+<section class="hero wrap" id="top">
+  <div class="hero-copy">
+    <p class="mono kicker" data-i18n="hero.kicker">// ios · full-stack · lisbon, pt</p>
+    <h1 data-i18n="hero.h1" data-reveal="words">I build apps people <em>open every day.</em></h1>
+    <p class="lede" data-i18n="hero.lede">Native iOS in SwiftUI and full-stack web with Next.js and Supabase. I take products from the first sketch to the App Store and production.</p>
+    <div class="cta">
+      <a class="btn" href="#work" data-i18n="hero.cta1">See the work</a>
+      <a class="btn ghost" href="#contact" data-contact data-i18n="hero.cta2">Get in touch</a>
+    </div>
   </div>
-  <ul class="nav-links">
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#contact" class="nav-cta">Hire me</a></li>
+  <div class="hero-side">
+    <section class="show" aria-roledescription="carousel" aria-label="Lucas and his apps" data-i18n-label="show.label">
+      <div class="show-slides">
+        <a class="show-slide on" href="index.html#about" data-i="0" aria-hidden="false" tabindex="0">
+          <div class="show-media show-me"><img src="assets/img/lucas-sunset.jpg" srcset="assets/img/lucas-sunset.jpg 1050w, assets/img/lucas-sunset-2400.jpg 1800w" sizes="(max-width: 899px) 100vw, 490px" width="1800" height="2400" alt="Lucas Salvador on a terrace, looking at the mountains at sunset" data-i18n-alt="show.me.alt" decoding="async" style="object-position:50% 62%"><div class="show-me-copy"><p class="mono">lisbon · 2026</p><p class="show-me-h" data-i18n="show.me.h">Hi, I’m Lucas. I design and build apps, from the first sketch to the App Store.</p></div></div>
+          <span class="show-cap"><img class="app-icon sm" src="assets/img/logos/lt.png" width="36" height="36" alt=""><span><b>Lucas Salvador</b><span class="mono" data-i18n="show.me">developer, lisbon</span></span></span>
+        </a>
+        <a class="show-slide" href="lunar.html" data-i="1" aria-hidden="true" tabindex="-1">
+          <div class="show-media"><img src="assets/img/lunar.jpg" srcset="assets/img/lunar.jpg 1600w, assets/img/lunar-2880.jpg 2880w" sizes="(max-width: 1240px) 100vw, 1160px" width="2880" height="1800" alt="" style="object-position:100% 50%" decoding="async"></div>
+          <span class="show-cap"><img class="app-icon sm" src="assets/img/logos/lunar.png" width="36" height="36" alt=""><span><b>Lunar</b><span class="mono" data-i18n="show.lunar">school assistant · ios, web</span></span></span>
+        </a>
+        <a class="show-slide" href="solarcalc.html" data-i="2" aria-hidden="true" tabindex="-1">
+          <div class="show-media"><img src="assets/img/solarcalc.jpg" srcset="assets/img/solarcalc.jpg 1600w, assets/img/solarcalc-2880.jpg 2880w" sizes="(max-width: 1240px) 100vw, 1160px" width="2880" height="1800" alt="" style="object-position:72% 55%" decoding="async"></div>
+          <span class="show-cap"><img class="app-icon sm" src="assets/img/logos/solarcalc.svg" width="36" height="36" alt=""><span><b>SolarCalc</b><span class="mono" data-i18n="show.solar">solar savings · web</span></span></span>
+        </a>
+        <a class="show-slide" href="teeup.html" data-i="3" aria-hidden="true" tabindex="-1">
+          <div class="show-media"><div class="show-tee"><div class="tu-phone tu-a">
+        <div class="tu-scr">
+          <div class="tu-bar"><b>9:41</b></div>
+          <p class="tu-small">Ronda · 18 buracos</p>
+          <p class="tu-title">Oitavos Dunes</p>
+          <div class="tu-hole">
+            <span class="tu-k">Buraco 7 · Par 4 · 362 m</span>
+            <span class="tu-score">5</span>
+            <span class="tu-sub">+1 · 2 putts · fairway ✓</span>
+          </div>
+          <div class="tu-card">
+            <div class="tu-row h"><span>B</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
+            <div class="tu-row"><span>Par</span><span>4</span><span>3</span><span>5</span><span>4</span><span>4</span><span>3</span><span>4</span></div>
+            <div class="tu-row s"><span>Tu</span><span>4</span><span>3</span><span class="b">6</span><span>4</span><span class="g">3</span><span>3</span><span class="b">5</span></div>
+          </div>
+          <div class="tu-tot"><span>Total</span><b>28 · +1</b></div>
+          <div class="tu-tabs"><span class="on"><svg><use href="#i-flag"/></svg>Ronda</span><span><svg><use href="#i-map"/></svg>Campos</span><span><svg><use href="#i-chart"/></svg>Stats</span><span><svg><use href="#i-people"/></svg>Amigos</span></div>
+        </div>
+      </div>
+      <div class="tu-phone tu-b">
+        <div class="tu-scr">
+          <div class="tu-bar"><b>9:41</b></div>
+          <p class="tu-small">World Handicap System</p>
+          <p class="tu-title">Handicap</p>
+          <div class="tu-hcp"><b>14,2</b><span>−0,6 este mês</span></div>
+          <div class="tu-bars"><i style="--v:62%"></i><i style="--v:58%"></i><i style="--v:66%"></i><i style="--v:55%"></i><i style="--v:51%"></i><i style="--v:54%"></i><i style="--v:47%"></i><i style="--v:45%"></i></div>
+          <div class="tu-list">
+            <div><span>Melhores 8 de 20</span><b>13,9</b></div>
+            <div><span>Última ronda</span><b>82</b></div>
+            <div><span>Greens em regulamento</span><b>38%</b></div>
+          </div>
+          <div class="tu-tabs"><span><svg><use href="#i-flag"/></svg>Ronda</span><span><svg><use href="#i-map"/></svg>Campos</span><span class="on"><svg><use href="#i-chart"/></svg>Stats</span><span><svg><use href="#i-people"/></svg>Amigos</span></div>
+        </div>
+      </div></div></div>
+          <span class="show-cap"><img class="app-icon sm" src="assets/img/logos/teeup.png" width="36" height="36" alt=""><span><b>TeeUp</b><span class="mono" data-i18n="show.teeup">golf companion · ios</span></span></span>
+        </a>
+        <a class="show-slide" href="podcast-helper.html" data-i="4" aria-hidden="true" tabindex="-1">
+          <div class="show-media"><img src="assets/img/podcast-room.webp" width="1800" height="1125" alt="" style="object-position:30% 50%"></div>
+          <span class="show-cap"><img class="app-icon sm" src="assets/img/logos/podcasthelper.png" width="36" height="36" alt=""><span><b>Podcast Helper</b><span class="mono" data-i18n="show.pod">remote studio · web, android</span></span></span>
+        </a>
+      </div>
+      <div class="show-ui">
+        <div class="show-dots" role="tablist" aria-label="Choose a slide" data-i18n-label="show.choose">
+          <button type="button" role="tab" aria-selected="true" aria-label="Lucas Salvador"><i></i></button>
+          <button type="button" role="tab" aria-selected="false" aria-label="Lunar"><i></i></button>
+          <button type="button" role="tab" aria-selected="false" aria-label="SolarCalc"><i></i></button>
+          <button type="button" role="tab" aria-selected="false" aria-label="TeeUp"><i></i></button>
+          <button type="button" role="tab" aria-selected="false" aria-label="Podcast Helper"><i></i></button>
+        </div>
+        <button type="button" class="show-pause" aria-pressed="false" aria-label="Pause slideshow" data-i18n-label="show.pause"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="ico-pause" d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="ico-play" d="M5 3.2v9.6L12.5 8z" fill="currentColor"/></svg></button>
+      </div>
+    </section>
+  <dl class="facts">
+    <div><dt data-i18n="facts.now">Shipping now</dt><dd>Lunar, iOS + web</dd></div>
+    <div><dt data-i18n="facts.store">On the App Store</dt><dd>KebabLocator</dd></div>
+    <div><dt data-i18n="facts.stack">Stack</dt><dd class="mono">swift · next.js · supabase</dd></div>
+    <div><dt data-i18n="facts.status">Status</dt><dd><i class="dot" aria-hidden="true"></i><span data-i18n="facts.open">Open to projects</span></dd></div>
+  </dl>
+  </div>
+</section>
+
+<!-- Lunar: the same scroll story as lunar-escola.vercel.app -->
+<section class="lunar" id="work" aria-labelledby="lunar-h">
+  <div class="wrap story">
+    <div class="story-copy">
+      <header class="st-intro">
+        <div class="app-id"><img class="app-icon" src="assets/img/logos/lunar.png" width="56" height="56" alt=""><p class="mono kicker">lunar · ios, web, android · 2026</p></div>
+        <h2 id="lunar-h" data-i18n="lunar.h" data-reveal="words">Lunar, the school assistant.</h2>
+        <p class="lede" data-i18n="lunar.p">A student's whole school year in one app: today's classes, the timetable, tests and grades, and an assistant that explains and acts. Built solo for iPhone, web and Android on one Supabase backend.</p>
+        <div class="links">
+          <a class="btn" href="lunar.html" data-i18n="cs.read">Read the case study</a>
+          <a class="link" href="https://lunar-escola.vercel.app" target="_blank" rel="noopener"><span data-i18n="lunar.link">Open lunar-escola.vercel.app</span> <svg class="ic"><use href="#i-arrow"/></svg></a>
+        </div>
+      </header>
+      <ol class="chapters">
+        <li class="ch is-on" data-i="0">
+          <p class="mono ch-n">01 · <span data-i18n="ch0.k">today</span></p>
+          <h3 data-i18n="ch0.h">Knows which class is next.</h3>
+          <p data-i18n="ch0.p">The Today screen follows the day: the class happening now, the next one, tests and homework coming up, and the study plan for the evening.</p>
+        </li>
+        <li class="ch" data-i="1">
+          <p class="mono ch-n">02 · <span data-i18n="ch1.k">timetable</span></p>
+          <h3 data-i18n="ch1.h">The timetable, read from a photo.</h3>
+          <p data-i18n="ch1.p">Take a picture of the printed timetable. Lunar reads every slot and asks only about the one it cannot read.</p>
+        </li>
+        <li class="ch" data-i="2">
+          <p class="mono ch-n">03 · <span data-i18n="ch2.k">tests</span></p>
+          <h3 data-i18n="ch2.h">A study plan for every test.</h3>
+          <p data-i18n="ch2.p">Each test gets short sessions spread over the days before it, with a reminder the evening before.</p>
+        </li>
+        <li class="ch" data-i="3">
+          <p class="mono ch-n">04 · <span data-i18n="ch3.k">assistant</span></p>
+          <h3 data-i18n="ch3.h">Explains, then hands it back.</h3>
+          <p data-i18n="ch3.p">The assistant solves an exercise from a photo step by step, then gives the student a similar one to try alone.</p>
+        </li>
+      </ol>
+    </div>
+
+    <div class="stage" aria-hidden="true">
+      <div class="dev-wrap">
+        <div class="dev-scale">
+          <div class="dev" id="dev">
+            <i class="dev-layer" style="--k:1"></i><i class="dev-layer" style="--k:2"></i><i class="dev-layer" style="--k:3"></i><i class="dev-layer" style="--k:4"></i>
+            <i class="dev-layer" style="--k:5"></i><i class="dev-layer" style="--k:6"></i><i class="dev-layer" style="--k:7"></i><i class="dev-layer" style="--k:8"></i>
+            <div class="dev-face">
+              <div class="dev-screen">
+                <i class="ph-island"></i>
+
+                <div class="scr on" data-i="0">
+                  <div class="ph-status"><b>08:21</b><span class="ph-sys"><i></i><i></i><i></i><i></i><u></u></span></div>
+                  <div class="ph-body">
+                    <div class="ph-top"><span class="ph-modes"><b>Escola</b><span>Futuro</span></span><span class="ph-av">T</span></div>
+                    <div class="ph-date">Terça, 6 de outubro</div>
+                    <div class="ph-title">Hoje</div>
+                    <div class="ph-now">
+                      <div class="ph-k">Agora · até 09:55</div>
+                      <div class="ph-big">Português</div>
+                      <div class="ph-s">Sala A3 · faltam 1 h 34</div>
+                      <div class="ph-meter"><i style="width:6%"></i></div>
+                      <div class="ph-next">A seguir: <b>Matemática A</b> às 10:10, na B12</div>
+                    </div>
+                    <div class="ph-group">
+                      <div class="ph-row"><div><b>Teste de Matemática A</b><span>Trigonometria, na sexta</span></div><span class="ph-pill red">3 dias</span></div>
+                      <div class="ph-row"><div><b>TPC de Filosofia</b><span>Página 84, para amanhã</span></div><span class="ph-pill">TPC</span></div>
+                      <div class="ph-row"><div><b>Levar amanhã</b><span>Calculadora gráfica e atlas</span></div><span class="ph-pill amber">material</span></div>
+                    </div>
+                    <div class="ph-h">Estudo de hoje</div>
+                    <div class="ph-group">
+                      <div class="ph-row"><div><b>Matemática A, 17:00 às 17:45</b><span>Círculo trigonométrico</span></div><span class="ph-pill blue">plano</span></div>
+                      <div class="ph-row"><div><b>Faltas a Educação Física</b><span>2 de 4 injustificadas</span></div><span class="ph-pill amber">metade</span></div>
+                    </div>
+                  </div>
+                  <div class="ph-tabs"><span class="on"><svg><use href="#i-sun"/></svg>Hoje</span><span><svg><use href="#i-cal"/></svg>Horário</span><span><svg><use href="#i-book"/></svg>Testes</span><span><svg><use href="#i-spark"/></svg>Assistente</span><span><svg><use href="#i-people"/></svg>Colegas</span></div>
+                </div>
+
+                <div class="scr" data-i="1">
+                  <div class="ph-status"><b>10:42</b><span class="ph-sys"><i></i><i></i><i></i><i></i><u></u></span></div>
+                  <div class="ph-body">
+                    <div class="ph-date">Lido da foto, 11.º C</div>
+                    <div class="ph-title">Horário</div>
+                    <div class="ph-tt">
+                      <span></span><b>Seg</b><b>Ter</b><b>Qua</b><b>Qui</b><b>Sex</b>
+                      <time>08:15</time><i>Port.<small>A3</small></i><i>Port.<small>A3</small></i><i>Econ.<small>C2</small></i><i>Inglês<small>A1</small></i><i>Mat. A<small>B12</small></i>
+                      <time>10:10</time><i>Econ.<small>C2</small></i><i>Mat. A<small>B12</small></i><i>Filos.<small>B4</small></i><i class="q">Mat. A<small>B12?</small></i><i>Econ.<small>C2</small></i>
+                      <time>12:00</time><i>Geo.<small>C5</small></i><i>Inglês<small>A1</small></i><i>Mat. A<small>B12</small></i><i>Filos.<small>B4</small></i><i>Port.<small>A3</small></i>
+                      <time>14:00</time><span></span><i>Ed. Fís.<small>Pav.</small></i><i>Geo.<small>C5</small></i><span></span><span></span>
+                    </div>
+                    <div class="ph-note">Uma aula por confirmar: a sala da Matemática A de quinta não se lê bem na foto.</div>
+                    <div class="ph-group">
+                      <div class="ph-row"><div><b>Horas dos tempos</b><span>Das 08:15 às 15:40, com os intervalos</span></div></div>
+                      <div class="ph-row"><div><b>7 disciplinas</b><span>Português, Inglês, Filosofia, Mat. A, Econ. A, Geo. A, Ed. Física</span></div></div>
+                    </div>
+                    <div class="ph-btn">Guardar o horário</div>
+                  </div>
+                  <div class="ph-tabs"><span><svg><use href="#i-sun"/></svg>Hoje</span><span class="on"><svg><use href="#i-cal"/></svg>Horário</span><span><svg><use href="#i-book"/></svg>Testes</span><span><svg><use href="#i-spark"/></svg>Assistente</span><span><svg><use href="#i-people"/></svg>Colegas</span></div>
+                </div>
+
+                <div class="scr" data-i="2">
+                  <div class="ph-status"><b>16:32</b><span class="ph-sys"><i></i><i></i><i></i><i></i><u></u></span></div>
+                  <div class="ph-body">
+                    <div class="ph-title">Testes e notas</div>
+                    <div class="ph-card">
+                      <div class="ph-k">Sexta, 9 de outubro</div>
+                      <div class="ph-big">Matemática A</div>
+                      <div class="ph-s">Trigonometria: círculo trigonométrico e equações</div>
+                      <span class="ph-pill red ph-corner">3 dias</span>
+                    </div>
+                    <div class="ph-h">Plano de estudo</div>
+                    <div class="ph-group">
+                      <div class="ph-row"><div><b>Hoje, 17:00 às 17:45</b><span>Círculo trigonométrico</span></div><span class="ph-check">✓</span></div>
+                      <div class="ph-row"><div><b>Quarta, 17:00 às 17:45</b><span>Equações do tipo sen x = a</span></div></div>
+                      <div class="ph-row"><div><b>Quinta, 17:00 às 17:30</b><span>Ficha de revisão do manual</span></div></div>
+                    </div>
+                    <div class="ph-note">Lembrete na véspera, às 20:00.</div>
+                    <div class="ph-h">A seguir</div>
+                    <div class="ph-group">
+                      <div class="ph-row"><div><b>Economia A</b><span>Quarta, 14 de outubro</span></div><span class="ph-pill">8 dias</span></div>
+                      <div class="ph-row"><div><b>Português</b><span>Segunda, 19 de outubro</span></div><span class="ph-pill">13 dias</span></div>
+                    </div>
+                  </div>
+                  <div class="ph-tabs"><span><svg><use href="#i-sun"/></svg>Hoje</span><span><svg><use href="#i-cal"/></svg>Horário</span><span class="on"><svg><use href="#i-book"/></svg>Testes</span><span><svg><use href="#i-spark"/></svg>Assistente</span><span><svg><use href="#i-people"/></svg>Colegas</span></div>
+                </div>
+
+                <div class="scr" data-i="3">
+                  <div class="ph-status"><b>19:08</b><span class="ph-sys"><i></i><i></i><i></i><i></i><u></u></span></div>
+                  <div class="ph-body">
+                    <div class="ph-title">Assistente</div>
+                    <div class="ph-q"><span>Da tua foto</span>Resolve a equação 2 sen x = 1 no intervalo [0, 2π].</div>
+                    <ol class="ph-steps">
+                      <li>Isola o seno: <b>sen x = 1/2</b>.</li>
+                      <li>No círculo trigonométrico, o seno vale 1/2 em <b>π/6</b> e em <b>π − π/6</b>.</li>
+                      <li>Em [0, 2π] não há mais ângulos com esse seno.</li>
+                    </ol>
+                    <div class="ph-card ph-result">Solução: <b>x = π/6</b> ou <b>x = 5π/6</b>.<span>Agora tu: resolve 2 cos x = √3 no mesmo intervalo.</span></div>
+                    <div class="ph-input">Pergunta outra coisa</div>
+                  </div>
+                  <div class="ph-tabs"><span><svg><use href="#i-sun"/></svg>Hoje</span><span><svg><use href="#i-cal"/></svg>Horário</span><span><svg><use href="#i-book"/></svg>Testes</span><span class="on"><svg><use href="#i-spark"/></svg>Assistente</span><span><svg><use href="#i-people"/></svg>Colegas</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <i class="dev-shadow"></i>
+      </div>
+      <div class="st-dots"><i class="on"></i><i></i><i></i><i></i></div>
+    </div>
+  </div>
+</section>
+
+<section class="featured wrap" aria-label="Featured projects" data-i18n-label="featured.label">
+  <article class="feat">
+    <a class="feat-media" href="solarcalc.html" tabindex="-1" aria-hidden="true" data-reveal="shutter">
+      <img src="assets/img/solarcalc.jpg" srcset="assets/img/solarcalc.jpg 1600w, assets/img/solarcalc-2880.jpg 2880w" sizes="(max-width: 899px) 100vw, 680px" width="2880" height="1800" loading="lazy" decoding="async" alt="">
+    </a>
+    <div class="feat-copy">
+      <div class="app-id"><img class="app-icon" src="assets/img/logos/solarcalc.svg" width="56" height="56" alt=""><p class="mono kicker">solarcalc · web · next.js, three.js</p></div>
+      <h2 data-i18n="solar.h" data-reveal="words">Solar savings for a Portuguese roof, in two minutes.</h2>
+      <p data-i18n="solar.p">PVGIS irradiance data from the European Commission and real Portuguese tariffs feed a payback simulation, introduced by a 3D house you walk around.</p>
+      <div class="links"><a class="btn" href="solarcalc.html" data-i18n="cs.read">Read the case study</a><a class="link" href="https://solarcalc-livid.vercel.app" target="_blank" rel="noopener"><span data-i18n="solar.link">Visit SolarCalc</span> <svg class="ic"><use href="#i-arrow"/></svg></a></div>
+    </div>
+  </article>
+
+  <article class="feat flip">
+    <a class="feat-media teeup" href="teeup.html" tabindex="-1" aria-hidden="true" data-reveal="shutter">
+      <div class="tu-phone tu-a">
+        <div class="tu-scr">
+          <div class="tu-bar"><b>9:41</b></div>
+          <p class="tu-small">Ronda · 18 buracos</p>
+          <p class="tu-title">Oitavos Dunes</p>
+          <div class="tu-hole">
+            <span class="tu-k">Buraco 7 · Par 4 · 362 m</span>
+            <span class="tu-score">5</span>
+            <span class="tu-sub">+1 · 2 putts · fairway ✓</span>
+          </div>
+          <div class="tu-card">
+            <div class="tu-row h"><span>B</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
+            <div class="tu-row"><span>Par</span><span>4</span><span>3</span><span>5</span><span>4</span><span>4</span><span>3</span><span>4</span></div>
+            <div class="tu-row s"><span>Tu</span><span>4</span><span>3</span><span class="b">6</span><span>4</span><span class="g">3</span><span>3</span><span class="b">5</span></div>
+          </div>
+          <div class="tu-tot"><span>Total</span><b>28 · +1</b></div>
+          <div class="tu-tabs"><span class="on"><svg><use href="#i-flag"/></svg>Ronda</span><span><svg><use href="#i-map"/></svg>Campos</span><span><svg><use href="#i-chart"/></svg>Stats</span><span><svg><use href="#i-people"/></svg>Amigos</span></div>
+        </div>
+      </div>
+      <div class="tu-phone tu-b">
+        <div class="tu-scr">
+          <div class="tu-bar"><b>9:41</b></div>
+          <p class="tu-small">World Handicap System</p>
+          <p class="tu-title">Handicap</p>
+          <div class="tu-hcp"><b>14,2</b><span>−0,6 este mês</span></div>
+          <div class="tu-bars"><i style="--v:62%"></i><i style="--v:58%"></i><i style="--v:66%"></i><i style="--v:55%"></i><i style="--v:51%"></i><i style="--v:54%"></i><i style="--v:47%"></i><i style="--v:45%"></i></div>
+          <div class="tu-list">
+            <div><span>Melhores 8 de 20</span><b>13,9</b></div>
+            <div><span>Última ronda</span><b>82</b></div>
+            <div><span>Greens em regulamento</span><b>38%</b></div>
+          </div>
+          <div class="tu-tabs"><span><svg><use href="#i-flag"/></svg>Ronda</span><span><svg><use href="#i-map"/></svg>Campos</span><span class="on"><svg><use href="#i-chart"/></svg>Stats</span><span><svg><use href="#i-people"/></svg>Amigos</span></div>
+        </div>
+      </div>
+    </a>
+    <div class="feat-copy">
+      <div class="app-id"><img class="app-icon" src="assets/img/logos/teeup.png" width="56" height="56" alt=""><p class="mono kicker">teeup · ios · swiftui, mapkit, weatherkit</p></div>
+      <h2 data-i18n="teeup.h" data-reveal="words">A golf companion built around Portuguese courses.</h2>
+      <p data-i18n="teeup.p">Hole-by-hole scorecards, the World Handicap System, course discovery and rounds with friends. It works offline on the course and syncs when you are back in range.</p>
+      <div class="links"><a class="btn" href="teeup.html" data-i18n="cs.read">Read the case study</a><a class="link" href="https://github.com/SoldergG/TeeUp" target="_blank" rel="noopener"><span data-i18n="teeup.link">Read the code on GitHub</span> <svg class="ic"><use href="#i-arrow"/></svg></a></div>
+    </div>
+  </article>
+
+  <article class="feat">
+    <a class="feat-media" href="podcast-helper.html" tabindex="-1" aria-hidden="true" data-reveal="shutter">
+      <img src="assets/img/podcasthelper.jpg" srcset="assets/img/podcasthelper.jpg 1600w, assets/img/podcasthelper-2880.jpg 2880w" sizes="(max-width: 899px) 100vw, 680px" width="2880" height="1800" loading="lazy" decoding="async" alt="">
+    </a>
+    <div class="feat-copy">
+      <div class="app-id"><img class="app-icon" src="assets/img/logos/podcasthelper.png" width="56" height="56" alt=""><p class="mono kicker">podcast helper · web, android · webrtc</p></div>
+      <h2 data-i18n="pod.h" data-reveal="words">A remote podcast studio that records every voice on its own device.</h2>
+      <p data-i18n="pod.p">Guests join from a link and talk peer to peer. Each microphone and camera is recorded locally in sync, so a bad connection never ruins the take.</p>
+      <div class="links"><a class="btn" href="podcast-helper.html" data-i18n="cs.read">Read the case study</a><a class="link" href="https://podcasthelper.vercel.app" target="_blank" rel="noopener"><span data-i18n="pod.link">Visit Podcast Helper</span> <svg class="ic"><use href="#i-arrow"/></svg></a></div>
+    </div>
+  </article>
+</section>
+
+<section class="more wrap" aria-labelledby="more-h">
+  <div class="more-head">
+    <h2 id="more-h" data-i18n="more.h" data-reveal="words">More work</h2>
+    <a class="link" href="work.html"><span data-i18n="more.all">See all the work</span> <svg class="ic"><use href="#i-arrow"/></svg></a>
+  </div>
+  <ul class="rows" data-reveal="stagger">
+    <li><a href="https://apps.apple.com/us/app/kebablocator/id6761265002" target="_blank" rel="noopener"><span class="row-id"><img class="app-icon sm" src="assets/img/logos/kebablocator.png" width="36" height="36" alt="" loading="lazy"><b>KebabLocator</b></span><span data-i18n="m.kebab">Find the best kebab near you. Live on the App Store.</span><span class="mono">swiftui · mapkit</span><svg class="ic"><use href="#i-arrow"/></svg></a></li>
+    <li><a href="https://github.com/SoldergG/GroupMemo" target="_blank" rel="noopener"><span class="row-id"><img class="app-icon sm" src="assets/img/logos/groupmemo.png" width="36" height="36" alt="" loading="lazy"><b>GroupMemo</b></span><span data-i18n="m.memo">Shared memories, a bucket list and a live map for friend groups.</span><span class="mono">swiftui · supabase</span><svg class="ic"><use href="#i-arrow"/></svg></a></li>
+    <li><a href="https://github.com/SoldergG" target="_blank" rel="noopener"><span class="row-id"><img class="app-icon sm" src="assets/img/logos/sgo.png" width="36" height="36" alt="" loading="lazy"><b>SGO SalvaMais</b></span><span data-i18n="m.sgo">An emergency safety workflow app, in TestFlight with real users.</span><span class="mono">swiftui · xcode cloud</span><svg class="ic"><use href="#i-arrow"/></svg></a></li>
+    <li><a href="https://github.com/SoldergG/procura-escola" target="_blank" rel="noopener"><span class="row-id"><i class="app-icon sm tile" aria-hidden="true">PE</i><b>Procura Escola</b></span><span data-i18n="m.escola">Compare Portuguese university courses and their entry grades.</span><span class="mono">next.js</span><svg class="ic"><use href="#i-arrow"/></svg></a></li>
+    <li><a href="https://github.com/SoldergG/schema-visualizer" target="_blank" rel="noopener"><span class="row-id"><i class="app-icon sm tile" aria-hidden="true">SV</i><b>Schema Visualizer</b></span><span data-i18n="m.schema">Paste SQL and get an interactive entity diagram.</span><span class="mono">next.js · react flow</span><svg class="ic"><use href="#i-arrow"/></svg></a></li>
+    <li><a href="https://github.com/SoldergG/swiftui-gallery" target="_blank" rel="noopener"><span class="row-id"><i class="app-icon sm tile" aria-hidden="true">SG</i><b>SwiftUI Gallery</b></span><span data-i18n="m.gallery">35 SwiftUI components with live code previews.</span><span class="mono">next.js · prism</span><svg class="ic"><use href="#i-arrow"/></svg></a></li>
+    <li><a href="https://github.com/SoldergG/ai-chat-swift" target="_blank" rel="noopener"><span class="row-id"><i class="app-icon sm tile" aria-hidden="true">AI</i><b>AI Chat Swift</b></span><span data-i18n="m.chat">A native chat client with streaming Claude replies.</span><span class="mono">swiftui · claude api</span><svg class="ic"><use href="#i-arrow"/></svg></a></li>
+    <li><a href="https://github.com/SoldergG/expense-tracker" target="_blank" rel="noopener"><span class="row-id"><i class="app-icon sm tile" aria-hidden="true">ET</i><b>Expense Tracker</b></span><span data-i18n="m.expense">Spending analytics with real-time sync.</span><span class="mono">next.js · recharts</span><svg class="ic"><use href="#i-arrow"/></svg></a></li>
   </ul>
-  <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
+</section>
 
-<!-- MOBILE MENU -->
-<div class="nav-mobile" id="nav-mobile">
-  <a href="#projects" class="nav-mobile-link">Projects</a>
-  <a href="#skills" class="nav-mobile-link">Skills</a>
-  <a href="#about" class="nav-mobile-link">About</a>
-  <a href="#contact" class="nav-mobile-link">Contact</a>
-  <a href="#contact" class="nav-cta-mobile">Hire me</a>
-</div>
-
-<!-- HERO -->
-<section class="hero" id="home">
-  <canvas id="hero-canvas"></canvas>
-  <div class="hero-inner">
-    <div class="hero-eyebrow"><div class="status-dot"></div>Available for projects &amp; collaborations · Lisbon, Portugal</div>
-    <h1 class="hero-h1">
-      iOS &amp; Full-Stack<br>
-      <span class="muted">Developer</span><span class="grad">.</span>
-    </h1>
-    <p class="hero-sub">
-      Building beautiful native Swift apps and full-stack web products with Next.js &amp; Supabase.
-      From concept to App Store — made in Portugal.
-    </p>
-    <div class="hero-actions">
-      <a href="#projects" class="btn-primary">View Projects →</a>
-      <a href="#contact" class="btn-ghost">Get in touch</a>
-    </div>
-    <div class="hero-stats">
-      <div><div class="h-stat-n">5+</div><div class="h-stat-l">iOS Apps</div></div>
-      <div class="stat-sep"></div>
-      <div><div class="h-stat-n">13+</div><div class="h-stat-l">Projects</div></div>
-      <div class="stat-sep"></div>
-      <div><div class="h-stat-n">PT</div><div class="h-stat-l">Lisbon</div></div>
+<section class="about" id="about" aria-labelledby="about-h">
+  <div class="wrap about-in">
+    <figure class="portrait"><img src="assets/img/lucas.jpg" width="750" height="1000" loading="lazy" alt="Portrait of Lucas Salvador" data-i18n-alt="about.alt"></figure>
+    <div class="about-copy">
+      <h2 id="about-h" data-i18n="about.h" data-reveal="words">A developer in Lisbon who learns by shipping.</h2>
+      <p data-i18n="about.p1">I started with iOS and grew into full-stack web. Every project here began with a problem I or someone close to me actually had, from finding a good kebab to getting through the school year.</p>
+      <p data-i18n="about.p2">Away from the editor I play golf, train at the gym and cook. TeeUp and KebabLocator are not a coincidence.</p>
+      <dl class="specs" data-reveal="stagger">
+        <div><dt class="mono" data-i18n="spec.focus">focus</dt><dd data-i18n="spec.focusv">iOS and full-stack web</dd></div>
+        <div><dt class="mono" data-i18n="spec.lang">languages</dt><dd data-i18n="spec.langv">Portuguese, English, Spanish</dd></div>
+        <div><dt class="mono">ios</dt><dd>Swift, SwiftUI, MapKit, WidgetKit</dd></div>
+        <div><dt class="mono">web</dt><dd>Next.js, TypeScript, Supabase</dd></div>
+      </dl>
     </div>
   </div>
 </section>
 
-<!-- BAND -->
-<div class="band">
-  <div class="band-track" id="band-track">
-    <div class="band-item"><strong>SwiftUI</strong> iOS Development</div>
-    <div class="band-item"><strong>Next.js 15</strong> Full-Stack Web</div>
-    <div class="band-item"><strong>Three.js</strong> 3D Web</div>
-    <div class="band-item"><strong>Supabase</strong> Backend</div>
-    <div class="band-item"><strong>React</strong> Web Apps</div>
-    <div class="band-item"><strong>Claude API</strong> AI Integration</div>
-    <div class="band-item"><strong>MapKit</strong> Location</div>
-    <div class="band-item"><strong>TypeScript</strong> Type-safe Code</div>
-    <div class="band-item"><strong>SwiftUI</strong> iOS Development</div>
-    <div class="band-item"><strong>Next.js 15</strong> Full-Stack Web</div>
-    <div class="band-item"><strong>Three.js</strong> 3D Web</div>
-    <div class="band-item"><strong>Supabase</strong> Backend</div>
-    <div class="band-item"><strong>React</strong> Web Apps</div>
-    <div class="band-item"><strong>Claude API</strong> AI Integration</div>
-    <div class="band-item"><strong>MapKit</strong> Location</div>
-    <div class="band-item"><strong>TypeScript</strong> Type-safe Code</div>
-  </div>
-</div>
-
-<!-- FEATURE: TeeUp -->
-<div style="max-width:1160px;margin:0 auto">
-  <div class="feature reveal">
-    <div>
-      <span class="feat-label">iOS App</span>
-      <h2 class="feat-h2">Golf companion<br>built for Portugal.</h2>
-      <p class="feat-desc">TeeUp combines real-time score tracking, WHS handicap, Google Places course discovery, and a full social layer — 100% SwiftUI, offline-first.</p>
-      <div class="feat-links">
-        <a href="https://github.com/SoldergG/TeeUp" class="btn-primary" style="font-size:.85rem;padding:11px 22px" target="_blank">GitHub →</a>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
-          <span class="tech-tag">SwiftUI</span><span class="tech-tag">Supabase</span><span class="tech-tag">MapKit</span><span class="tech-tag">WeatherKit</span>
-        </div>
-      </div>
+<section class="contact" id="contact" aria-labelledby="contact-h">
+  <div class="wrap contact-in">
+    <h2 id="contact-h" data-i18n="contact.h" data-reveal="words">Have an app in mind? <em>Let's talk.</em></h2>
+    <div class="cta" data-reveal="up">
+      <a class="btn light" href="mailto:Lucs2.8@icloud.com" data-contact data-i18n="contact.write">Write to me</a>
+      <a class="btn ghost-light" href="tel:+351933258349">+351 933 258 349</a>
+      <a class="btn ghost-light" href="https://github.com/SoldergG" target="_blank" rel="noopener">GitHub <svg class="ic"><use href="#i-arrow"/></svg></a>
+      <a class="btn ghost-light" href="https://instagram.com/Lucs2.8" target="_blank" rel="noopener">Instagram <svg class="ic"><use href="#i-arrow"/></svg></a>
     </div>
-    <div class="feat-visual">
-      <div class="feat-card-3d" id="teeup-card">
-        <div style="text-align:center;padding:8px 0 16px">
-          <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">TeeUp</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.25)">Golf Companion</div>
-        </div>
-        <div class="phone-mock">
-          <div class="phone-notch"></div>
-          <div class="phone-screen">
-            <!-- mini score screen -->
-            <div style="background:linear-gradient(135deg,#1B4D2E,#0F2E1A);border-radius:10px;padding:8px;margin-bottom:8px">
-              <div style="display:flex;justify-content:space-around;align-items:center">
-                <div style="text-align:center"><div style="font-size:16px;font-weight:800;color:#fff">78</div><div style="font-size:7px;color:rgba(255,255,255,.5)">SCORE</div></div>
-                <div style="width:1px;height:24px;background:rgba(255,255,255,.15)"></div>
-                <div style="text-align:center"><div style="font-size:16px;font-weight:800;color:#4dabff">−2</div><div style="font-size:7px;color:rgba(255,255,255,.5)">PAR</div></div>
-                <div style="width:1px;height:24px;background:rgba(255,255,255,.15)"></div>
-                <div style="text-align:center"><div style="font-size:16px;font-weight:800;color:#C9A84C">14</div><div style="font-size:7px;color:rgba(255,255,255,.5)">HCP</div></div>
-              </div>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
-              <div style="background:#fff;border-radius:8px;padding:6px;text-align:center"><div style="font-size:13px;font-weight:800;color:#34C759">23</div><div style="font-size:7px;color:#8e8e93">Rounds</div></div>
-              <div style="background:#fff;border-radius:8px;padding:6px;text-align:center"><div style="font-size:13px;font-weight:800;color:#0a84ff">86.4</div><div style="font-size:7px;color:#8e8e93">Avg</div></div>
-            </div>
-            <!-- Score dots -->
-            <div style="display:flex;gap:3px;margin-top:6px;justify-content:center">
-              <div style="width:22px;height:22px;border-radius:6px;background:rgba(10,132,255,.15);color:#0a84ff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center">-1</div>
-              <div style="width:22px;height:22px;border-radius:6px;background:rgba(52,199,89,.15);color:#34C759;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center">E</div>
-              <div style="width:22px;height:22px;border-radius:6px;background:rgba(88,86,214,.15);color:#5856D6;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center">-2</div>
-              <div style="width:22px;height:22px;border-radius:6px;background:rgba(255,149,0,.15);color:#FF9500;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center">+1</div>
-              <div style="width:22px;height:22px;border-radius:6px;background:rgba(52,199,89,.15);color:#34C759;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center">E</div>
-            </div>
-          </div>
-        </div>
-        <div style="display:flex;justify-content:space-around;padding-top:16px">
-          <div style="text-align:center;font-size:9px;color:rgba(255,255,255,.3)">⛳ Rondas</div>
-          <div style="text-align:center;font-size:9px;color:rgba(255,255,255,.3)">🗺 Campos</div>
-          <div style="text-align:center;font-size:9px;color:rgba(255,255,255,.3)">📍 Mapa</div>
-          <div style="text-align:center;font-size:9px;color:rgba(255,255,255,.3)">👥 Amigos</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FEATURE: SolarCalc -->
-  <div class="feature reverse reveal reveal-delay-1">
-    <div>
-      <span class="feat-label">SaaS · Web</span>
-      <h2 class="feat-h2">Solar energy<br>calculator for Portugal.</h2>
-      <p class="feat-desc">SolarCalc uses PVGIS data, real Portuguese electricity tariffs, and a 3D Three.js hero to deliver accurate solar savings in under 2 minutes.</p>
-      <div class="feat-links">
-        <a href="https://solarcalc-livid.vercel.app" class="btn-primary" style="font-size:.85rem;padding:11px 22px" target="_blank" rel="noopener">Visit site →</a>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
-          <span class="tech-tag">Three.js</span><span class="tech-tag">PVGIS API</span><span class="tech-tag">React</span>
-        </div>
-      </div>
-    </div>
-    <div class="feat-visual">
-      <div class="feat-card-3d" id="solar-card" style="background:linear-gradient(135deg,#06090F,#0C1120)">
-        <div class="web-card-mock">
-          <div class="wc-topbar">
-            <div class="wc-dot" style="background:#ff5f56"></div>
-            <div class="wc-dot" style="background:#ffbd2e"></div>
-            <div class="wc-dot" style="background:#27c93f"></div>
-            <div class="wc-url">solarcalc.pt</div>
-          </div>
-          <div class="wc-body" style="background:#06090F">
-            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#fff;line-height:1;margin-bottom:4px;letter-spacing:-.02em">Quanto pode a<br><span style="color:#F4A823">energia solar</span><br>poupar-lhe?</div>
-            <div style="font-size:9px;color:rgba(255,252,245,.4);margin-bottom:10px;line-height:1.5">Dados reais PVGIS · Portugal</div>
-            <!-- mini calc -->
-            <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:8px">
-              <div style="font-size:8px;color:rgba(255,255,255,.4);margin-bottom:4px">Consumo mensal</div>
-              <div style="height:3px;background:rgba(255,255,255,.08);border-radius:2px;margin-bottom:8px">
-                <div style="width:55%;height:100%;background:linear-gradient(to right,#E8920A,#FFD166);border-radius:2px"></div>
-              </div>
-              <div style="display:flex;justify-content:space-between">
-                <div style="font-size:9px;color:rgba(255,252,245,.5)">Poupança/ano</div>
-                <div style="font-size:9px;font-weight:700;color:#10D67E">EUR 847</div>
-              </div>
-              <div style="display:flex;justify-content:space-between">
-                <div style="font-size:9px;color:rgba(255,252,245,.5)">Payback</div>
-                <div style="font-size:9px;font-weight:700;color:#F4A823">6.8 anos</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="section-inner">
-    <span class="section-eyebrow reveal">All Projects</span>
-    <h2 class="section-h2 reveal">Built to ship.</h2>
-    <div class="projects-grid" style="grid-template-columns:repeat(3,1fr)">
-
-      <!-- TeeUp — wide -->
-      <div class="pcard wide reveal" style="grid-column:span 2">
-        <div class="pcard-icon" style="background:linear-gradient(135deg,#1B4D2E,#2D7A4A)">⛳</div>
-        <div class="pcard-tags">
-          <span class="ptag" style="background:rgba(10,132,255,.1);color:#0a84ff;border:1px solid rgba(10,132,255,.2)">iOS</span>
-          <span class="ptag" style="background:rgba(255,107,53,.08);color:var(--orange);border:1px solid rgba(255,107,53,.18)">Featured</span>
-        </div>
-        <h3>TeeUp</h3>
-        <p>Premium golf companion for Portuguese golfers. WHS handicap, MapKit course discovery, social rounds, Swift Charts analytics. 72 Swift files, 100% SwiftUI, offline-first with Supabase backend.</p>
-        <div class="pcard-footer">
-          <div class="pcard-tech"><span class="tech-tag">SwiftUI</span><span class="tech-tag">Supabase</span><span class="tech-tag">MapKit</span><span class="tech-tag">WeatherKit</span></div>
-          <a href="https://github.com/SoldergG/TeeUp" class="pcard-link" target="_blank">GitHub →</a>
-        </div>
-      </div>
-
-      <!-- KebabLocator — App Store -->
-      <div class="pcard reveal reveal-delay-1">
-        <div class="pcard-icon" style="background:linear-gradient(135deg,#ff6b35,#ff9500)">🌯</div>
-        <div class="pcard-tags">
-          <span class="ptag" style="background:rgba(10,132,255,.1);color:#0a84ff;border:1px solid rgba(10,132,255,.2)">iOS</span>
-          <span class="ptag" style="background:rgba(48,209,88,.1);color:#30d158;border:1px solid rgba(48,209,88,.2)">App Store</span>
-        </div>
-        <h3>KebabLocator</h3>
-        <p>Find the best kebabs near you. Live on the App Store — MapKit, CoreLocation, native SwiftUI.</p>
-        <div class="pcard-footer">
-          <div class="pcard-tech"><span class="tech-tag">Swift</span><span class="tech-tag">MapKit</span></div>
-          <a href="https://apps.apple.com/us/app/kebablocator/id6761265002" class="pcard-link" target="_blank" style="color:#30d158">App Store ↗</a>
-        </div>
-      </div>
-
-      <!-- GroupMemo -->
-      <div class="pcard reveal">
-        <div class="pcard-icon" style="background:linear-gradient(135deg,#bf5af2,#8e44ad)">📸</div>
-        <div class="pcard-tags">
-          <span class="ptag" style="background:rgba(10,132,255,.1);color:#0a84ff;border:1px solid rgba(10,132,255,.2)">iOS</span>
-        </div>
-        <h3>GroupMemo</h3>
-        <p>Shared memories for friend groups. Timeline, bucket list, interactive map with real-time member locations. Apple Sign-In, Supabase Realtime.</p>
-        <div class="pcard-footer">
-          <div class="pcard-tech"><span class="tech-tag">SwiftUI</span><span class="tech-tag">MapKit</span></div>
-          <a href="https://github.com/SoldergG/GroupMemo" class="pcard-link" target="_blank">GitHub →</a>
-        </div>
-      </div>
-
-      <!-- SGO SalvaMais — TestFlight -->
-      <div class="pcard reveal reveal-delay-1">
-        <div class="pcard-icon" style="background:linear-gradient(135deg,#ff3b30,#ff6961)">🚨</div>
-        <div class="pcard-tags">
-          <span class="ptag" style="background:rgba(10,132,255,.1);color:#0a84ff;border:1px solid rgba(10,132,255,.2)">iOS</span>
-          <span class="ptag" style="background:rgba(255,59,48,.1);color:#ff3b30;border:1px solid rgba(255,59,48,.2)">TestFlight</span>
-        </div>
-        <h3>SGO SalvaMais</h3>
-        <p>Native iOS emergency safety workflow app. Xcode Cloud CI/CD, production-grade codebase for real users.</p>
-        <div class="pcard-footer">
-          <div class="pcard-tech"><span class="tech-tag">Swift</span><span class="tech-tag">Xcode Cloud</span></div>
-          <a href="https://testflight.apple.com/join/G4tn2J4P" class="pcard-link" target="_blank" style="color:#ff3b30">TestFlight ↗</a>
-        </div>
-      </div>
-
-      <!-- SolarCalc -->
-      <div class="pcard reveal reveal-delay-2">
-        <div class="pcard-icon" style="background:linear-gradient(135deg,#F4A823,#E8920A)">☀️</div>
-        <div class="pcard-tags"><span class="ptag" style="background:rgba(191,90,242,.1);color:#bf5af2;border:1px solid rgba(191,90,242,.2)">Web · SaaS</span></div>
-        <h3>SolarCalc</h3>
-        <p>Solar energy calculator for Portugal. PVGIS data, real tariffs, 3D Three.js hero, real-time payback simulation.</p>
-        <div class="pcard-footer">
-          <div class="pcard-tech"><span class="tech-tag">Three.js</span><span class="tech-tag">React</span></div>
-          <a href="https://solarcalc-livid.vercel.app" class="pcard-link" target="_blank" rel="noopener">Visit site →</a>
-        </div>
-      </div>
-
-      <!-- Jarvis -->
-      <div class="pcard reveal">
-        <div class="pcard-icon" style="background:linear-gradient(135deg,#0a84ff,#5856d6)">🤖</div>
-        <div class="pcard-tags"><span class="ptag" style="background:rgba(48,209,88,.1);color:#30d158;border:1px solid rgba(48,209,88,.2)">Server</span></div>
-        <h3>Jarvis</h3>
-        <p>Self-hosted AI assistant with ElevenLabs voice, Docker Compose, Tailscale remote access, Telegram integration.</p>
-        <div class="pcard-footer">
-          <div class="pcard-tech"><span class="tech-tag">Docker</span><span class="tech-tag">Linux</span></div>
-          <a href="https://github.com/SoldergG" class="pcard-link" target="_blank">GitHub →</a>
-        </div>
-      </div>
-
-      <!-- Expense Tracker -->
-      <div class="pcard reveal reveal-delay-1">
-        <div class="pcard-icon" style="background:linear-gradient(135deg,#34c759,#1a7a3a)">💸</div>
-        <div class="pcard-tags"><span class="ptag" style="background:rgba(191,90,242,.1);color:#bf5af2;border:1px solid rgba(191,90,242,.2)">Web · SaaS</span></div>
-        <h3>Expense Tracker</h3>
-        <p>Full-stack expense tracking with beautiful Recharts analytics and real-time Supabase persistence. Next.js 15.</p>
-        <div class="pcard-footer">
-          <div class="pcard-tech"><span class="tech-tag">Next.js</span><span class="tech-tag">Supabase</span></div>
-          <a href="https://github.com/SoldergG/expense-tracker" class="pcard-link" target="_blank">GitHub →</a>
-        </div>
-      </div>
-
-      <!-- Schema Visualizer -->
-      <div class="pcard reveal reveal-delay-2">
-        <div class="pcard-icon" style="background:linear-gradient(135deg,#5856d6,#3634a3)">🗂</div>
-        <div class="pcard-tags"><span class="ptag" style="background:rgba(191,90,242,.1);color:#bf5af2;border:1px solid rgba(191,90,242,.2)">Web · Tool</span></div>
-        <h3>Schema Visualizer</h3>
-        <p>SQL-to-ER diagram generator. Paste SQL, get an interactive React Flow entity-relationship diagram instantly.</p>
-        <div class="pcard-footer">
-          <div class="pcard-tech"><span class="tech-tag">Next.js</span><span class="tech-tag">React Flow</span></div>
-          <a href="https://github.com/SoldergG/schema-visualizer" class="pcard-link" target="_blank">GitHub →</a>
-        </div>
-      </div>
-
-      <!-- SwiftUI Gallery -->
-      <div class="pcard reveal">
-        <div class="pcard-icon" style="background:linear-gradient(135deg,#ff6b35,#ff9500)">🎨</div>
-        <div class="pcard-tags"><span class="ptag" style="background:rgba(191,90,242,.1);color:#bf5af2;border:1px solid rgba(191,90,242,.2)">Web · Reference</span></div>
-        <h3>SwiftUI Gallery</h3>
-        <p>Interactive showcase of 35+ SwiftUI components with live Prism.js code previews. A reference library for iOS devs.</p>
-        <div class="pcard-footer">
-          <div class="pcard-tech"><span class="tech-tag">Next.js</span><span class="tech-tag">Prism.js</span></div>
-          <a href="https://github.com/SoldergG/swiftui-gallery" class="pcard-link" target="_blank">GitHub →</a>
-        </div>
-      </div>
-
-      <!-- AI Chat Swift -->
-      <div class="pcard reveal reveal-delay-1">
-        <div class="pcard-icon" style="background:linear-gradient(135deg,#ff6b35,#bf5af2)">🧠</div>
-        <div class="pcard-tags">
-          <span class="ptag" style="background:rgba(10,132,255,.1);color:#0a84ff;border:1px solid rgba(10,132,255,.2)">iOS</span>
-        </div>
-        <h3>AI Chat Swift</h3>
-        <p>Native iOS chat app with real-time Claude API streaming, conversation history, and markdown rendering.</p>
-        <div class="pcard-footer">
-          <div class="pcard-tech"><span class="tech-tag">SwiftUI</span><span class="tech-tag">Claude API</span></div>
-          <a href="https://github.com/SoldergG/ai-chat-swift" class="pcard-link" target="_blank">GitHub →</a>
-        </div>
-      </div>
-
-      <!-- Procura Escola -->
-      <div class="pcard reveal reveal-delay-2">
-        <div class="pcard-icon" style="background:linear-gradient(135deg,#34c759,#007aff)">🎓</div>
-        <div class="pcard-tags"><span class="ptag" style="background:rgba(191,90,242,.1);color:#bf5af2;border:1px solid rgba(191,90,242,.2)">Web · PT</span></div>
-        <h3>Procura Escola</h3>
-        <p>Portuguese university course comparator. Compare degrees, filter by district, access entry scores side-by-side.</p>
-        <div class="pcard-footer">
-          <div class="pcard-tech"><span class="tech-tag">Next.js</span><span class="tech-tag">TypeScript</span></div>
-          <a href="https://github.com/SoldergG/procura-escola" class="pcard-link" target="_blank">GitHub →</a>
-        </div>
-      </div>
-
-    </div>
+    <footer class="foot mono">
+      <span>© 2026 Lucas Salvador</span>
+      <a href="privacy.html" data-i18n="foot.privacy">privacy</a>
+      <span data-i18n="foot.place">lisbon · portugal</span>
+    </footer>
   </div>
 </section>
 
-<!-- SKILLS -->
-<section id="skills">
-  <div class="section-inner">
-    <span class="section-eyebrow reveal">Technical Profile</span>
-    <h2 class="section-h2 reveal">Built from scratch,<br>shipped to production.</h2>
-    <div class="skills-grid" style="grid-template-columns:repeat(4,1fr)">
-      <div class="skill-cat reveal">
-        <div class="skill-cat-icon">📱</div>
-        <h4>iOS & Mobile</h4>
-        <div class="skill-tags">
-          <span class="skill-tag">Swift</span><span class="skill-tag">SwiftUI</span><span class="skill-tag">UIKit</span><span class="skill-tag">MapKit</span><span class="skill-tag">SwiftData</span><span class="skill-tag">CoreLocation</span><span class="skill-tag">TestFlight</span>
-        </div>
-      </div>
-      <div class="skill-cat reveal reveal-delay-1">
-        <div class="skill-cat-icon">🖥</div>
-        <h4>Infrastructure</h4>
-        <div class="skill-tags">
-          <span class="skill-tag">Docker</span><span class="skill-tag">Linux</span><span class="skill-tag">Nginx</span><span class="skill-tag">Tailscale</span><span class="skill-tag">SSH</span><span class="skill-tag">Home Assistant</span>
-        </div>
-      </div>
-      <div class="skill-cat reveal reveal-delay-2">
-        <div class="skill-cat-icon">🌐</div>
-        <h4>Web & Full-Stack</h4>
-        <div class="skill-tags">
-          <span class="skill-tag">Next.js 15</span><span class="skill-tag">React</span><span class="skill-tag">TypeScript</span><span class="skill-tag">Three.js</span><span class="skill-tag">Supabase</span><span class="skill-tag">Tailwind</span>
-        </div>
-      </div>
-      <div class="skill-cat reveal reveal-delay-3" style="border:1px solid rgba(255,107,53,.2);background:rgba(255,107,53,.03)">
-        <div class="skill-cat-icon">🧠</div>
-        <h4 style="color:var(--orange)">AI & Claude</h4>
-        <div class="skill-tags">
-          <span class="skill-tag" style="border-color:rgba(255,107,53,.2);color:var(--orange)">Claude Expert</span>
-          <span class="skill-tag">Prompt Eng.</span>
-          <span class="skill-tag">OpenAI API</span>
-          <span class="skill-tag">ElevenLabs</span>
-          <span class="skill-tag">OpenRouter</span>
-          <span class="skill-tag">AI Products</span>
-        </div>
-      </div>
-    </div>
+</main>
 
-    <!-- Claude callout -->
-    <div class="reveal" style="margin-top:24px;background:linear-gradient(135deg,rgba(255,107,53,.06),rgba(255,149,0,.06));border:1px solid rgba(255,107,53,.18);border-radius:20px;padding:28px 32px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
-      <div style="font-size:2.4rem;flex-shrink:0">🧠</div>
-      <div style="flex:1;min-width:200px">
-        <div style="font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-.02em">Expert in building with Claude AI</div>
-        <div style="font-size:.88rem;color:var(--muted);line-height:1.7">From building AI-powered iOS apps to self-hosted assistants and agentic workflows — Lucas ships real products with Claude at the core. Capable of rapid prototyping, full-stack AI integration, and prompt engineering for production use.</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
-        <div style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--text2);font-weight:500"><span style="color:var(--orange)">✓</span> AI product development</div>
-        <div style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--text2);font-weight:500"><span style="color:var(--orange)">✓</span> LLM API integration</div>
-        <div style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--text2);font-weight:500"><span style="color:var(--orange)">✓</span> Voice + AI assistants</div>
-        <div style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--text2);font-weight:500"><span style="color:var(--orange)">✓</span> Rapid UI prototyping</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="section-inner">
-    <span class="section-eyebrow reveal">Background</span>
-    <h2 class="section-h2 reveal">About me</h2>
-  </div>
-  <div class="about-inner">
-    <div class="about-photo-wrap reveal">
-      <img src="lucas_photo.jpg" alt="Lucas Salvador">
-      <div class="about-photo-badge">
-        <div class="dot"></div>
-        iOS &amp; Web Dev · Lisbon 🇵🇹
-      </div>
-    </div>
-    <div class="about-content reveal reveal-delay-1">
-      <p class="about-bio">
-        I'm a <em>developer</em> from <strong>Lisbon, Portugal</strong>, passionate about building software
-        that actually gets used. I started with iOS development and expanded into full-stack web,
-        building products end-to-end — from native Swift apps to Next.js platforms with Supabase backends.
-      </p>
-      <p class="about-bio">
-        I believe in <strong>learning by building</strong> — every project I take on solves a real problem.
-        Whether it's a native Swift app or a full-stack web product, I ship things that work and look great.
-      </p>
-      <p class="about-bio">
-        Outside of tech, I play <strong>golf</strong> and go to the gym regularly. I also enjoy cooking
-        simple, good food — which might explain why KebabLocator exists.
-      </p>
-      <div class="about-facts reveal reveal-delay-2">
-        <div class="about-fact">
-          <div class="fact-label">Location</div>
-          <div class="fact-value">Lisbon, Portugal</div>
-        </div>
-        <div class="about-fact">
-          <div class="fact-label">Status</div>
-          <div class="fact-value">Open to opportunities</div>
-        </div>
-        <div class="about-fact">
-          <div class="fact-label">Focus</div>
-          <div class="fact-value">iOS &amp; Full-Stack Web</div>
-        </div>
-        <div class="about-fact">
-          <div class="fact-label">Languages</div>
-          <div class="fact-value">PT · EN · ES</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact" style="background:var(--bg2);padding:120px 32px">
-  <div style="max-width:860px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center" class="contact-grid">
-    <div>
-      <span class="section-eyebrow reveal">Let's work together</span>
-      <h2 class="reveal" style="font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin:16px 0 18px;color:var(--text)">Got a project<br>in <span style="background:linear-gradient(135deg,var(--orange),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">mind?</span></h2>
-      <p class="reveal" style="font-size:.97rem;color:var(--muted);line-height:1.8;margin-bottom:28px">Available for iOS apps, full-stack web products, and AI-powered tools. Based in Lisbon, Portugal — working globally.</p>
-      <a href="mailto:Lucs2.8@icloud.com" class="btn-primary reveal" style="font-size:.92rem;padding:14px 28px;background:linear-gradient(135deg,var(--orange),var(--amber));box-shadow:0 8px 24px rgba(255,107,53,.25)">Send a message →</a>
-    </div>
-    <div class="reveal" style="display:flex;flex-direction:column;gap:10px">
-      <a href="https://github.com/SoldergG" target="_blank" style="display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--sep2);border-radius:14px;padding:14px 18px;text-decoration:none;color:var(--text);transition:border-color .2s,transform .2s" onmouseover="this.style.borderColor='#ff6b35';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='';this.style.transform=''">
-        <span style="font-size:1.2rem">⌨️</span>
-        <div><div style="font-size:.88rem;font-weight:600">github.com/SoldergG</div><div style="font-size:.76rem;color:var(--muted)">13 public repos — iOS apps &amp; web projects</div></div>
-        <span style="margin-left:auto;color:var(--muted)">↗</span>
-      </a>
-      <a href="mailto:Lucs2.8@icloud.com" style="display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--sep2);border-radius:14px;padding:14px 18px;text-decoration:none;color:var(--text);transition:border-color .2s,transform .2s" onmouseover="this.style.borderColor='#ff6b35';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='';this.style.transform=''">
-        <span style="font-size:1.2rem">✉️</span>
-        <div><div style="font-size:.88rem;font-weight:600">Lucs2.8@icloud.com</div><div style="font-size:.76rem;color:var(--muted)">Preferred contact</div></div>
-        <span style="margin-left:auto;color:var(--muted)">↗</span>
-      </a>
-      <a href="https://instagram.com/Lucs2.8" target="_blank" style="display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--sep2);border-radius:14px;padding:14px 18px;text-decoration:none;color:var(--text);transition:border-color .2s,transform .2s" onmouseover="this.style.borderColor='#ff6b35';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='';this.style.transform=''">
-        <span style="font-size:1.2rem">📸</span>
-        <div><div style="font-size:.88rem;font-weight:600">@Lucs2.8</div><div style="font-size:.76rem;color:var(--muted)">Instagram</div></div>
-        <span style="margin-left:auto;color:var(--muted)">↗</span>
-      </a>
-      <div style="background:rgba(27,77,46,.06);border:1px solid rgba(27,77,46,.12);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:10px">
-        <div style="width:8px;height:8px;background:#34c759;border-radius:50%;animation:pulse-dot 2s infinite;flex-shrink:0"></div>
-        <div style="font-size:.82rem;color:#1B4D2E;font-weight:600">Available for new projects · Lisbon 🇵🇹</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer style="background:var(--bg);border-top:1px solid var(--sep);padding:28px 32px;display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--muted);flex-wrap:wrap;gap:10px">
-  <div style="display:flex;align-items:center;gap:8px">
-    <img src="logo.png" alt="LT" style="width:18px;height:18px;object-fit:contain;opacity:.5;">
-    <span>© 2025 Lucas Salvador</span>
-  </div>
-  <span>Lisbon · Portugal 🇵🇹</span>
-  <div style="display:flex;gap:20px">
-    <a href="https://github.com/SoldergG" target="_blank" style="color:var(--muted);text-decoration:none;transition:color .2s" onmouseover="this.style.color='#ff6b35'" onmouseout="this.style.color=''">GitHub</a>
-    <a href="https://apps.apple.com/us/app/kebablocator/id6761265002" target="_blank" style="color:var(--muted);text-decoration:none;transition:color .2s" onmouseover="this.style.color='#ff6b35'" onmouseout="this.style.color=''">App Store</a>
-    <a href="mailto:Lucs2.8@icloud.com" style="color:var(--muted);text-decoration:none;transition:color .2s" onmouseover="this.style.color='#ff6b35'" onmouseout="this.style.color=''">Email</a>
-  </div>
-</footer>
-
-<script>
-// ── Nav stuck ──
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('stuck', window.scrollY > 20);
-});
-
-// ── Hamburger menu ──
-(function() {
-  const btn = document.getElementById('nav-hamburger');
-  const menu = document.getElementById('nav-mobile');
-  function closeMenu() {
-    btn.classList.remove('open');
-    menu.classList.remove('open');
-  }
-  btn.addEventListener('click', () => {
-    btn.classList.toggle('open');
-    menu.classList.toggle('open');
-  });
-  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-  window.addEventListener('scroll', closeMenu);
-})();
-
-// ── Scroll reveal ──
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-// ── Three.js hero — floating hexagon cluster ──
-(function initHero() {
-  const canvas = document.getElementById('hero-canvas');
-  const W = window.innerWidth, H = window.innerHeight;
-  canvas.width = W; canvas.height = H;
-
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(W, H);
-  renderer.setClearColor(0x000000, 0);
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, W/H, 0.1, 200);
-  camera.position.set(0, 0, 12);
-
-  // Subtle ambient + directional
-  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-  const sun = new THREE.DirectionalLight(0xff8040, 2.5);
-  sun.position.set(4, 6, 5);
-  scene.add(sun);
-  const rim = new THREE.DirectionalLight(0x6080ff, 0.8);
-  rim.position.set(-4, -2, -3);
-  scene.add(rim);
-
-  // ── LT Logo arc: 6 hexagons in horseshoe/arc shape ──
-  // Matches the actual logo: arc from top-left→top-center(bridge)→top-right→right→bottom-right
-  // Opening faces lower-left where "LT" text lives
-  const hexShape = new THREE.Shape();
-  for (let i = 0; i < 6; i++) {
-    const angle = (Math.PI / 3) * i + Math.PI / 6;
-    const x = Math.cos(angle), y = Math.sin(angle);
-    i === 0 ? hexShape.moveTo(x, y) : hexShape.lineTo(x, y);
-  }
-  hexShape.closePath();
-
-  const extrudeSettings = { depth: 0.42, bevelEnabled: true, bevelThickness: 0.07, bevelSize: 0.05, bevelSegments: 5 };
-
-  // Arc positions matching the logo exactly:
-  // top-left, top-right (bridge), left-mid, right-upper, right-lower, bottom-right
-  const hexPositions = [
-    [-0.58, 1.38, 0],    // top-left (bridge left)
-    [ 0.58, 1.38, 0],    // top-right (bridge right)
-    [-1.32, 0.12, 0.08], // left-middle (large hex)
-    [ 1.30, 0.52, 0.04], // right-upper
-    [ 1.20,-0.68, 0.08], // right-lower
-    [ 0.72,-1.55, 0.12], // bottom-right
-  ];
-
-  const mat = new THREE.MeshPhysicalMaterial({
-    color: 0x1d1d1f,
-    metalness: 0.55,
-    roughness: 0.18,
-    clearcoat: 1.0,
-    clearcoatRoughness: 0.08,
-    reflectivity: 0.9,
-  });
-
-  const hexGroup = new THREE.Group();
-  hexPositions.forEach(([x, y, zOff]) => {
-    const geo = new THREE.ExtrudeGeometry(hexShape, extrudeSettings);
-    geo.center();
-    const mesh = new THREE.Mesh(geo, mat.clone());
-    mesh.position.set(x, y, zOff);
-    mesh.scale.setScalar(0.72);
-    hexGroup.add(mesh);
-  });
-
-  const isMobile = window.innerWidth <= 768;
-  hexGroup.position.set(isMobile ? 1.5 : 3.8, isMobile ? -1.2 : 0.1, -1.5);
-  hexGroup.rotation.set(0.12, -0.18, 0.05);
-  if (isMobile) hexGroup.scale.setScalar(0.7);
-  scene.add(hexGroup);
-
-  // Particles
-  const pGeo = new THREE.BufferGeometry();
-  const pPos = new Float32Array(600 * 3);
-  for (let i = 0; i < 600; i++) {
-    pPos[i*3] = (Math.random() - 0.5) * 30;
-    pPos[i*3+1] = (Math.random() - 0.5) * 20;
-    pPos[i*3+2] = (Math.random() - 0.5) * 15 - 5;
-  }
-  pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-  scene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0xff6b35, size: 0.045, transparent: true, opacity: 0.35, sizeAttenuation: true })));
-
-  let mx = 0, my = 0, tmx = 0, tmy = 0;
-  let scrollY = 0;
-  document.addEventListener('mousemove', e => {
-    mx = (e.clientX / window.innerWidth - 0.5) * 2;
-    my = (e.clientY / window.innerHeight - 0.5) * 2;
-  });
-  window.addEventListener('scroll', () => { scrollY = window.scrollY; });
-  window.addEventListener('resize', () => {
-    const W2 = window.innerWidth, H2 = window.innerHeight;
-    camera.aspect = W2/H2; camera.updateProjectionMatrix();
-    renderer.setSize(W2, H2);
-  });
-
-  let heroEnabled = true;
-  const clock = new THREE.Clock();
-  (function loop() {
-    requestAnimationFrame(loop);
-    if (!heroEnabled) return;
-    const t = clock.getElapsedTime();
-    tmx += (mx - tmx) * 0.04;
-    tmy += (my - tmy) * 0.04;
-
-    hexGroup.rotation.y = -0.15 + tmx * 0.35;
-    hexGroup.rotation.x = 0.1 + tmy * 0.2;
-    hexGroup.rotation.z = 0.1 + Math.sin(t * 0.4) * 0.04;
-    hexGroup.position.y = Math.sin(t * 0.6) * 0.12;
-
-    // Scroll parallax — hex drifts out as user scrolls
-    const scrollFade = Math.max(0, 1 - scrollY / 400);
-    hexGroup.position.z = -2 - scrollY * 0.008;
-    hexGroup.children.forEach(h => { h.material.opacity = scrollFade; });
-    hexGroup.children.forEach(h => { h.material.transparent = true; });
-
-    renderer.render(scene, camera);
-  })();
-
-  window.__heroEnabled = (v) => { heroEnabled = v; canvas.style.opacity = v ? '1' : '0'; };
-})();
-
-// ── 3D card tilt on hover ──
-document.querySelectorAll('.feat-card-3d').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const r = card.getBoundingClientRect();
-    const dx = (e.clientX - r.left - r.width/2) / (r.width/2);
-    const dy = (e.clientY - r.top - r.height/2) / (r.height/2);
-    card.style.transform = `perspective(1000px) rotateX(${-dy * 10}deg) rotateY(${dx * 10}deg) translateY(-8px) scale(1.02)`;
-    card.style.transition = 'transform .08s ease';
-  });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
-    card.style.transition = 'transform .5s cubic-bezier(.23,1,.32,1)';
-  });
-});
-
-// ── Scroll-driven 3D parallax on feature sections ──
-function onScroll() {
-  const teeup = document.getElementById('teeup-card');
-  const solar = document.getElementById('solar-card');
-  if (teeup) {
-    const r = teeup.closest('.feature').getBoundingClientRect();
-    const p = Math.max(0, Math.min(1, 1 - r.top / window.innerHeight));
-    teeup.style.transform = `perspective(1000px) rotateY(${-6 + p * 12}deg) rotateX(${3 - p * 6}deg) translateY(${-p * 12}px)`;
-  }
-  if (solar) {
-    const r = solar.closest('.feature').getBoundingClientRect();
-    const p = Math.max(0, Math.min(1, 1 - r.top / window.innerHeight));
-    solar.style.transform = `perspective(1000px) rotateY(${6 - p * 12}deg) rotateX(${3 - p * 6}deg) translateY(${-p * 12}px)`;
-  }
-}
-window.addEventListener('scroll', onScroll, { passive: true });
-onScroll();
-
-</script>
+<script src="assets/js/pt/home.js" defer></script>
+<script src="assets/vendor/gsap-3.15.0.min.js" defer></script>
+<script src="assets/vendor/ScrollTrigger-3.15.0.min.js" defer></script>
+<script src="assets/vendor/lenis-1.3.26.min.js" defer></script>
+<script src="assets/js/core.js" defer></script>
+<script src="assets/js/home.js" defer></script>
 </body>
 </html>
